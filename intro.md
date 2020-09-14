@@ -1,7 +1,10 @@
-Welcome to your Jupyter Book
+ Functional Programming in Scala Specialization
 ============================
 
-This is a small sample book to give you a feel for how book content is
-structured.
+Functional Programming in Scala Specialization contains five courses:
 
-Check out the content pages bundled with this sample book to get started.
+- Functional Programming Principles in Scala
+- Functional Program Design in Scala
+- Parallel programming
+- Big Data Analysis with Scala and Spark
+- Functional Programming in Scala Capstone
