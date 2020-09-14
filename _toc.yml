@@ -1,4 +1,4 @@
 - file: intro
-- file: fpps\fpps_intro
+- file: fpps\intro
   sections:
     - file: fpps\week1
