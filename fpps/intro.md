@@ -2,7 +2,7 @@ Introduction
 ==========================================
 
 
-The objective of course is to learn functional programming from basic principles using Scala.  Functional programming  is quite different from imperative programming paradigm (e.g., C, Java).
+The objective of course is to learn functional programming from basic principles using Scala. Functional programming  is quite different from imperative programming paradigm (e.g., C, Java).
 
 Scala provides support for both functional and object oriented programming. Scala has strong static type and inferred system. Scala is interoperable with Java and vice versa, and compiles to Java bytecode, so the executable runs on Java Virtual Machine.[^1]
 

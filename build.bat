@@ -1,2 +1,0 @@
-jb clean .
-jb build .
