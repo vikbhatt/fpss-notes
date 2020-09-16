@@ -6,3 +6,9 @@ logo: logo.png
 latex:
   latex_documents:
     targetname: book.tex
+
+parse:
+  myst_extended_syntax: true
+
+html:
+  favicon: images/favicon.ico

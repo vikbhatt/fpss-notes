@@ -39,6 +39,8 @@ Not every expression reduces to value in finite steps. For example try this in y
 ```scala
 def loop: Int = loop
 ```
+
+
 The interpreter tries to reduce the function arguments to values before the function application. Function parameters can be passed in two ways
 
 1. Call by Value (CBV)
@@ -46,18 +48,16 @@ The interpreter tries to reduce the function arguments to values before the func
 
 Both strategies reduce expressions to same values as long as the reduced expression consist of pure functions and both values terminate.
 
-### Call by Value
-
-Call by value evaluates every function argument once.
+Call by Value
+: Call by value evaluates every function argument once.
 
 ```scala
 def multiply(x:Int, y:Int) = x*y
 ```
 
 ----------------------------------------------------------------
-### Call by Name
-
-Call by name doesn't evaluate argument unless it is used by the function's body.
+Call by Name
+: Call by name doesn't evaluate argument unless it is used by the function's body.
 
 ```{note}
 Scala normally uses call by value. But when the function parameters starts with :=> it uses call by name.
@@ -94,7 +94,7 @@ constOne(loop, 1+2)
 
 First argument is called by value, and second argument called by name.
 
-`constOne(1+2,loop) = constOne(3, loop) = 1`
+`constOne(1+2,loop) => constOne(3, loop) => 1`
 
 `constOne(loop, 1+2)` never terminates, because when the interpreter tries to evaluate the first argument it never returns.
 ## Blocks in Scala
