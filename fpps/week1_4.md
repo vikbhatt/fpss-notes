@@ -20,7 +20,7 @@ Logical operators `&&` and `||` are short circuited. Operands on both side of th
 
 For example `false && e` always evaluates to `false` irrespective of the value of the expression `e` and the expression `e` is not evaluated.
 
-Another example is `true || e` always return `true`, `e` expression is not evaluated further.
+Another example is `true || e` always return `true`, the expression `e` is not evaluated further.
 
 Consider the short circuit nature of the logical operators, and think how you can implement this in terms of call by name or call by nature of the arguments in the `and` and `or` functions.
 ```
@@ -38,13 +38,13 @@ Also function arguments are generally call by value in Scala, unless you specify
 ```
 
 --------------------------------------------------------------------------------
-:::{admonition,dropdown} Ex1 solution
+````{dropdown} Ex1 solution
 
 ```scala
 def and(x: Boolean, y: =>Boolean) = if(x) y else false
 def or(x: Boolean, y: => Boolean)= if(x) true else y
 ```
-:::
+````
 
 --------------------------------------------------------------------------------
 
@@ -61,14 +61,14 @@ You cannot use imperative structures like loops, iterators and mutations.
 ````
 
 ------------------------------------------------------------------------------------------
-```{admonition}Newton's Method
+```{admonition} Newton's Method
 :class: tip
 
-Start with intial estimate $y$ and repeatedly improve estimate by taking mean of $y$ and $\frac{x}{y}$.
+Start with initial estimate $y$ and repeatedly improve estimate by taking mean of $y$ and $\frac{x}{y}$.
 
 ```
 
-```{admonition}Block Scope
+```{admonition} Block Scope
 :class: tip
 
 Any definitions defined before and outside of block expression ({...}) is visible inside the block, unless a new definition with same name exists inside the block, then it shadows the outside value.
@@ -76,7 +76,7 @@ Any definitions defined before and outside of block expression ({...}) is visibl
 ```
 --------------------------------------------------------------------------------------------
 
-:::{admonition,dropdown} Ex2 solution
+````{dropdown} Ex2 solution
 ```scala
 
 def square(x: Double): Double = {
@@ -90,4 +90,4 @@ def square(x: Double): Double = {
    sqrtIter(1.0)
   }
 ```
-:::
+````
