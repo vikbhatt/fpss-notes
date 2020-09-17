@@ -2,8 +2,9 @@
 - part: Functional Programming Principles in Scala
   numbered: true
   chapters:
-    - file: fpps\intro
-    - file: fpps\week1_1
-    - file: fpps\week1_2
-    - file: fpps\week1_3
-    - file: fpps\week1_4
+    - file: fpps\week1\intro
+    - file: fpps\week1\week1_1
+    - file: fpps\week1\week1_2
+    - file: fpps\week1\week1_3
+    - file: fpps\week1\week1_4
+    - file: fpps\week2\week2_1

@@ -73,6 +73,23 @@ In a strict sense functional programming means:
 - no for loops (instead recursion or map)
 - no imperative control structures
 
+Here I need to define precisely side effects. In order to understand the side effects in context of programming, wee need to define referential transparency. But for now think of any of the following:
+
+- Modifying a variable or data structure in place.
+- I/O operation
+
+
+For an imperative programmer, it would look like functional programming is impossible to adapt for every scenario, considering the restrictions of immutability and no side effects only pure functions. But[^2]
+
+> Functional programming is a restriction on how we write a program but not on what the program can express.
+
+Functional programming style would imply use of pure functions(no side effects). How do we define pure functions?
+
+Referential transparency and Pure Functions[^2]
+:  An expression $e$ is referential transparent means for all programs $p$, all occurrences of expression $e$ can be replaced by the result of $e$ without effecting the meaning of $p$. A function $f$ is pure, if the expression $f(x)$ is referentially transparent for all referential transparent $x$.
+
+We can reason about the program evaluation when referential transparency(RT) holds true for every expression (called substitution model). We can conceptualize computation as you would with an algebraic equation by substituting the expression with the evaluated result of the expression.
+
 In wider sense:
 - functions are first class citizens
 - function as values, return parameters, and composable methods to construct functions
@@ -82,3 +99,4 @@ We don't need a functional programming language(e.g., Haskell, Scala, StandardML
 ```
 
 [^1]: https://en.wikipedia.org/wiki/Von_Neumann_architecture#Design_limitations
+[^2]: Chiusano, Paul, and Rnar Bjarnason. Functional programming in Scala. Manning Publications Co., 2014.
