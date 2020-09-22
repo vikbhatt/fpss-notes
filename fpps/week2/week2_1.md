@@ -87,9 +87,10 @@ or
 $$\text{def } f(args_1)(args_2)..(args_{n-1}) = \{ args_n \Longrightarrow E \}$$
 
 
-By repeating above process $n$ times we have
+By repeating above process $n$ times we have  
 
-$$ \text{def } f = (args_1 \Longrightarrow (args_2 \Longrightarrow \cdots (args_n \Longrightarrow E))) $$,
+$ \text{def } f = (args_1 \Longrightarrow (args_2 \Longrightarrow \cdots (args_n \Longrightarrow E))) $
+
 
 this type of function definition and application is called _currying_.
 
