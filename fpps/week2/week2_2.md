@@ -44,6 +44,9 @@ r.add(new Rational(1,2))
 r add (new Rational(1,2)) //same as above
 ```
 
+```scala
+
+```
 ---------------------
 
 [^1]:
