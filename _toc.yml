@@ -10,3 +10,8 @@
     - file: fpps\week2\week2_1
     - file: fpps\week2\week2_2
     - file: fpps\week3\week3_1
+- part: Functional Program Design in Scala
+  numbered: true
+  chapters:
+    - file: fpds\week1\week1_1
+    - file: fpds\week1\week1_2

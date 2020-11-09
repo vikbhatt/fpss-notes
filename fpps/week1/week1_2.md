@@ -3,7 +3,7 @@ In Scala an expression can be:
 
 -  An identifier such as `x`, `isGoodEnough`,
 -  A literal, like `0`, `1.0`, `
-  ”abc”`,
+  "abc"`,
 -  A function application, like `sqrt(x)`,
 -  An operator application, like `-x`, `y + x`,
 - A selection, like `math.abs`,
