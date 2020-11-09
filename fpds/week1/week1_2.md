@@ -145,7 +145,8 @@ yield b.title
 )
 ```
 ````
--------------------------------------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------------------------------------
 
 ````{panels}
 :column: col-lg-12 p-2
@@ -198,3 +199,6 @@ for (b1 <- books
 ````
 
 -----------------------------------------------------------------------------------------------------------
+
+The translation of `for`-expression is not limited to lists, or sequences or even collections.
+It is based solely on presence of methods `map`, `flatMap`, and `withFilter`. This lets you use `for` your own syntax for your own types (arrays, iterators, databases, XML, parsers etc.). We must only define `map`, `flatMap` and `withFilter` functions.
