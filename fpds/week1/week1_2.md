@@ -72,7 +72,7 @@ For expressions simplify the combinations of `map`, `flatMap`, and `filter`. Sca
     where `s` is sequence of generators (potentially empty) translates to
 
     ```scala
-    e1.flatMap((x => for (y <- e2; s) yield e3)
+    e1.flatMap(x => for (y <- e2; s) yield e3)
     ```
     and translation continues with new expression.
 

@@ -1,6 +1,6 @@
 # Recap Functions and Pattern Matching
 
-case class is preferred way to define complex data. Let's look at possible domain we can express with functions and pattern matching is Java Script Object Notation (JSON).
+`case` class is preferred way to define complex data. Let's look at possible domain we can express with functions and pattern matching is Java Script Object Notation (JSON).
 
 See below example of JSON object from Wikipedia.
 
