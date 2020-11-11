@@ -47,18 +47,21 @@ def tail: Stream[A]
 A concrete implementation of `Stream` is defined in the companion object.
 
 ```scala
-
 object Stream {
+
 def cons[T](hd: T, tl: => Stream[T]) = new Stream[T] {
 def isEmpty = false
 def head = hd
 def tail = tl
 }
+
 val empty = new Stream[Nothing] {
+
 def isEmpty = true
 def head = throw new NoSuchElementException(”empty.head”)
 def tail = throw new NoSuchElementException(”empty.tail”)
 }
+
 }
 ```
 
@@ -75,7 +78,4 @@ Scala uses strict evaluation by default. Pure functional programming languages u
 
 Since Scala allows mutable side effects, `lazy` is not allowed vby default.
 
-Lets compare `lazy val x = expr` and `def x = expr`. Both right hand side `expr` not evaluated,  unless called. But once `lazy val` is called, the result is stored and used in subsequent calls, rather in `def x=expr` the `expr` is evaluated every time it is required. 
-
-
----
+Lets compare `lazy val x = expr` and `def x = expr`. Both right hand side `expr` not evaluated,  unless called. But once `lazy val` is called, the result is stored and used in subsequent calls, rather in `def x=expr` the `expr` is evaluated every time it is required.
