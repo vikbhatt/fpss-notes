@@ -40,7 +40,6 @@ trait Stream[+A] extends Seq[A] {
 def isEmpty: Boolean
 def head: A
 def tail: Stream[A]
-...
 }
 ```
 
@@ -56,10 +55,9 @@ def tail = tl
 }
 
 val empty = new Stream[Nothing] {
-
 def isEmpty = true
-def head = throw new NoSuchElementException(”empty.head”)
-def tail = throw new NoSuchElementException(”empty.tail”)
+def head = throw new NoSuchElementException("empty.head")
+def tail = throw new NoSuchElementException("empty.tail")
 }
 
 }
@@ -69,7 +67,7 @@ Notice the `tl` parameter in `cons` which is call by name parameter. For list th
 
 ## Lazy Evaluation
 
-Laziness means do them as late as possible, never do them twice. 
+Laziness means do them as late as possible, never do them twice.
 The implementation of `Stream` solves the problem of avoiding unnecessary computation when tail value is not required. But it suffers from a potential serious problem. If tail is called several times, the Stream will be recomputed and can cause exponential blow up of program complexity.
 
 This can be avoided, by storing the first evaluation of tail and reusing the result instead of recomputing the tail. We could just squirrel away the first time we have produced the result, and reuse that result every time. That scheme is called lazy evaluation.
@@ -79,3 +77,31 @@ Scala uses strict evaluation by default. Pure functional programming languages u
 Since Scala allows mutable side effects, `lazy` is not allowed vby default.
 
 Lets compare `lazy val x = expr` and `def x = expr`. Both right hand side `expr` not evaluated,  unless called. But once `lazy val` is called, the result is stored and used in subsequent calls, rather in `def x=expr` the `expr` is evaluated every time it is required.
+
+-----------------------------------------------------------------------------------------------------------
+
+````{panels}
+:column: col-lg-12 p-2
+
+{badge}`Ex1`
+
+What is the output of the following program?
+```scala
+def expr = {
+val x = { print(”x”); 1 }
+lazy val y = { print(”y”); 2 }
+def z = { print(”z”); 3 }
+z + y + x + z + y + x
+}
+expr
+```
+````
+
+````{dropdown} Ex1 solution
+
+- xzyz
+
+The compiler sees `val` definition of `x` and evaluated it immediately and prints `x`. But `lazy val` and `def` are evaluated when required. Finally the expression `z + y + x + z + y + x` is evaluated from left to right. `z` is evaluated on demand so "z" is printed. `y` is evaluated on demand, but the result is also stored. While evaluating the value of `y`, "y" is printed, and the result is stored in `y`. `x` is already evaluted so the value is substituted as it is. `z` is again evaluated by the `def` form, so "z" is printed. `y` and `x` are already evaluated and saved, so the values are substituted as it is.
+
+````
+-----------------------------------------------------------------------------------------------------------
