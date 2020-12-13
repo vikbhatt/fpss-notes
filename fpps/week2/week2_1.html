@@ -1,0 +1,432 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>6. Higher Order Functions &#8212; Functional Programming in Scala Specialization -- Complied Notes</title>
+    
+  <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../../_static/sphinx-book-theme.2d2078699c18a0efb88233928e1cf6ed.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.be0a4a0c39cd630af62a2fcf693f3f06.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="7. Class and Objects" href="week2_2.html" />
+    <link rel="prev" title="5. Exercise Session" href="../week1/week1_4.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../../index.html">
+  
+  <img src="../../_static/logo.png" class="logo" alt="logo">
+  
+  
+  <h1 class="site-logo" id="site-title">Functional Programming in Scala Specialization -- Complied Notes</h1>
+  
+</a>
+</div>
+
+<form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../intro.html">
+   Functional Programming in Scala Specialization
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Functional Programming Principles in Scala
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week1/intro.html">
+   1. Introduction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week1/week1_1.html">
+   2. Imperative vs Functional Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week1/week1_2.html">
+   3. Expressions and Evaluation model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week1/week1_3.html">
+   4. Tail Recursion
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week1/week1_4.html">
+   5. Exercise Session
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   6. Higher Order Functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="week2_2.html">
+   7. Class and Objects
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week3/week3_1.html">
+   8. Class Hierarchies
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Functional Program Design in Scala
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week1/week1_1.html">
+   1. Recap Functions and Pattern Matching
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week1/week1_2.html">
+   2. Recap: Collections
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week1/week1_3.html">
+   3. Functional Random Generators
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week1/week1_4.html">
+   4. Monads
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week2/week2_1.html">
+   5. Streams
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week2/week2_2.html">
+   6. Case Study: The Water Pouring Problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week3/week3_1.html">
+   7. Type-Directed Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week3/week3_2.html">
+   8. Type Class
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week4/week4_1.html">
+   9. Functions and State
+  </a>
+ </li>
+</ul>
+
+</nav>
+
+ <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        <div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/fpps/week2/week2_1.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+    
+</div>
+        <!-- Source interaction buttons -->
+
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                title="Fullscreen mode"><i
+                    class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+
+    </div>
+
+    <!-- Table of contents -->
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#anonymous-functions">
+   6.1. Anonymous functions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#currying">
+   6.2. Currying
+  </a>
+ </li>
+</ul>
+
+        </nav>
+        
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="higher-order-functions">
+<h1><span class="section-number">6. </span>Higher Order Functions<a class="headerlink" href="#higher-order-functions" title="Permalink to this headline">¶</a></h1>
+<p>Functional programming languages treat functions as first class values. Functions can be passed, and returned from other functions.</p>
+<dl class="simple myst">
+<dt>Higher order functions</dt><dd><p>Functions that take other functions as parameters and return other functions are called higher order functions.</p>
+</dd>
+</dl>
+<p>The type <code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">=&gt;</span> <span class="pre">B</span></code> is the type of a functions that takes an argument of type A and result of type B.</p>
+<p>We can define types for our own convenience as</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">type</span> <span class="kt">Bit</span> <span class="o">=</span> <span class="nc">Int</span>
+<span class="k">type</span> <span class="kt">aFuncofInterest</span> <span class="o">=</span> <span class="nc">String</span> <span class="o">=&gt;</span> <span class="nc">Int</span>
+</pre></div>
+</div>
+<div class="section" id="anonymous-functions">
+<h2><span class="section-number">6.1. </span>Anonymous functions<a class="headerlink" href="#anonymous-functions" title="Permalink to this headline">¶</a></h2>
+<p>Anonymous functions are similar to string literals. They exist without a reference name.</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="o">(</span><span class="n">x</span><span class="k">:</span><span class="kt">Int</span><span class="o">,</span> <span class="n">y</span><span class="k">:</span><span class="kt">Int</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">x</span><span class="o">+</span><span class="n">y</span>
+</pre></div>
+</div>
+<div class="information admonition">
+<p class="admonition-title">Syntactic Sugar</p>
+<p>Syntactic sugar is syntax in a programming language that is designed to make things easier to read and express. It offers no functionality or expressiveness that the programming language couldn’t.<a class="footnote-reference brackets" href="#id3" id="id1">3</a></p>
+<p>Anonymous functions are syntactic sugar.</p>
+<p>You can always rewrite <code class="docutils literal notranslate"><span class="pre">(x1:T1,</span> <span class="pre">x2:T2,</span> <span class="pre">...,</span> <span class="pre">xn:Tn)</span> <span class="pre">=&gt;</span> <span class="pre">E</span></code> as follows</p>
+<p><code class="docutils literal notranslate"><span class="pre">{def</span> <span class="pre">f(x1:T1,</span> <span class="pre">x2:T2,</span> <span class="pre">...,</span> <span class="pre">xn:Tn)</span> <span class="pre">=&gt;</span> <span class="pre">E;</span> <span class="pre">f}</span></code></p>
+<p>where <code class="docutils literal notranslate"><span class="pre">f</span></code> is an arbitrary fresh name not used in the programming. Note the return value of above block (see <a class="reference internal" href="../week1/week1_2.html"><span class="doc std std-doc">block scope</span></a>) is <code class="docutils literal notranslate"><span class="pre">f</span></code> which is the equivalent function defined.</p>
+</div>
+</div>
+<div class="section" id="currying">
+<h2><span class="section-number">6.2. </span>Currying<a class="headerlink" href="#currying" title="Permalink to this headline">¶</a></h2>
+<p>Currying is the technique of converting function with multiple parameters into sequence of functions that takes a single parameter.<a class="footnote-reference brackets" href="#id4" id="id2">4</a></p>
+<p><span class="math notranslate nohighlight">\(x = f(a,b,c)\)</span> can be written as</p>
+<div class="math notranslate nohighlight">
+\[
+h = g(a)
+i = h(b)
+x = i(c)
+\]</div>
+<p>Scala has special syntax for functions with multiple arguments. We can write</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">sum</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">,</span> <span class="n">y</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="n">x</span><span class="o">+</span><span class="n">y</span>
+<span class="k">def</span> <span class="n">sumCurry</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)(</span><span class="n">y</span><span class="k">:</span><span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="n">x</span><span class="o">+</span><span class="n">y</span>
+</pre></div>
+</div>
+<p>both are equivalent. Why would you choose one over another? We can assign the partial function to another reference.</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">x</span><span class="k">:</span><span class="o">(</span><span class="kt">Int</span> <span class="o">=&gt;</span> <span class="kt">Int</span><span class="o">)</span> <span class="o">=</span> <span class="n">sumCurry</span><span class="o">(</span><span class="mi">2</span><span class="o">)(</span><span class="k">_</span><span class="o">)</span> <span class="c1">//return a lambda function whose value is 2 + y</span>
+<span class="n">x</span><span class="o">(</span><span class="mi">3</span><span class="o">)</span> <span class="c1">//returns 5</span>
+</pre></div>
+</div>
+<p>In Scala, we have a method for currying a function with multiple arguments <code class="docutils literal notranslate"><span class="pre">.curried</span></code></p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">sumCurried</span><span class="k">:</span> <span class="o">(</span><span class="kt">Int</span> <span class="o">=&gt;</span> <span class="o">(</span><span class="kt">Int</span> <span class="o">=&gt;</span> <span class="kt">Int</span><span class="o">))</span> <span class="o">=</span> <span class="o">(</span><span class="n">sum</span>  <span class="k">_</span><span class="o">).</span><span class="n">curried</span>
+</pre></div>
+</div>
+<hr class="docutils" />
+<p>Functions with multiple parameter lists are syntactic sugar. In Scala, a definition of</p>
+<div class="math notranslate nohighlight">
+\[\text{def } f(args_1)(args_2)..(args_n) = E;\]</div>
+<p>equivalent to</p>
+<div class="math notranslate nohighlight">
+\[\text{def } f(args_1)(args_2)..(args_{n-1}) = \{ \text{def } f(args_n) = E; g \}\]</div>
+<p>or</p>
+<div class="math notranslate nohighlight">
+\[\text{def } f(args_1)(args_2)..(args_{n-1}) = \{ args_n \Longrightarrow E \}\]</div>
+<p>By repeating above process <span class="math notranslate nohighlight">\(n\)</span> times we have</p>
+<p><span class="math notranslate nohighlight">\( \text{def } f = (args_1 \Longrightarrow (args_2 \Longrightarrow \cdots (args_n \Longrightarrow E))) \)</span></p>
+<p>this type of function definition and application is called <em>currying</em>.</p>
+<p>We know that in Scala every function has a value, then guess the type of the function below.</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">sum</span><span class="o">(</span><span class="n">f</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=&gt;</span> <span class="nc">Int</span><span class="o">)(</span><span class="n">a</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">b</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span><span class="kt">Int</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">sum</span></code> take a function of type <code class="docutils literal notranslate"><span class="pre">Int</span> <span class="pre">=&gt;</span> <span class="pre">Int</span></code> return another function  of type <code class="docutils literal notranslate"><span class="pre">(Int,</span> <span class="pre">Int)</span> <span class="pre">=&gt;</span> <span class="pre">Int</span></code>.
+So type of sum <code class="docutils literal notranslate"><span class="pre">(Int</span> <span class="pre">=&gt;Int)</span> <span class="pre">=&gt;</span> <span class="pre">((Int,</span> <span class="pre">Int)</span> <span class="pre">=&gt;</span> <span class="pre">Int)</span></code>.</p>
+<p>Note that functional type associate to right. <code class="docutils literal notranslate"><span class="pre">Int</span> <span class="pre">=&gt;</span> <span class="pre">Int</span> <span class="pre">=&gt;</span> <span class="pre">Int</span></code> equivalent to <code class="docutils literal notranslate"><span class="pre">Int</span> <span class="pre">=&gt;</span> <span class="pre">(Int</span> <span class="pre">=&gt;</span> <span class="pre">Int)</span></code>.</p>
+<hr class="docutils" />
+<hr class="docutils" />
+<dl class="footnote brackets">
+<dt class="label" id="id3"><span class="brackets"><a class="fn-backref" href="#id1">3</a></span></dt>
+<dd><p>https://en.wikipedia.org/wiki/Syntactic_sugar</p>
+</dd>
+<dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id2">4</a></span></dt>
+<dd><p>https://en.wikipedia.org/wiki/Currying</p>
+</dd>
+</dl>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./fpps\week2"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+    <a class='left-prev' id="prev-link" href="../week1/week1_4.html" title="previous page"><span class="section-number">5. </span>Exercise Session</a>
+    <a class='right-next' id="next-link" href="week2_2.html" title="next page"><span class="section-number">7. </span>Class and Objects</a>
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Vikram Bhatt<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="../../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    
+  </body>
+</html>

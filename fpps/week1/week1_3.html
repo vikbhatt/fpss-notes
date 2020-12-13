@@ -1,0 +1,431 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>4. Tail Recursion &#8212; Functional Programming in Scala Specialization -- Complied Notes</title>
+    
+  <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../../_static/sphinx-book-theme.2d2078699c18a0efb88233928e1cf6ed.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.be0a4a0c39cd630af62a2fcf693f3f06.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="5. Exercise Session" href="week1_4.html" />
+    <link rel="prev" title="3. Expressions and Evaluation model" href="week1_2.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../../index.html">
+  
+  <img src="../../_static/logo.png" class="logo" alt="logo">
+  
+  
+  <h1 class="site-logo" id="site-title">Functional Programming in Scala Specialization -- Complied Notes</h1>
+  
+</a>
+</div>
+
+<form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../intro.html">
+   Functional Programming in Scala Specialization
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Functional Programming Principles in Scala
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="intro.html">
+   1. Introduction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="week1_1.html">
+   2. Imperative vs Functional Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="week1_2.html">
+   3. Expressions and Evaluation model
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   4. Tail Recursion
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="week1_4.html">
+   5. Exercise Session
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week2/week2_1.html">
+   6. Higher Order Functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week2/week2_2.html">
+   7. Class and Objects
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week3/week3_1.html">
+   8. Class Hierarchies
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Functional Program Design in Scala
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week1/week1_1.html">
+   1. Recap Functions and Pattern Matching
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week1/week1_2.html">
+   2. Recap: Collections
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week1/week1_3.html">
+   3. Functional Random Generators
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week1/week1_4.html">
+   4. Monads
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week2/week2_1.html">
+   5. Streams
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week2/week2_2.html">
+   6. Case Study: The Water Pouring Problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week3/week3_1.html">
+   7. Type-Directed Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week3/week3_2.html">
+   8. Type Class
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week4/week4_1.html">
+   9. Functions and State
+  </a>
+ </li>
+</ul>
+
+</nav>
+
+ <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        <div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/fpps/week1/week1_3.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+    
+</div>
+        <!-- Source interaction buttons -->
+
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                title="Fullscreen mode"><i
+                    class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+
+    </div>
+
+    <!-- Table of contents -->
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#tail-call-optimization">
+   4.1. Tail Call Optimization
+  </a>
+ </li>
+</ul>
+
+        </nav>
+        
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="tail-recursion">
+<h1><span class="section-number">4. </span>Tail Recursion<a class="headerlink" href="#tail-recursion" title="Permalink to this headline">¶</a></h1>
+<p>If the last action of a call consists of calling another function (which may
+be the same), one stack frame is sufficient for both functions. Such calls are called tail calls.</p>
+<p>Tail calls are sub routines performed as last action of a procedure.</p>
+<p>If the tail call is same as the routine (which calls the tail call), then the routine is tail-recursive. <a class="footnote-reference brackets" href="#id3" id="id1">2</a></p>
+<p>Tail recursive functions are iterative process. You can say tail recursive functions are functional forms of iterative loop.</p>
+<hr class="docutils" />
+<div class="section" id="tail-call-optimization">
+<h2><span class="section-number">4.1. </span>Tail Call Optimization<a class="footnote-reference brackets" href="#id3" id="id2">2</a><a class="headerlink" href="#tail-call-optimization" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Tail calls can be implemented without addition of new stack frame.</p></li>
+<li><p>Most of the current stack frame is not necessary and can be replaced by the frame of tail call.</p></li>
+<li><p>The program can then jump to the called subroutine.</p></li>
+<li><p>Producing such code instead of standard sequence of call stack is called tail call optimization or tail call elimination.</p></li>
+<li><p>In functional programming language tail call elimination is implemented in the language standard.</p></li>
+</ul>
+<p>(tail-rec-note)</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<ul class="simple">
+<li><p>A tail call doesn’t have to appear lexically after all the statements in source code.</p></li>
+<li><p>Only requirement is calling function return immediately after the tail call, and returning the tail call result if any, since the calling function bypassed when optimization is performed.</p></li>
+</ul>
+</div>
+<ul class="simple">
+<li><p>In Scala only directly recursive calls to the current function are optimized.</p></li>
+<li><p>We can require a function to be tail recursive by using <code class="docutils literal notranslate"><span class="pre">&#64;tailrec</span></code> annotation.</p></li>
+<li><p>Throws an error when the implementation is not tail recursive.</p></li>
+</ul>
+<hr class="docutils" />
+<p>Let’s take a look at few examples.</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">gcd</span><span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">b</span><span class="k">:</span><span class="kt">Int</span><span class="o">)</span><span class="k">:</span><span class="kt">Int</span> <span class="o">=</span>
+    <span class="k">if</span><span class="o">(</span><span class="n">b</span><span class="o">==</span><span class="mi">0</span><span class="o">)</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">gcd</span><span class="o">(</span><span class="n">b</span><span class="o">,</span> <span class="n">a</span> <span class="o">%</span> <span class="n">b</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>Above function can be tail call optimized because the last call of routine <code class="docutils literal notranslate"><span class="pre">gcd</span></code> returns immediately.
+Note that we have two branches for if-condition but both returns immediately and hence <code class="docutils literal notranslate"><span class="pre">gcd</span></code> is tail recursive (even though lexically doesn’t appear at the end of source code, see <span class="xref std std-ref">tail-rec-note</span>)</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">factorial</span><span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="o">{</span>
+  <span class="k">if</span><span class="o">(</span><span class="n">a</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">a</span><span class="o">*</span><span class="n">factorial</span><span class="o">(</span><span class="n">a</span><span class="o">-</span><span class="mi">1</span><span class="o">)</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">factorial</span></code> function is not tail recursive. Let’s take a look trace of <code class="docutils literal notranslate"><span class="pre">factorial(4)</span></code></p>
+<div class="amsmath math notranslate nohighlight" id="equation-e13c0710-eb9e-419f-85c3-1049c8867ecd">
+<span class="eqno">(4.1)<a class="headerlink" href="#equation-e13c0710-eb9e-419f-85c3-1049c8867ecd" title="Permalink to this equation">¶</a></span>\[\begin{align}
+&amp; factorial(4) \\
+\Longrightarrow &amp; 4*factorial(3) \\
+\Longrightarrow &amp; 4*3*factorial(2) \\  
+\Longrightarrow &amp; 4*3*2*factorial(1) \\
+\Longrightarrow &amp; 4*3*2*1*factorial(0) \\
+\Longrightarrow &amp; 4*3*2*1*1
+\end{align}\]</div>
+<p>The final action requires multiplication of all factors gathered from stack build up before the return of caller. Thus above version of not <code class="docutils literal notranslate"><span class="pre">factorial</span></code> tail recursive.</p>
+<p><strong>Can we make it tail recursive?</strong></p>
+<p>Yes we can.</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">factorial</span><span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span><span class="kt">Int</span> <span class="o">=</span> <span class="o">{</span>
+
+  <span class="k">def</span> <span class="n">accumulator</span><span class="o">(</span><span class="n">acc</span><span class="k">:</span><span class="kt">Int</span><span class="o">,</span> <span class="n">n</span><span class="k">:</span><span class="kt">Int</span><span class="o">)</span><span class="k">:</span><span class="kt">Int</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="n">acc</span>
+    <span class="k">else</span> <span class="n">accumulator</span><span class="o">(</span><span class="n">acc</span><span class="o">*</span><span class="n">n</span><span class="o">,</span> <span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="o">)</span>
+  <span class="o">}</span>
+  <span class="n">accumulator</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">a</span><span class="o">)</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>Now stack frame for <code class="docutils literal notranslate"><span class="pre">factorial</span></code> can be replaced by <code class="docutils literal notranslate"><span class="pre">accumulator</span></code> routine (tail call optimization!),and the accumulator function is itself is tail recursive. So its essentially a loop and takes <span class="math notranslate nohighlight">\(\mathcal{O}(1)\)</span> space.</p>
+<p>Let’s look at the stack trace of <code class="docutils literal notranslate"><span class="pre">factorial(4)</span></code>:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-522a67d8-f5c5-4bba-9b62-9e4e31550865">
+<span class="eqno">(4.2)<a class="headerlink" href="#equation-522a67d8-f5c5-4bba-9b62-9e4e31550865" title="Permalink to this equation">¶</a></span>\[\begin{align}
+&amp; factorial(4)  \\
+\Longrightarrow &amp; accumulator(1,4) \\
+\Longrightarrow &amp; accumulator(1*4,3) \\
+\Longrightarrow &amp; accumulator(4*3,2) \\
+\Longrightarrow &amp; accumulator(12*2,1) \\
+\Longrightarrow &amp; accumulator(24*1,0) \\
+\Longrightarrow &amp; 24 \\
+\end{align}\]</div>
+<p>In the next stack the arguments are evaluated because Scala is generally call by value. (See <a class="reference internal" href="week1_2.html"><span class="doc std std-doc">here</span></a>)</p>
+<p>Notice we haven’t used imperative loop or any kind of mutations in the above example. A similar design pattern is ubiquitous in functional programming and well worth to know about it.</p>
+<hr class="docutils" />
+<dl class="footnote brackets">
+<dt class="label" id="id3"><span class="brackets">2</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id2">2</a>)</span></dt>
+<dd><p>https://en.wikipedia.org/wiki/Tail_call</p>
+</dd>
+</dl>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./fpps\week1"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+    <a class='left-prev' id="prev-link" href="week1_2.html" title="previous page"><span class="section-number">3. </span>Expressions and Evaluation model</a>
+    <a class='right-next' id="next-link" href="week1_4.html" title="next page"><span class="section-number">5. </span>Exercise Session</a>
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Vikram Bhatt<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="../../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    
+  </body>
+</html>
