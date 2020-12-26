@@ -326,6 +326,12 @@ It means that S can be instantiated only to types that conform to <code class="d
 <li><p><code class="docutils literal notranslate"><span class="pre">S</span> <span class="pre">&lt;:</span> <span class="pre">T</span></code> means: <code class="docutils literal notranslate"><span class="pre">S</span> <span class="pre">is</span> <span class="pre">a</span> <span class="pre">subtype</span> <span class="pre">of</span> <span class="pre">T</span></code>, and</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">S</span> <span class="pre">&gt;:</span> <span class="pre">T</span></code> means: <code class="docutils literal notranslate"><span class="pre">S</span> <span class="pre">is</span> <span class="pre">a</span> <span class="pre">supertype</span> <span class="pre">of</span> <span class="pre">T</span></code>, or <code class="docutils literal notranslate"><span class="pre">T</span> <span class="pre">is</span> <span class="pre">a</span> <span class="pre">subtype</span> <span class="pre">of</span> <span class="pre">S</span></code>.</p></li>
 </ul>
+<p>You can also use lower bound for a variable.</p>
+<p><code class="docutils literal notranslate"><span class="pre">[S</span> <span class="pre">&gt;:</span> <span class="pre">NonEmpty]</span></code> introduces a type parameter <code class="docutils literal notranslate"><span class="pre">S</span></code> that can range only over supertypes of <code class="docutils literal notranslate"><span class="pre">NonEmpty</span></code>.
+So <code class="docutils literal notranslate"><span class="pre">S</span></code> could be one of <code class="docutils literal notranslate"><span class="pre">NonEmpty</span></code>, <code class="docutils literal notranslate"><span class="pre">IntSet</span></code>, <code class="docutils literal notranslate"><span class="pre">AnyRef</span></code>, or <code class="docutils literal notranslate"><span class="pre">Any</span></code>.</p>
+<p>Finally it is possible to mix upper and lower bound.
+For instance, <code class="docutils literal notranslate"><span class="pre">[S</span> <span class="pre">&gt;:</span> <span class="pre">NonEmpty</span> <span class="pre">&lt;:</span> <span class="pre">IntSet]</span></code> would restrict <code class="docutils literal notranslate"><span class="pre">S</span></code> any type on the interval between <code class="docutils literal notranslate"><span class="pre">NonEmpty</span></code> and
+<code class="docutils literal notranslate"><span class="pre">IntSet</span></code>.</p>
 </div>
 
     <script type="text/x-thebe-config">

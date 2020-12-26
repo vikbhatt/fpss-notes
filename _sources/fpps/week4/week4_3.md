@@ -41,4 +41,13 @@ It means that S can be instantiated only to types that conform to `IntSet`.
 Generally, the notation
 
 * `S <: T` means: `S is a subtype of T`, and
-* `S >: T` means: `S is a supertype of T`, or `T is a subtype of S`.
+* `S >: T` means: `S is a supertype of T`, or `T is a subtype of S`. 
+
+You can also use lower bound for a variable.
+
+`[S >: NonEmpty]` introduces a type parameter `S` that can range only over supertypes of `NonEmpty`.
+So `S` could be one of `NonEmpty`, `IntSet`, `AnyRef`, or `Any`.
+
+Finally it is possible to mix upper and lower bound.
+For instance, `[S >: NonEmpty <: IntSet]` would restrict `S` any type on the interval between `NonEmpty` and
+`IntSet`.
