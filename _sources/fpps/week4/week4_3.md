@@ -51,3 +51,16 @@ So `S` could be one of `NonEmpty`, `IntSet`, `AnyRef`, or `Any`.
 Finally it is possible to mix upper and lower bound.
 For instance, `[S >: NonEmpty <: IntSet]` would restrict `S` any type on the interval between `NonEmpty` and
 `IntSet`.
+
+## Covariance
+
+There’s another interaction between subtyping and type parameters
+we need to consider. Given:
+
+`NonEmpty <: IntSet`
+
+
+is
+
+
+`List[NonEmpty] <: List[IntSet] ?`
