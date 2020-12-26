@@ -312,6 +312,12 @@ In general there are three possible relationships between <code class="docutils 
 <li><p><code class="docutils literal notranslate"><span class="pre">C[A]</span> <span class="pre">&gt;:</span> <span class="pre">C[B]</span></code> <code class="docutils literal notranslate"><span class="pre">C</span></code> is <em>contravariant</em></p></li>
 <li><p>neither <code class="docutils literal notranslate"><span class="pre">C[A]</span></code> nor <code class="docutils literal notranslate"><span class="pre">C[B]</span></code> is subtype of other. <code class="docutils literal notranslate"><span class="pre">C</span></code> is <em>non-variant</em></p></li>
 </ul>
+<p>Scala lets you declare the variance of a type by annotating the type parameter</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">class</span> <span class="pre">C[+A]</span> <span class="pre">{</span> <span class="pre">...</span> <span class="pre">}</span></code> <code class="docutils literal notranslate"><span class="pre">C</span></code> is covariant</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">class</span> <span class="pre">C[-A]</span> <span class="pre">{</span> <span class="pre">...</span> <span class="pre">}</span></code> <code class="docutils literal notranslate"><span class="pre">C</span></code> is contravariant</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">class</span> <span class="pre">C[A]</span> <span class="pre">{</span> <span class="pre">...</span> <span class="pre">}</span></code> <code class="docutils literal notranslate"><span class="pre">C</span></code> is non-variant</p></li>
+</ul>
 </div>
 
     <script type="text/x-thebe-config">

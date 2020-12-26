@@ -10,3 +10,9 @@ In general there are three possible relationships between `C[A]` and `C[B]`
 * `C[A] <: C[B]` `C` is *covariant*
 * `C[A] >: C[B]` `C` is *contravariant*
 * neither `C[A]` nor `C[B]` is subtype of other. `C` is *non-variant*
+
+Scala lets you declare the variance of a type by annotating the type parameter
+
+* `class C[+A] { ... }` `C` is covariant
+* `class C[-A] { ... }` `C` is contravariant
+* `class C[A] { ... }` `C` is non-variant
