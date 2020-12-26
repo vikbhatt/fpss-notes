@@ -389,8 +389,50 @@ To see why, consider the Java code below.</p>
 <span class="n">NonEmpty</span> <span class="n">s</span> <span class="o">=</span> <span class="n">a</span> <span class="o">[</span><span class="mi">0</span><span class="o">]</span>
 </pre></div>
 </div>
-<p>Initially, a <code class="docutils literal notranslate"><span class="pre">NonEmpty</span></code> array created with reference <code class="docutils literal notranslate"><span class="pre">a</span></code>. Another <code class="docutils literal notranslate"><span class="pre">IntSet</span></code> array initialized with reference <code class="docutils literal notranslate"><span class="pre">b</span></code> assigned the value a (which is allowed by covariance). But we set the fist value of array using reference <code class="docutils literal notranslate"><span class="pre">b</span></code> to <code class="docutils literal notranslate"><span class="pre">Empty</span></code> and pull out the first value of array using reference <code class="docutils literal notranslate"><span class="pre">a</span></code> and assign it to <code class="docutils literal notranslate"><span class="pre">NonEmpty</span></code> reference <code class="docutils literal notranslate"><span class="pre">s</span></code>.
+<p>Initially, a <code class="docutils literal notranslate"><span class="pre">NonEmpty</span></code> array created with reference <code class="docutils literal notranslate"><span class="pre">a</span></code>. Another <code class="docutils literal notranslate"><span class="pre">IntSet</span></code> array initialized with reference <code class="docutils literal notranslate"><span class="pre">b</span></code> assigned the value a (which is allowed by covariance property of arrays). But we set the fist value of array using reference <code class="docutils literal notranslate"><span class="pre">b</span></code> to <code class="docutils literal notranslate"><span class="pre">Empty</span></code> and pull out the first value of array using reference <code class="docutils literal notranslate"><span class="pre">a</span></code> and assign it to <code class="docutils literal notranslate"><span class="pre">NonEmpty</span></code> reference <code class="docutils literal notranslate"><span class="pre">s</span></code>.
 It looks like we assigned in the last line an <code class="docutils literal notranslate"><span class="pre">Empty</span></code> set to a variable of type <code class="docutils literal notranslate"><span class="pre">NonEmpty</span></code>!</p>
+<p>The third line throws run time exception <code class="docutils literal notranslate"><span class="pre">ArrayStoreException</span></code>. In order to save itself from covariance, Java needs to store in every array type tag, at what type the array is created (here it is <code class="docutils literal notranslate"><span class="pre">NonEmpty</span></code>). When we assign, the run time type gets checked against the assigned value. But the code compiles just fine.</p>
+<p>The following principle, stated by Barbara Liskov, tells us when a
+type can be a subtype of another.
+If <code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">&lt;:</span> <span class="pre">B</span></code>, then everything one can to do with a value of type <code class="docutils literal notranslate"><span class="pre">B</span></code> one should also be able to do with a value of type <code class="docutils literal notranslate"><span class="pre">A</span></code>.</p>
+<hr class="docutils" />
+<div class="sphinx-bs container pb-4 docutils">
+<div class="row docutils">
+<div class="d-flex col-lg-12 p-2 docutils">
+<div class="card w-100 shadow docutils">
+<div class="card-body docutils">
+<p class="card-text"><span class="sphinx-bs badge">Exercise</span></p>
+<p class="card-text">The problematic array example would be written as follows in Scala:</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">a</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">NonEmpty</span><span class="o">]</span> <span class="o">=</span> <span class="nc">Array</span><span class="o">(</span><span class="k">new</span> <span class="nc">NonEmpty</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="nc">Empty</span><span class="o">,</span> <span class="nc">Empty</span><span class="o">))</span>
+<span class="k">val</span> <span class="n">b</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">IntSet</span><span class="o">]</span> <span class="o">=</span> <span class="n">a</span>
+<span class="n">b</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span> <span class="o">=</span> <span class="nc">Empty</span>
+<span class="k">val</span> <span class="n">s</span><span class="k">:</span> <span class="kt">NonEmpty</span> <span class="o">=</span> <span class="n">a</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span>
+</pre></div>
+</div>
+<p class="card-text">When you try out this example, what do you observe?</p>
+<ul class="simple">
+<li><p class="card-text">A type error in line 1</p></li>
+<li><p class="card-text">A type error in line 2</p></li>
+<li><p class="card-text">A type error in line 3</p></li>
+<li><p class="card-text">A type error in line 4</p></li>
+<li><p class="card-text">A program that compiles and throws an exception at run-time</p></li>
+<li><p class="card-text">A program that compiles and runs without exception</p></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<details class="sphinx-bs dropdown card mb-3">
+<summary class="summary-title card-header">
+Solution<div class="summary-down docutils">
+<svg version="1.1" width="24" height="24" class="octicon octicon-chevron-down" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 8.72a.75.75 0 000 1.06l6.25 6.25a.75.75 0 001.06 0l6.25-6.25a.75.75 0 00-1.06-1.06L12 14.44 6.28 8.72a.75.75 0 00-1.06 0z"></path></svg></div>
+<div class="summary-up docutils">
+<svg version="1.1" width="24" height="24" class="octicon octicon-chevron-up" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M18.78 15.28a.75.75 0 000-1.06l-6.25-6.25a.75.75 0 00-1.06 0l-6.25 6.25a.75.75 0 101.06 1.06L12 9.56l5.72 5.72a.75.75 0 001.06 0z"></path></svg></div>
+</summary><div class="summary-content card-body docutils">
+<p class="card-text">We would expect type error in line 2, because <code class="docutils literal notranslate"><span class="pre">a</span></code> is <code class="docutils literal notranslate"><span class="pre">Array[NonEmpty]</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code> is <code class="docutils literal notranslate"><span class="pre">Array[IntSet]</span></code> but in Scala arrays are not covariant.</p>
+</div>
+</details><hr class="docutils" />
 </div>
 </div>
 
