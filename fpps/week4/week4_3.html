@@ -381,6 +381,16 @@ Reminder:</p>
 Arrays in Java are covariant, so one would have:
 <code class="docutils literal notranslate"><span class="pre">NonEmpty[]</span> <span class="pre">&lt;:</span> <span class="pre">IntSet[]</span></code></p></li>
 </ul>
+<p>But covariant array typing causes problems.
+To see why, consider the Java code below.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">NonEmpty</span> <span class="o">[]</span> <span class="n">a</span> <span class="o">=</span> <span class="k">new</span> <span class="n">NonEmpty</span> <span class="o">[]</span><span class="p">{</span> <span class="k">new</span> <span class="n">NonEmpty</span> <span class="p">(</span><span class="mi">1</span> <span class="p">,</span> <span class="n">Empty</span> <span class="p">,</span> <span class="n">Empty</span> <span class="p">)}</span>
+<span class="n">IntSet</span> <span class="o">[]</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span>
+<span class="n">b</span> <span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">=</span> <span class="n">Empty</span>
+<span class="n">NonEmpty</span> <span class="n">s</span> <span class="o">=</span> <span class="n">a</span> <span class="o">[</span><span class="mi">0</span><span class="o">]</span>
+</pre></div>
+</div>
+<p>Initially, a <code class="docutils literal notranslate"><span class="pre">NonEmpty</span></code> array created with reference <code class="docutils literal notranslate"><span class="pre">a</span></code>. Another <code class="docutils literal notranslate"><span class="pre">IntSet</span></code> array initialized with reference <code class="docutils literal notranslate"><span class="pre">b</span></code> assigned the value a (which is allowed by covariance). But we set the fist value of array using reference <code class="docutils literal notranslate"><span class="pre">b</span></code> to <code class="docutils literal notranslate"><span class="pre">Empty</span></code> and pull out the first value of array using reference <code class="docutils literal notranslate"><span class="pre">a</span></code> and assign it to <code class="docutils literal notranslate"><span class="pre">NonEmpty</span></code> reference <code class="docutils literal notranslate"><span class="pre">s</span></code>.
+It looks like we assigned in the last line an <code class="docutils literal notranslate"><span class="pre">Empty</span></code> set to a variable of type <code class="docutils literal notranslate"><span class="pre">NonEmpty</span></code>!</p>
 </div>
 </div>
 

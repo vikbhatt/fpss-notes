@@ -82,3 +82,16 @@ Reminder:
 * In Scala we use parameterized type syntax `Array[T] `to refer to the same type.
 Arrays in Java are covariant, so one would have:
 `NonEmpty[] <: IntSet[]`
+
+But covariant array typing causes problems.
+To see why, consider the Java code below.
+
+```java
+NonEmpty [] a = new NonEmpty []{ new NonEmpty (1 , Empty , Empty )}
+IntSet [] b = a
+b [0] = Empty
+NonEmpty s = a [0]
+```
+
+Initially, a `NonEmpty` array created with reference `a`. Another `IntSet` array initialized with reference `b` assigned the value a (which is allowed by covariance). But we set the fist value of array using reference `b` to `Empty` and pull out the first value of array using reference `a` and assign it to `NonEmpty` reference `s`.
+It looks like we assigned in the last line an `Empty` set to a variable of type `NonEmpty`!
