@@ -318,6 +318,38 @@ In general there are three possible relationships between <code class="docutils 
 <li><p><code class="docutils literal notranslate"><span class="pre">class</span> <span class="pre">C[-A]</span> <span class="pre">{</span> <span class="pre">...</span> <span class="pre">}</span></code> <code class="docutils literal notranslate"><span class="pre">C</span></code> is contravariant</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">class</span> <span class="pre">C[A]</span> <span class="pre">{</span> <span class="pre">...</span> <span class="pre">}</span></code> <code class="docutils literal notranslate"><span class="pre">C</span></code> is non-variant</p></li>
 </ul>
+<hr class="docutils" />
+<div class="sphinx-bs container pb-4 docutils">
+<div class="row docutils">
+<div class="d-flex col-lg-12 p-2 docutils">
+<div class="card w-100 shadow docutils">
+<div class="card-body docutils">
+<p class="card-text"><span class="sphinx-bs badge">Exercise</span></p>
+<p class="card-text">Say you have two function types</p>
+<p class="card-text"><code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">A</span> <span class="pre">=</span> <span class="pre">IntSet</span> <span class="pre">=&gt;</span> <span class="pre">NonEmpty</span></code></p>
+<p class="card-text"><code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">B</span> <span class="pre">=</span> <span class="pre">NonEmpty</span> <span class="pre">=&gt;</span> <span class="pre">IntSet</span></code></p>
+<p class="card-text">According to Liskov Substituion Principle, which of the following is true?</p>
+<ul class="simple">
+<li><p class="card-text"><code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">&lt;:</span> <span class="pre">B</span></code></p></li>
+<li><p class="card-text"><code class="docutils literal notranslate"><span class="pre">B</span> <span class="pre">&lt;:</span> <span class="pre">A</span></code></p></li>
+<li><p class="card-text"><code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">B</span></code> are unrelated</p></li>
+<li></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<details class="sphinx-bs dropdown card mb-3">
+<summary class="summary-title card-header">
+Solution<div class="summary-down docutils">
+<svg version="1.1" width="24" height="24" class="octicon octicon-chevron-down" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 8.72a.75.75 0 000 1.06l6.25 6.25a.75.75 0 001.06 0l6.25-6.25a.75.75 0 00-1.06-1.06L12 14.44 6.28 8.72a.75.75 0 00-1.06 0z"></path></svg></div>
+<div class="summary-up docutils">
+<svg version="1.1" width="24" height="24" class="octicon octicon-chevron-up" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M18.78 15.28a.75.75 0 000-1.06l-6.25-6.25a.75.75 0 00-1.06 0l-6.25 6.25a.75.75 0 101.06 1.06L12 9.56l5.72 5.72a.75.75 0 001.06 0z"></path></svg></div>
+</summary><div class="summary-content card-body docutils">
+<p class="card-text"><code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">&lt;:</span> <span class="pre">B</span></code>. Using <code class="docutils literal notranslate"><span class="pre">B</span></code> I can pass <code class="docutils literal notranslate"><span class="pre">NonEmpty</span></code> and get an <code class="docutils literal notranslate"><span class="pre">IntSet</span></code>. Can you do that with <code class="docutils literal notranslate"><span class="pre">A</span></code>? Yes. Since <code class="docutils literal notranslate"><span class="pre">NonEmpty</span> <span class="pre">&lt;:</span> <span class="pre">IntSet</span></code> you can pass <code class="docutils literal notranslate"><span class="pre">NonEmpty</span></code> in place of <code class="docutils literal notranslate"><span class="pre">IntSet</span></code>. The return value of <code class="docutils literal notranslate"><span class="pre">A</span></code> is <code class="docutils literal notranslate"><span class="pre">NonEmpty</span></code> which is special case for <code class="docutils literal notranslate"><span class="pre">IntSet</span></code>.</p>
+</div>
+</details><hr class="docutils" />
 </div>
 
     <script type="text/x-thebe-config">

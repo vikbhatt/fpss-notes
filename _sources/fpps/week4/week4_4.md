@@ -16,3 +16,30 @@ Scala lets you declare the variance of a type by annotating the type parameter
 * `class C[+A] { ... }` `C` is covariant
 * `class C[-A] { ... }` `C` is contravariant
 * `class C[A] { ... }` `C` is non-variant
+
+---
+
+````{panels}
+:column: col-lg-12 p-2
+
+{badge}`Exercise`
+
+Say you have two function types
+
+`type A = IntSet => NonEmpty`
+
+`type B = NonEmpty => IntSet`
+
+According to Liskov Substituion Principle, which of the following is true?
+* `A <: B`
+* `B <: A`
+* `A` and `B` are unrelated
+* 
+
+````
+
+````{dropdown} Solution
+`A <: B`. Using `B` I can pass `NonEmpty` and get an `IntSet`. Can you do that with `A`? Yes. Since `NonEmpty <: IntSet` you can pass `NonEmpty` in place of `IntSet`. The return value of `A` is `NonEmpty` which is special case for `IntSet`.
+````
+
+---
