@@ -58,7 +58,7 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="1. Recap Functions and Pattern Matching" href="../../fpds/week1/week1_1.html" />
+    <link rel="next" title="14. Variance" href="week4_4.html" />
     <link rel="prev" title="12. Functions as objects" href="week4_2.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -168,6 +168,11 @@
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
    13. Subtyping and Generics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="week4_4.html">
+   14. Variance
   </a>
  </li>
 </ul>
@@ -339,8 +344,8 @@
 </div>
 <p>Can we be more precise? (Above is fine by the way!)</p>
 <p>For example if we pass <code class="docutils literal notranslate"><span class="pre">Empty</span></code>, we get <code class="docutils literal notranslate"><span class="pre">Empty</span></code> set. If we pass <code class="docutils literal notranslate"><span class="pre">NonEmpty</span></code> we might get <code class="docutils literal notranslate"><span class="pre">NonEmpty</span></code> or and exception. But the above knowledge is not shown in the definition.</p>
-<p>One might want to express that assertAllPos takes Empty sets to
-Empty sets and NonEmpty sets to NonEmpty sets.
+<p>One might want to express that <code class="docutils literal notranslate"><span class="pre">assertAllPos</span></code> takes <code class="docutils literal notranslate"><span class="pre">Empty</span></code> sets to
+<code class="docutils literal notranslate"><span class="pre">Empty</span></code> sets and <code class="docutils literal notranslate"><span class="pre">NonEmpty</span></code> sets to <code class="docutils literal notranslate"><span class="pre">NonEmpty</span></code> sets.
 A way to express this is:</p>
 <div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">assertAllPos</span><span class="o">[</span><span class="kt">S</span> <span class="k">&lt;:</span> <span class="kt">IntSet</span><span class="o">](</span><span class="n">r</span><span class="k">:</span> <span class="kt">S</span><span class="o">)</span><span class="k">:</span> <span class="kt">S</span> <span class="o">=</span>
 </pre></div>
@@ -369,7 +374,7 @@ we need to consider. Given:</p>
 case of a list of arbitrary sets.
 We call types for which this relationship holds <em>covariant</em> because
 their subtyping relationship varies with the type parameter.</p>
-<p>Can every parametrized is covariant?</p>
+<p>Can every parametrized type be covariant?</p>
 </div>
 <div class="section" id="array-typing-problem">
 <h2><span class="section-number">13.2. </span>Array Typing Problem<a class="headerlink" href="#array-typing-problem" title="Permalink to this headline">¶</a></h2>
@@ -465,7 +470,7 @@ Solution<div class="summary-down docutils">
     <div class='prev-next-bottom'>
         
     <a class='left-prev' id="prev-link" href="week4_2.html" title="previous page"><span class="section-number">12. </span>Functions as objects</a>
-    <a class='right-next' id="next-link" href="../../fpds/week1/week1_1.html" title="next page"><span class="section-number">1. </span>Recap Functions and Pattern Matching</a>
+    <a class='right-next' id="next-link" href="week4_4.html" title="next page"><span class="section-number">14. </span>Variance</a>
 
     </div>
     <footer class="footer mt-5 mt-md-0">

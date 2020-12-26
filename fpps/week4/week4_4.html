@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>7. Class and Objects &#8212; Functional Programming in Scala Specialization -- Complied Notes</title>
+    <title>14. Variance &#8212; Functional Programming in Scala Specialization -- Complied Notes</title>
     
   <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
 
@@ -58,8 +58,8 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="8. Class Hierarchies" href="../week3/week3_1.html" />
-    <link rel="prev" title="6. Higher Order Functions" href="week2_1.html" />
+    <link rel="next" title="1. Recap Functions and Pattern Matching" href="../../fpds/week1/week1_1.html" />
+    <link rel="prev" title="13. Subtyping and Generics" href="week4_3.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -131,12 +131,12 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="week2_1.html">
+  <a class="reference internal" href="../week2/week2_1.html">
    6. Higher Order Functions
   </a>
  </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week2/week2_2.html">
    7. Class and Objects
   </a>
  </li>
@@ -156,22 +156,22 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../week4/week4_1.html">
+  <a class="reference internal" href="week4_1.html">
    11. Objects Everywhere
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../week4/week4_2.html">
+  <a class="reference internal" href="week4_2.html">
    12. Functions as objects
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../week4/week4_3.html">
+  <a class="reference internal" href="week4_3.html">
    13. Subtyping and Generics
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../week4/week4_4.html">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
    14. Variance
   </a>
  </li>
@@ -269,7 +269,7 @@
         <!-- ipynb file if we had a myst markdown file -->
         
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../../_sources/fpps/week2/week2_2.md"><button type="button"
+        <a class="dropdown-buttons" href="../../_sources/fpps/week4/week4_4.md"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
                 data-placement="left">.md</button></a>
         <!-- Download PDF via print -->
@@ -294,20 +294,6 @@
     <!-- Table of contents -->
     <div class="d-none d-md-block col-md-2 bd-toc show">
         
-        <div class="tocsection onthispage pt-5 pb-3">
-            <i class="fas fa-list"></i> Contents
-        </div>
-        <nav id="bd-toc-nav">
-            <ul class="nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#infix-notation">
-   7.1. Infix Notation
-  </a>
- </li>
-</ul>
-
-        </nav>
-        
     </div>
 </div>
     <div id="main-content" class="row">
@@ -315,47 +301,17 @@
         
               <div>
                 
-  <div class="section" id="class-and-objects">
-<h1><span class="section-number">7. </span>Class and Objects<a class="headerlink" href="#class-and-objects" title="Permalink to this headline">¶</a></h1>
-<p>We define class in Scala using <code class="docutils literal notranslate"><span class="pre">class</span></code> keyword. <code class="docutils literal notranslate"><span class="pre">class</span></code> takes parameters with type information.</p>
-<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">abstract</span> <span class="k">class</span> <span class="nc">Rational</span><span class="o">(</span><span class="n">x</span><span class="k">:</span><span class="kt">Int</span><span class="o">,</span> <span class="n">y</span><span class="k">:</span><span class="kt">Int</span><span class="o">)</span>
-</pre></div>
-</div>
-<p>Create new class instance with <code class="docutils literal notranslate"><span class="pre">new</span></code> operator.</p>
-<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Rational</span><span class="o">(</span><span class="n">x</span><span class="k">:</span><span class="kt">Int</span><span class="o">,</span> <span class="n">y</span><span class="k">:</span><span class="kt">Int</span><span class="o">)</span>
-<span class="k">val</span> <span class="n">r</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">)</span>
-</pre></div>
-</div>
-<div class="information admonition">
-<p class="admonition-title">Abstract Class</p>
+  <div class="section" id="variance">
+<h1><span class="section-number">14. </span>Variance<a class="headerlink" href="#variance" title="Permalink to this headline">¶</a></h1>
+<p>We talk about how sub-typing relates to generic property.</p>
+<p>ROughly speaking, a type that accepts mutation should not be covariant. But immutable types can be covariant if some conditions are met.</p>
+<p>Say <code class="docutils literal notranslate"><span class="pre">C[T]</span></code> is a parametrized type and, <code class="docutils literal notranslate"><span class="pre">A</span></code>, and <code class="docutils literal notranslate"><span class="pre">B</span></code> are types such that <code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">&lt;:B</span></code>.
+In general there are three possible relationships between <code class="docutils literal notranslate"><span class="pre">C[A]</span></code> and <code class="docutils literal notranslate"><span class="pre">C[B]</span></code></p>
 <ul class="simple">
-<li><p>In Java abstract classes cannot be instantiated but can only be sub classed.</p></li>
-<li><p>In Scala, we have traits which are far more powerful (similar to Java interfaces), but we can use <code class="docutils literal notranslate"><span class="pre">abstract</span></code> class if</p>
-<ul>
-<li><p>You want to create a base class with constructor arguments</p></li>
-<li><p>Your Scala code needs to be called from Java. See <a class="reference external" href="https://docs.oracle.com/javase/tutorial/java/IandI/abstract.html#:~:text=An%20abstract%20class%20is%20a,but%20they%20can%20be%20subclassed.&amp;text=When%20an%20abstract%20class%20is,methods%20in%20its%20parent%20class.">Java documentation on abstract class.</a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">C[A]</span> <span class="pre">&lt;:</span> <span class="pre">C[B]</span></code> <code class="docutils literal notranslate"><span class="pre">C</span></code> is <em>covariant</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">C[A]</span> <span class="pre">&gt;:</span> <span class="pre">C[B]</span></code> <code class="docutils literal notranslate"><span class="pre">C</span></code> is <em>contravariant</em></p></li>
+<li><p>neither <code class="docutils literal notranslate"><span class="pre">C[A]</span></code> nor <code class="docutils literal notranslate"><span class="pre">C[B]</span></code> is subtype of other. <code class="docutils literal notranslate"><span class="pre">C</span></code> is <em>non-variant</em></p></li>
 </ul>
-</li>
-<li><p>In Scala, abstract class contains members which  are missing an implementation</p></li>
-</ul>
-</div>
-<div class="section" id="infix-notation">
-<h2><span class="section-number">7.1. </span>Infix Notation<a class="headerlink" href="#infix-notation" title="Permalink to this headline">¶</a></h2>
-<p>In Scala, any method with operator can be used like infix operator. Write down the operator in tree form</p>
-<p><img alt="Binary Tree" src="../../_images/Picture1.png" /></p>
-<p>Infix traversal of the above binary tree is <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">op</span> <span class="pre">y</span></code>. See below example.</p>
-<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Rational</span><span class="o">(</span><span class="k">val</span> <span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="k">val</span> <span class="n">y</span><span class="k">:</span><span class="kt">Int</span><span class="o">){</span>
-  <span class="n">require</span><span class="o">(</span><span class="n">y</span> <span class="o">!=</span> <span class="mi">0</span><span class="o">)</span>
-  <span class="k">def</span> <span class="n">add</span> <span class="o">(</span><span class="n">that</span><span class="k">:</span> <span class="kt">Rational</span><span class="o">)</span><span class="k">:</span><span class="kt">Rational</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">((</span><span class="k">this</span><span class="o">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">that</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">that</span><span class="o">.</span><span class="n">y</span> <span class="o">*</span> <span class="k">this</span><span class="o">.</span><span class="n">x</span><span class="o">),(</span><span class="k">this</span><span class="o">.</span><span class="n">y</span> <span class="o">*</span> <span class="n">that</span><span class="o">.</span><span class="n">y</span><span class="o">))</span>
-<span class="o">}</span>
-
-<span class="k">val</span> <span class="n">r</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">)</span>
-<span class="n">r</span><span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">))</span>
-<span class="n">r</span> <span class="n">add</span> <span class="o">(</span><span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">))</span> <span class="c1">//same as above</span>
-</pre></div>
-</div>
-<hr class="docutils" />
-</div>
 </div>
 
     <script type="text/x-thebe-config">
@@ -371,7 +327,7 @@
         },
         kernelOptions: {
             kernelName: "python3",
-            path: "./fpps\week2"
+            path: "./fpps\week4"
         },
         predefinedOutput: true
     }
@@ -386,8 +342,8 @@
     
     <div class='prev-next-bottom'>
         
-    <a class='left-prev' id="prev-link" href="week2_1.html" title="previous page"><span class="section-number">6. </span>Higher Order Functions</a>
-    <a class='right-next' id="next-link" href="../week3/week3_1.html" title="next page"><span class="section-number">8. </span>Class Hierarchies</a>
+    <a class='left-prev' id="prev-link" href="week4_3.html" title="previous page"><span class="section-number">13. </span>Subtyping and Generics</a>
+    <a class='right-next' id="next-link" href="../../fpds/week1/week1_1.html" title="next page"><span class="section-number">1. </span>Recap Functions and Pattern Matching</a>
 
     </div>
     <footer class="footer mt-5 mt-md-0">

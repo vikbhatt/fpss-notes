@@ -27,8 +27,8 @@ Can we be more precise? (Above is fine by the way!)
 
 For example if we pass `Empty`, we get `Empty` set. If we pass `NonEmpty` we might get `NonEmpty` or and exception. But the above knowledge is not shown in the definition.
 
-One might want to express that assertAllPos takes Empty sets to
-Empty sets and NonEmpty sets to NonEmpty sets.
+One might want to express that `assertAllPos` takes `Empty` sets to
+`Empty` sets and `NonEmpty` sets to `NonEmpty` sets.
 A way to express this is:
 ```scala
 def assertAllPos[S <: IntSet](r: S): S =
@@ -71,7 +71,7 @@ case of a list of arbitrary sets.
 We call types for which this relationship holds *covariant* because
 their subtyping relationship varies with the type parameter.
 
-Can every parametrized is covariant?
+Can every parametrized type be covariant?
 
 ## Array Typing Problem
 
