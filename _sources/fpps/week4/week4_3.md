@@ -64,3 +64,21 @@ is
 
 
 `List[NonEmpty] <: List[IntSet] ?`
+
+
+Intuitively, this makes sense: A list of non-empty sets is a special
+case of a list of arbitrary sets.
+We call types for which this relationship holds *covariant* because
+their subtyping relationship varies with the type parameter.
+
+Can every parametrized is covariant?
+
+## Array Typing Problem
+
+For perspective, let’s look at arrays in Java (and C#).
+Reminder:
+
+*  An array of T elements is written `T[]` in Java.
+* In Scala we use parameterized type syntax `Array[T] `to refer to the same type.
+Arrays in Java are covariant, so one would have:
+`NonEmpty[] <: IntSet[]`

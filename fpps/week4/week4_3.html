@@ -299,6 +299,11 @@
    13.1. Covariance
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#array-typing-problem">
+   13.2. Array Typing Problem
+  </a>
+ </li>
 </ul>
 
         </nav>
@@ -360,6 +365,22 @@ we need to consider. Given:</p>
 <p><code class="docutils literal notranslate"><span class="pre">NonEmpty</span> <span class="pre">&lt;:</span> <span class="pre">IntSet</span></code></p>
 <p>is</p>
 <p><code class="docutils literal notranslate"><span class="pre">List[NonEmpty]</span> <span class="pre">&lt;:</span> <span class="pre">List[IntSet]</span> <span class="pre">?</span></code></p>
+<p>Intuitively, this makes sense: A list of non-empty sets is a special
+case of a list of arbitrary sets.
+We call types for which this relationship holds <em>covariant</em> because
+their subtyping relationship varies with the type parameter.</p>
+<p>Can every parametrized is covariant?</p>
+</div>
+<div class="section" id="array-typing-problem">
+<h2><span class="section-number">13.2. </span>Array Typing Problem<a class="headerlink" href="#array-typing-problem" title="Permalink to this headline">¶</a></h2>
+<p>For perspective, let’s look at arrays in Java (and C#).
+Reminder:</p>
+<ul class="simple">
+<li><p>An array of T elements is written <code class="docutils literal notranslate"><span class="pre">T[]</span></code> in Java.</p></li>
+<li><p>In Scala we use parameterized type syntax <code class="docutils literal notranslate"><span class="pre">Array[T]</span> </code>to refer to the same type.
+Arrays in Java are covariant, so one would have:
+<code class="docutils literal notranslate"><span class="pre">NonEmpty[]</span> <span class="pre">&lt;:</span> <span class="pre">IntSet[]</span></code></p></li>
+</ul>
 </div>
 </div>
 
