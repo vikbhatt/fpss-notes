@@ -175,6 +175,21 @@
    14. Variance
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week4/week4_5.html">
+   15. Decomposition
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week4/week4_6.html">
+   16. Pattern Matching
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week4/week4_7.html">
+   17. Lists
+  </a>
+ </li>
 </ul>
 <p class="caption">
  <span class="caption-text">
@@ -359,8 +374,8 @@ Note that we have two branches for if-condition but both returns immediately and
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">factorial</span></code> function is not tail recursive. Let’s take a look trace of <code class="docutils literal notranslate"><span class="pre">factorial(4)</span></code></p>
-<div class="amsmath math notranslate nohighlight" id="equation-f610a0e3-e6be-45ee-85c6-830fbfbd4cf5">
-<span class="eqno">(4.1)<a class="headerlink" href="#equation-f610a0e3-e6be-45ee-85c6-830fbfbd4cf5" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-f37cca90-3a08-48d8-8e5d-dae9fab35658">
+<span class="eqno">(4.1)<a class="headerlink" href="#equation-f37cca90-3a08-48d8-8e5d-dae9fab35658" title="Permalink to this equation">¶</a></span>\[\begin{align}
 &amp; factorial(4) \\
 \Longrightarrow &amp; 4*factorial(3) \\
 \Longrightarrow &amp; 4*3*factorial(2) \\  
@@ -383,8 +398,8 @@ Note that we have two branches for if-condition but both returns immediately and
 </div>
 <p>Now stack frame for <code class="docutils literal notranslate"><span class="pre">factorial</span></code> can be replaced by <code class="docutils literal notranslate"><span class="pre">accumulator</span></code> routine (tail call optimization!),and the accumulator function is itself is tail recursive. So its essentially a loop and takes <span class="math notranslate nohighlight">\(\mathcal{O}(1)\)</span> space.</p>
 <p>Let’s look at the stack trace of <code class="docutils literal notranslate"><span class="pre">factorial(4)</span></code>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-41d40f76-ec74-49ca-ac9c-f4e0d9e1be44">
-<span class="eqno">(4.2)<a class="headerlink" href="#equation-41d40f76-ec74-49ca-ac9c-f4e0d9e1be44" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-ee4241c6-717b-47fd-98d8-48375b5d1994">
+<span class="eqno">(4.2)<a class="headerlink" href="#equation-ee4241c6-717b-47fd-98d8-48375b5d1994" title="Permalink to this equation">¶</a></span>\[\begin{align}
 &amp; factorial(4)  \\
 \Longrightarrow &amp; accumulator(1,4) \\
 \Longrightarrow &amp; accumulator(1*4,3) \\
