@@ -355,6 +355,43 @@
 </pre></div>
 </div>
 <p><em>Problem</em>: Writing all these classification and accessor functions quickly becomes tedious!</p>
+<p>So, what happens if you want to add new expression forms, say</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Prod</span><span class="o">(</span><span class="n">e1</span><span class="k">:</span> <span class="kt">Expr</span><span class="o">,</span> <span class="n">e2</span><span class="k">:</span> <span class="kt">Expr</span><span class="o">)</span> <span class="k">extends</span> <span class="nc">Expr</span> <span class="c1">// e1 * e2</span>
+<span class="k">class</span> <span class="nc">Var</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span> <span class="k">extends</span> <span class="nc">Expr</span> <span class="c1">// Variable ‘x’</span>
+</pre></div>
+</div>
+<p>You need to add methods for classification and access to all classes defined above.</p>
+<hr class="docutils" />
+<div class="sphinx-bs container pb-4 docutils">
+<div class="row docutils">
+<div class="d-flex col-lg-12 p-2 docutils">
+<div class="card w-100 shadow docutils">
+<div class="card-body docutils">
+<p class="card-text"><span class="sphinx-bs badge">Exercise</span></p>
+<p class="card-text">To integrate <code class="docutils literal notranslate"><span class="pre">Prod</span></code> and <code class="docutils literal notranslate"><span class="pre">Var</span></code> into the hierarchy, how many new method definitions do you need?
+(including method definitions in Prod and Var themselves, but not counting methods that were already given.)</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<details class="sphinx-bs dropdown card mb-3">
+<summary class="summary-title card-header">
+Solution<div class="summary-down docutils">
+<svg version="1.1" width="24" height="24" class="octicon octicon-chevron-down" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 8.72a.75.75 0 000 1.06l6.25 6.25a.75.75 0 001.06 0l6.25-6.25a.75.75 0 00-1.06-1.06L12 14.44 6.28 8.72a.75.75 0 00-1.06 0z"></path></svg></div>
+<div class="summary-up docutils">
+<svg version="1.1" width="24" height="24" class="octicon octicon-chevron-up" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M18.78 15.28a.75.75 0 000-1.06l-6.25-6.25a.75.75 0 00-1.06 0l-6.25 6.25a.75.75 0 101.06 1.06L12 9.56l5.72 5.72a.75.75 0 001.06 0z"></path></svg></div>
+</summary><div class="summary-content card-body docutils">
+<p class="card-text">We need two additional methods in <code class="docutils literal notranslate"><span class="pre">trait</span> <span class="pre">Expr</span></code> <code class="docutils literal notranslate"><span class="pre">def</span> <span class="pre">isProd</span></code> and <code class="docutils literal notranslate"><span class="pre">def</span> <span class="pre">isVar</span></code>. Another operation that gives the name of the variable <code class="docutils literal notranslate"><span class="pre">def</span> <span class="pre">name</span></code> is required. So in total 8 methods for the trait. Each class (<code class="docutils literal notranslate"><span class="pre">Expr</span></code>,<code class="docutils literal notranslate"><span class="pre">Prod</span></code>,<code class="docutils literal notranslate"><span class="pre">Var</span></code>,<code class="docutils literal notranslate"><span class="pre">Sum</span></code>,<code class="docutils literal notranslate"><span class="pre">Number</span></code>) has to implement these methods (8 * 5 = 40). Previously we have 3 classes each have 5 methods, so additionally we implement 25 methods.</p>
+</div>
+</details><hr class="docutils" />
+<p>So generally if we continue to extend the hierarchy, the number of methods need tend to grow quadratically. What to do about it?</p>
+<p>Scala let’s you do these using methods defined in class <code class="docutils literal notranslate"><span class="pre">Any</span></code>:</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">isInstanceOf</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span><span class="k">:</span> <span class="kt">Boolean</span> <span class="c1">// checks whether this object’s type conforms to ‘T‘</span>
+<span class="kt">def</span> <span class="kt">asInstanceOf</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span><span class="k">:</span> <span class="kt">T</span> <span class="c1">// treats this object as an instance of type ‘T‘</span>
+<span class="c1">// throws ‘ClassCastException‘ if it isn’t.</span>
+</pre></div>
+</div>
 </div>
 
     <script type="text/x-thebe-config">

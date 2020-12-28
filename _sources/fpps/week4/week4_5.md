@@ -46,3 +46,41 @@ else throw new Error("Unknown expression" + e)
 ```
 
 _Problem_: Writing all these classification and accessor functions quickly becomes tedious!
+
+So, what happens if you want to add new expression forms, say
+
+```scala
+class Prod(e1: Expr, e2: Expr) extends Expr // e1 * e2
+class Var(x: String) extends Expr // Variable ‘x’
+```
+
+You need to add methods for classification and access to all classes defined above. 
+
+
+---
+
+````{panels}
+:column: col-lg-12 p-2
+
+{badge}`Exercise`
+
+To integrate `Prod` and `Var` into the hierarchy, how many new method definitions do you need?
+(including method definitions in Prod and Var themselves, but not counting methods that were already given.)
+
+````
+
+````{dropdown} Solution
+We need two additional methods in `trait Expr` `def isProd` and `def isVar`. Another operation that gives the name of the variable `def name` is required. So in total 8 methods for the trait. Each class (`Expr`,`Prod`,`Var`,`Sum`,`Number`) has to implement these methods (8 * 5 = 40). Previously we have 3 classes each have 5 methods, so additionally we implement 25 methods.
+````
+
+---
+
+So generally if we continue to extend the hierarchy, the number of methods need tend to grow quadratically. What to do about it?
+
+Scala let’s you do these using methods defined in class `Any`:
+
+```scala
+def isInstanceOf[T]: Boolean // checks whether this object’s type conforms to ‘T‘
+def asInstanceOf[T]: T // treats this object as an instance of type ‘T‘
+// throws ‘ClassCastException‘ if it isn’t.
+```
