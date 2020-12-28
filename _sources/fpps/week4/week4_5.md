@@ -84,3 +84,50 @@ def isInstanceOf[T]: Boolean // checks whether this object’s type conforms to 
 def asInstanceOf[T]: T // treats this object as an instance of type ‘T‘
 // throws ‘ClassCastException‘ if it isn’t.
 ```
+
+But the use is discouraged in Scala.
+
+Here’s a formulation of the `eval` method using type tests and casts:
+
+```scala
+def eval(e: Expr): Int =
+if (e.isInstanceOf[Number])
+e.asInstanceOf[Number].numValue
+else if (e.isInstanceOf[Sum])
+eval(e.asInstanceOf[Sum].leftOp) +
+eval(e.asInstanceOf[Sum].rightOp)
+else throw new Error(”Unknown expression ” + e)
+```
+
+Assessment of this solution:
+
+* no need for classification methods (like `isNumber`, `isSum` etc.), access methods only for classes where the value is defined.
+* low-level and potentially unsafe.
+
+When you do a typecast, you don't know at runtime whether the typecast would succeed. It might throw type cast exception.
+
+## Object-Oriented Solution
+
+For example, suppose that all you want to do is evaluate expressions.
+You could then define:
+
+```scala
+trait Expr {
+def eval: Int
+}
+class Number(n: Int) extends Expr {
+def eval: Int = n
+}
+class Sum(e1: Expr, e2: Expr) extends Expr {
+def eval: Int = e1.eval + e2.eval
+}
+```
+
+But what happens if you’d like to display expressions now? (say new method `def show` in trait `Expr`) You have to define new methods in all the subclasses. We need to touch all the classes hierarchy, potentially could be thousands (bad idea to touch many code areas!)
+
+And what if you want to simplify the expressions, say using the rule:
+
+`a * b + a * c -> a * (b + c)`
+
+**Problem**: This is a non-local simplification. It cannot be encapsulated in the method of a single object. We need to verify the expressions on both side are the same `Product`. So we need accessor methods like `def isProd`.
+You are back to square one; you need test and access methods for all the different subclasses.

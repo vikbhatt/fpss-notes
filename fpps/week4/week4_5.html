@@ -309,6 +309,20 @@
     <!-- Table of contents -->
     <div class="d-none d-md-block col-md-2 bd-toc show">
         
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#object-oriented-solution">
+   15.1. Object-Oriented Solution
+  </a>
+ </li>
+</ul>
+
+        </nav>
+        
     </div>
 </div>
     <div id="main-content" class="row">
@@ -391,6 +405,44 @@ Solution<div class="summary-down docutils">
 <span class="kt">def</span> <span class="kt">asInstanceOf</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span><span class="k">:</span> <span class="kt">T</span> <span class="c1">// treats this object as an instance of type ‘T‘</span>
 <span class="c1">// throws ‘ClassCastException‘ if it isn’t.</span>
 </pre></div>
+</div>
+<p>But the use is discouraged in Scala.</p>
+<p>Here’s a formulation of the <code class="docutils literal notranslate"><span class="pre">eval</span></code> method using type tests and casts:</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span>def eval(e: Expr): Int =
+if (e.isInstanceOf[Number])
+e.asInstanceOf[Number].numValue
+else if (e.isInstanceOf[Sum])
+eval(e.asInstanceOf[Sum].leftOp) +
+eval(e.asInstanceOf[Sum].rightOp)
+else throw new Error(”Unknown expression ” + e)
+</pre></div>
+</div>
+<p>Assessment of this solution:</p>
+<ul class="simple">
+<li><p>no need for classification methods (like <code class="docutils literal notranslate"><span class="pre">isNumber</span></code>, <code class="docutils literal notranslate"><span class="pre">isSum</span></code> etc.), access methods only for classes where the value is defined.</p></li>
+<li><p>low-level and potentially unsafe.</p></li>
+</ul>
+<p>When you do a typecast, you don’t know at runtime whether the typecast would succeed. It might throw type cast exception.</p>
+<div class="section" id="object-oriented-solution">
+<h2><span class="section-number">15.1. </span>Object-Oriented Solution<a class="headerlink" href="#object-oriented-solution" title="Permalink to this headline">¶</a></h2>
+<p>For example, suppose that all you want to do is evaluate expressions.
+You could then define:</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">trait</span> <span class="nc">Expr</span> <span class="o">{</span>
+<span class="k">def</span> <span class="n">eval</span><span class="k">:</span> <span class="kt">Int</span>
+<span class="o">}</span>
+<span class="k">class</span> <span class="nc">Number</span><span class="o">(</span><span class="n">n</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">extends</span> <span class="nc">Expr</span> <span class="o">{</span>
+<span class="k">def</span> <span class="n">eval</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="n">n</span>
+<span class="o">}</span>
+<span class="k">class</span> <span class="nc">Sum</span><span class="o">(</span><span class="n">e1</span><span class="k">:</span> <span class="kt">Expr</span><span class="o">,</span> <span class="n">e2</span><span class="k">:</span> <span class="kt">Expr</span><span class="o">)</span> <span class="k">extends</span> <span class="nc">Expr</span> <span class="o">{</span>
+<span class="k">def</span> <span class="n">eval</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="n">e1</span><span class="o">.</span><span class="n">eval</span> <span class="o">+</span> <span class="n">e2</span><span class="o">.</span><span class="n">eval</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>But what happens if you’d like to display expressions now? (say new method <code class="docutils literal notranslate"><span class="pre">def</span> <span class="pre">show</span></code> in trait <code class="docutils literal notranslate"><span class="pre">Expr</span></code>) You have to define new methods in all the subclasses. We need to touch all the classes hierarchy, potentially could be thousands (bad idea to touch many code areas!)</p>
+<p>And what if you want to simplify the expressions, say using the rule:</p>
+<p><code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">*</span> <span class="pre">b</span> <span class="pre">+</span> <span class="pre">a</span> <span class="pre">*</span> <span class="pre">c</span> <span class="pre">-&gt;</span> <span class="pre">a</span> <span class="pre">*</span> <span class="pre">(b</span> <span class="pre">+</span> <span class="pre">c)</span></code></p>
+<p><strong>Problem</strong>: This is a non-local simplification. It cannot be encapsulated in the method of a single object. We need to verify the expressions on both side are the same <code class="docutils literal notranslate"><span class="pre">Product</span></code>. So we need accessor methods like <code class="docutils literal notranslate"><span class="pre">def</span> <span class="pre">isProd</span></code>.
+You are back to square one; you need test and access methods for all the different subclasses.</p>
 </div>
 </div>
 
