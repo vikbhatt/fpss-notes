@@ -36,3 +36,55 @@ def apply(e1: Expr, e2: Expr) = new Sum(e1, e2)
 ```
 
 so you can write `Number(1)` instead of `new Number(1)`. However, these classes are now empty. So how can we access the members?
+
+Rules:
+
+* `match` is followed by a sequence of cases, `pat => expr`.
+* Each case associates an expression `expr` with a pattern `pat`.
+* A `MatchError` exception is thrown if no pattern matches the value of the selector.
+
+```scala
+def eval(e: Expr): Int = e match {
+case Number(n) => n
+case Sum(e1, e2) => eval(e1) + eval(e2)
+}
+```
+
+Patterns are constructed from:
+
+* constructors, e.g. Number, Sum,
+* variables, e.g. n, e1, e2,
+* wildcard patterns _,
+* constants, e.g. 1, true.
+Variables always begin with a lowercase letter. Names of constants begin with a capital letter, with the exception of the reserved words `null`, `true`, `false`.
+
+An expression of the form
+
+```scala
+e match { case p1 => e1 ... case pn => en }
+```
+
+matches the value of the selector `e` with the patterns `p1, ..., pn` in the order in which they are written.
+The whole match expression is rewritten to the right-hand side of the first case where the pattern matches the selector `e`.
+References to pattern variables are replaced by the corresponding parts in the selector.
+
+* A constructor pattern `C(p1, ..., pn)` matches all the values of
+type `C` (or a subtype) that have been constructed with arguments matching the patterns `p1, ..., pn`.
+* A variable pattern `x` matches any value, and binds the name of the variable to this value.
+* A constant pattern `c` matches values that are equal to `c` (in the sense of `==`)
+
+
+Of course, it’s also possible to define the evaluation function as a method of the base trait.
+
+Example
+
+```scala
+trait Expr {
+def eval: Int = this match {
+case Number(n) => n
+case Sum(e1, e2) => e1.eval + e2.eval
+}
+}
+```
+
+
