@@ -96,7 +96,7 @@ e.asInstanceOf[Number].numValue
 else if (e.isInstanceOf[Sum])
 eval(e.asInstanceOf[Sum].leftOp) +
 eval(e.asInstanceOf[Sum].rightOp)
-else throw new Error(”Unknown expression ” + e)
+else throw new Error("Unknown expression" + e)
 ```
 
 Assessment of this solution:
