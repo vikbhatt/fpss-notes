@@ -138,3 +138,34 @@ def sum(xs: List[Int]) = (0::xs) reduceLeft ((x,y) => x+y)
 def product(xs: List[Int]) = 1:;xs reduceLeft ((x,y) => x*y)
 
 ```
+
+Instead of `(x,y) => x*y` we can write `(_*_)`. Every `_` represents a new function parameter going from left to right. The parameters are defined at next outer pair of parentheses.
+
+But `reduceLeft` can not be applied only empty list.
+
+The function `reduceLeft` is defined in terms of more general function `foldLeft`. `foldLeft` is like `reduceLeft` but takes an accumulator `z`, as an additional parameter which is returned when called on empty list.
+
+`(List(x1, ..., xn) foldLeft z)(op) = (...(z op x1) op ... ) op xn`
+
+So sum and product can be defined as follows.
+
+```scala
+def sum(xs: List[Int]) = (xs foldLeft 0)(_ + _)
+def product(xs: List[Int]) = (xs foldLeft 1)(_ * _)
+```
+
+`foldLeft` and `reduceLeft` can be implemented in class `List` as follows.
+
+```scala
+abstract class List[T] { ...
+def reduceLeft(op: (T, T) => T): T = this match {
+case Nil => throw new Error(ŏNil.reduceLeft)
+case x :: xs => (xs foldLeft x)(op)
+}
+def foldLeft[U](z: U)(op: (U, T) => U): U = this match {
+case Nil => z
+case x :: xs => (xs foldLeft op(z, x))(op)
+}
+}
+
+```
