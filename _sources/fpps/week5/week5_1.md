@@ -106,17 +106,17 @@ Looking alone at `insert` the worst case element `x` greater than all elements w
 
 | Property        | Definition           |
 | ------------- |:-------------:|
-| xs.length     | The number of elements of xs.|
-| xs.last    | The list's last element, Exception if empty.      |
-| xs.init | A list of all elements of xs except the last one, exception if xs is empty.|
-| xs take n | A list containing the first n elements of xs or xs if it is shorter than n|  
-| xs drop n| The rest of collection after taking n elements|
-| xs(n)    | The element of xs at index n|
+| `xs.length`     | The number of elements of `xs`.|
+| `xs.last`    | The list's last element, exception if empty.      |
+| `xs.init` | A list of all elements of `xs` except the last one, exception if `xs` is empty.|
+| `xs take n` | A list containing the first `n` elements of `xs` or `xs` if it is shorter than `n`|  
+| `xs drop n`| The rest of collection after taking `n` elements|
+| `xs(n)`    | The element of `xs` at index `n`|
 
 ### Creating new lists
 
 | Method        | Definition           |
 | ------------- |:-------------:|
-| xs++ys     | A list containing all elements of xs followed by all elements of ys.|
-|xs.reverse | List containing the elements of xs in reverse order.|
-|xs updated (n,x)| A list containing the same elements as xs except at index n where it contains x |
+| `xs++ys`     | A list containing all elements of `xs` followed by all elements of `ys`.|
+|`xs.reverse` | List containing the elements of `xs` in reverse order.|
+|`xs updated (n,x)`| A list containing the same elements as `xs` except at index `n` where it contains `x` |
