@@ -369,8 +369,8 @@ Note that we have two branches for if-condition but both returns immediately and
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">factorial</span></code> function is not tail recursive. Let’s take a look trace of <code class="docutils literal notranslate"><span class="pre">factorial(4)</span></code></p>
-<div class="amsmath math notranslate nohighlight" id="equation-21c8bf42-8c0e-497b-bb9b-887f0180f70c">
-<span class="eqno">(4.1)<a class="headerlink" href="#equation-21c8bf42-8c0e-497b-bb9b-887f0180f70c" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-0efb9a8e-6cf1-435f-abc4-e0b63805fd8e">
+<span class="eqno">(4.1)<a class="headerlink" href="#equation-0efb9a8e-6cf1-435f-abc4-e0b63805fd8e" title="Permalink to this equation">¶</a></span>\[\begin{align}
 &amp; factorial(4) \\
 \Longrightarrow &amp; 4*factorial(3) \\
 \Longrightarrow &amp; 4*3*factorial(2) \\  
@@ -393,8 +393,8 @@ Note that we have two branches for if-condition but both returns immediately and
 </div>
 <p>Now stack frame for <code class="docutils literal notranslate"><span class="pre">factorial</span></code> can be replaced by <code class="docutils literal notranslate"><span class="pre">accumulator</span></code> routine (tail call optimization!),and the accumulator function is itself is tail recursive. So its essentially a loop and takes <span class="math notranslate nohighlight">\(\mathcal{O}(1)\)</span> space.</p>
 <p>Let’s look at the stack trace of <code class="docutils literal notranslate"><span class="pre">factorial(4)</span></code>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-d6f8d164-a779-407a-a60d-b768bda11846">
-<span class="eqno">(4.2)<a class="headerlink" href="#equation-d6f8d164-a779-407a-a60d-b768bda11846" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-90e52c00-85f6-47f2-ab33-d747d9c01fa1">
+<span class="eqno">(4.2)<a class="headerlink" href="#equation-90e52c00-85f6-47f2-ab33-d747d9c01fa1" title="Permalink to this equation">¶</a></span>\[\begin{align}
 &amp; factorial(4)  \\
 \Longrightarrow &amp; accumulator(1,4) \\
 \Longrightarrow &amp; accumulator(1*4,3) \\
