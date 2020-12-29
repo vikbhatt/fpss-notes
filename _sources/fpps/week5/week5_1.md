@@ -44,11 +44,11 @@ It is also possible to decompose lists with pattern matching.
 
 Examples
 
-`1::2::xs` - List that starts with 1 and then 2.
-`x :: Nil` - List of length 1
-`List(x)` - Same as `x::Nil`
-`List()` - Same as empty list
-`List(2::xs)` - A list contains only another list that starts with 2.
+* `1::2::xs` - List that starts with 1 and then 2.
+* `x :: Nil` - List of length 1
+* `List(x)` - Same as `x::Nil`
+* `List()` - Same as empty list
+* `List(2::xs)` - A list contains only another list that starts with 2.
 
 ---
 
