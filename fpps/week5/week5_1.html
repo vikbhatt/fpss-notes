@@ -334,6 +334,11 @@
      17.2.2. Creating new lists
     </a>
    </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#finding-elements">
+     17.2.3. Finding Elements
+    </a>
+   </li>
   </ul>
  </li>
 </ul>
@@ -507,6 +512,67 @@ Solution<div class="summary-down docutils">
 </tr>
 </tbody>
 </table>
+</div>
+<div class="section" id="finding-elements">
+<h3><span class="section-number">17.2.3. </span>Finding Elements<a class="headerlink" href="#finding-elements" title="Permalink to this headline">¶</a></h3>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="text-align:center head"><p>Definition</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">xs</span> <span class="pre">indexOf</span> <span class="pre">x</span></code></p></td>
+<td class="text-align:center"><p>The index of first element of <code class="docutils literal notranslate"><span class="pre">xs</span></code> equal to <code class="docutils literal notranslate"><span class="pre">x</span></code>, otherwise -1 if <code class="docutils literal notranslate"><span class="pre">x</span></code> doesn’t appear in <code class="docutils literal notranslate"><span class="pre">xs</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">xs</span> <span class="pre">contains</span> <span class="pre">x</span></code></p></td>
+<td class="text-align:center"><p>Same as <code class="docutils literal notranslate"><span class="pre">xs</span> <span class="pre">indexOf</span> <span class="pre">x</span> <span class="pre">&gt;=</span> <span class="pre">0</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>How can concatenation be implemented?</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">conact</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span><span class="n">xs</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">T</span><span class="o">],</span> <span class="n">ys</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">T</span><span class="o">])</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="o">=</span> <span class="n">xs</span> <span class="k">match</span> <span class="o">{</span>
+<span class="k">case</span> <span class="nc">List</span><span class="o">()</span> <span class="o">=&gt;</span> <span class="n">ys</span>
+<span class="k">case</span> <span class="n">z</span><span class="o">::</span><span class="n">zs</span> <span class="o">=&gt;</span> <span class="n">z</span><span class="o">::</span><span class="n">concat</span><span class="o">(</span><span class="n">zs</span><span class="o">,</span> <span class="n">ys</span><span class="o">)</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>The complexity of above function is proportional to length of list <code class="docutils literal notranslate"><span class="pre">xs</span></code>.</p>
+<p>How can reverse be implemented?</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">reverse</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span><span class="n">xs</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">T</span><span class="o">])</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="o">=</span> <span class="n">xs</span> <span class="k">match</span> <span class="o">{</span>
+    <span class="k">case</span> <span class="nc">Nil</span> <span class="o">=&gt;</span> <span class="nc">Nil</span>
+    <span class="k">case</span> <span class="nc">List</span><span class="o">(</span><span class="n">y</span><span class="o">,</span> <span class="n">ys</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">reverse</span><span class="o">(</span><span class="n">ys</span><span class="o">)</span> <span class="o">++</span><span class="nc">List</span><span class="o">(</span><span class="n">y</span><span class="o">)</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>The complexity of above function is quadratic (N for reverse and N for concatenation).</p>
+<hr class="docutils" />
+<div class="sphinx-bs container pb-4 docutils">
+<div class="row docutils">
+<div class="d-flex col-lg-12 p-2 docutils">
+<div class="card w-100 shadow docutils">
+<div class="card-body docutils">
+<p class="card-text"><span class="sphinx-bs badge">Exercise</span></p>
+<p class="card-text">Remove the nth element of list <code class="docutils literal notranslate"><span class="pre">xs</span></code>. If <code class="docutils literal notranslate"><span class="pre">n</span></code> is out of bounds, return the list itself.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<details class="sphinx-bs dropdown card mb-3">
+<summary class="summary-title card-header">
+Solution<div class="summary-down docutils">
+<svg version="1.1" width="24" height="24" class="octicon octicon-chevron-down" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 8.72a.75.75 0 000 1.06l6.25 6.25a.75.75 0 001.06 0l6.25-6.25a.75.75 0 00-1.06-1.06L12 14.44 6.28 8.72a.75.75 0 00-1.06 0z"></path></svg></div>
+<div class="summary-up docutils">
+<svg version="1.1" width="24" height="24" class="octicon octicon-chevron-up" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M18.78 15.28a.75.75 0 000-1.06l-6.25-6.25a.75.75 0 00-1.06 0l-6.25 6.25a.75.75 0 101.06 1.06L12 9.56l5.72 5.72a.75.75 0 001.06 0z"></path></svg></div>
+</summary><div class="summary-content card-body docutils">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">removeAt</span><span class="o">(</span><span class="n">n</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">xs</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Int</span><span class="o">])</span> <span class="o">=</span> <span class="o">(</span><span class="n">xs</span> <span class="n">take</span> <span class="n">n</span><span class="o">):::(</span><span class="n">xs</span> <span class="n">drop</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="o">)</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p class="card-text">Looking alone at <code class="docutils literal notranslate"><span class="pre">insert</span></code> the worst case element <code class="docutils literal notranslate"><span class="pre">x</span></code> greater than all elements we have N calls. We have to make a call for <code class="docutils literal notranslate"><span class="pre">insert</span></code> from <code class="docutils literal notranslate"><span class="pre">isort</span></code> for every element so the worst case complexity is proportional to  <code class="docutils literal notranslate"><span class="pre">N*N</span></code>.</p>
+</div>
+</details><hr class="docutils" />
 </div>
 </div>
 </div>

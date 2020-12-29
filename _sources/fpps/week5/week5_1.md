@@ -106,7 +106,7 @@ Looking alone at `insert` the worst case element `x` greater than all elements w
 
 | Property | Definition |
 | ------------- |:-------------:|
-| `xs.length`     | The number of elements of `xs`.|
+| `xs.length` | The number of elements of `xs`.|
 | `xs.last` | The list's last element, exception if empty. |
 | `xs.init` | A list of all elements of `xs` except the last one, exception if `xs` is empty.|
 | `xs take n` | A list containing the first `n` elements of `xs` or `xs` if it is shorter than `n`|  
@@ -120,3 +120,56 @@ Looking alone at `insert` the worst case element `x` greater than all elements w
 | `xs++ys`     | A list containing all elements of `xs` followed by all elements of `ys`.|
 |`xs.reverse` | List containing the elements of `xs` in reverse order.|
 |`xs updated (n,x)`| A list containing the same elements as `xs` except at index `n` where it contains `x` |
+
+### Finding Elements
+
+| Method        | Definition           |
+| ------------- |:-------------:|
+| `xs indexOf x`     | The index of first element of `xs` equal to `x`, otherwise -1 if `x` doesn't appear in `xs`|
+|`xs contains x` | Same as `xs indexOf x >= 0`|
+
+
+How can concatenation be implemented?
+
+
+```scala
+def conact[T](xs: List[T], ys: List[T]): List[Int] = xs match {
+case List() => ys
+case z::zs => z::concat(zs, ys)
+}
+
+```
+
+
+The complexity of above function is proportional to length of list `xs`.
+
+How can reverse be implemented?
+
+```scala
+def reverse[T](xs: List[T]): List[T] = xs match {
+    case Nil => Nil
+    case List(y, ys) => reverse(ys) ++List(y)
+}
+```
+The complexity of above function is quadratic (N for reverse and N for concatenation).
+
+---
+
+````{panels}
+:column: col-lg-12 p-2
+
+{badge}`Exercise`
+
+Remove the nth element of list `xs`. If `n` is out of bounds, return the list itself.
+
+````
+
+````{dropdown} Solution
+```scala
+def removeAt(n: Int, xs: List[Int]) = (xs take n):::(xs drop n+1)
+}
+```
+
+Looking alone at `insert` the worst case element `x` greater than all elements we have N calls. We have to make a call for `insert` from `isort` for every element so the worst case complexity is proportional to  `N*N`.
+````
+---
