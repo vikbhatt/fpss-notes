@@ -353,8 +353,8 @@ This one has more evenly balanced access patterns than <code class="docutils lit
 <p>How much time does it take to retrieve for an element?</p>
 <p>The number of access are the depth of the vector. A depth of 6 would give billion elements (actually it’s <span class="math notranslate nohighlight">\(log_{32}(N)\)</span> where N is number of elements)</p>
 <p>Vectors are created analogously to lists:</p>
-<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span>val nums = Vector(1, 2, 3, -88)
-val people = Vector(”Bob”, ”James”, ”Peter”)
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">nums</span> <span class="o">=</span> <span class="nc">Vector</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">,</span> <span class="o">-</span><span class="mi">88</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">people</span> <span class="o">=</span> <span class="nc">Vector</span><span class="o">(</span><span class="s">&quot;Bob&quot;</span><span class="o">,</span> <span class="s">&quot;James&quot;</span><span class="o">,</span> <span class="s">&quot;Peter&quot;</span><span class="o">)</span>
 </pre></div>
 </div>
 <p>They support the same operations as lists, with the exception of <code class="docutils literal notranslate"><span class="pre">::</span></code>

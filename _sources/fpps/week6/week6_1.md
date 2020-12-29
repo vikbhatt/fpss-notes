@@ -12,7 +12,7 @@ Vectors are created analogously to lists:
 
 ```scala
 val nums = Vector(1, 2, 3, -88)
-val people = Vector(”Bob”, ”James”, ”Peter”)
+val people = Vector("Bob", "James", "Peter")
 ```
 
 They support the same operations as lists, with the exception of `::`
