@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>9. How classes are organized? &#8212; Functional Programming in Scala Specialization -- Complied Notes</title>
+    <title>20. Other Collections &#8212; Functional Programming in Scala Specialization -- Complied Notes</title>
     
   <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
 
@@ -58,8 +58,8 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="10. Polymorphism" href="week3_3.html" />
-    <link rel="prev" title="8. Class Hierarchies" href="week3_1.html" />
+    <link rel="next" title="1. Recap Functions and Pattern Matching" href="../../fpds/week1/week1_1.html" />
+    <link rel="prev" title="19. Higher Order List Functions" href="../week5/week5_3.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -141,17 +141,17 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="week3_1.html">
+  <a class="reference internal" href="../week3/week3_1.html">
    8. Class Hierarchies
   </a>
  </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week3/week3_2.html">
    9. How classes are organized?
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="week3_3.html">
+  <a class="reference internal" href="../week3/week3_3.html">
    10. Polymorphism
   </a>
  </li>
@@ -200,8 +200,8 @@
    19. Higher Order List Functions
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../week6/week6_1.html">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
    20. Other Collections
   </a>
  </li>
@@ -299,7 +299,7 @@
         <!-- ipynb file if we had a myst markdown file -->
         
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../../_sources/fpps/week3/week3_2.md"><button type="button"
+        <a class="dropdown-buttons" href="../../_sources/fpps/week6/week6_1.md"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
                 data-placement="left">.md</button></a>
         <!-- Download PDF via print -->
@@ -324,20 +324,6 @@
     <!-- Table of contents -->
     <div class="d-none d-md-block col-md-2 bd-toc show">
         
-        <div class="tocsection onthispage pt-5 pb-3">
-            <i class="fas fa-list"></i> Contents
-        </div>
-        <nav id="bd-toc-nav">
-            <ul class="nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#traits">
-   9.1. Traits
-  </a>
- </li>
-</ul>
-
-        </nav>
-        
     </div>
 </div>
     <div id="main-content" class="row">
@@ -345,92 +331,12 @@
         
               <div>
                 
-  <div class="section" id="how-classes-are-organized">
-<h1><span class="section-number">9. </span>How classes are organized?<a class="headerlink" href="#how-classes-are-organized" title="Permalink to this headline">¶</a></h1>
-<p>Classes and objects are organized in packages.
-To place a class or object inside a packages, use a package clause at the top of your source file.</p>
-<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">package</span> <span class="nn">progfun.example</span> 
-<span class="k">object</span> <span class="nc">HelloWorld</span><span class="o">{</span>
-    <span class="o">...</span>
-<span class="o">}</span>
-</pre></div>
-</div>
-<p>You can refer to <code class="docutils literal notranslate"><span class="pre">HelloWorld</span></code> by it’s fully qualified name <code class="docutils literal notranslate"><span class="pre">progfun.example.HelloWorld</span></code>. To run the object</p>
-<blockquote>
-<div><p>scala progfun.example.HelloWorld</p>
-</div></blockquote>
-<p>You can import from any package or object.</p>
-<p>All members of</p>
-<ul class="simple">
-<li><p>package <code class="docutils literal notranslate"><span class="pre">scala</span></code></p></li>
-<li><p>package <code class="docutils literal notranslate"><span class="pre">java.lang</span></code></p></li>
-<li><p>singleton object <code class="docutils literal notranslate"><span class="pre">Scala.PreDef</span></code></p></li>
-</ul>
-<p>are imported in any Scala program. <code class="docutils literal notranslate"><span class="pre">require</span></code> and <code class="docutils literal notranslate"><span class="pre">assert</span></code> are defined in <code class="docutils literal notranslate"><span class="pre">Scala.PreDef</span></code>.</p>
-<p>See <a class="reference external" href="https://www.scala-lang.org/files/archive/api/current/">here</a> for more detailed documentation online.</p>
-<div class="section" id="traits">
-<h2><span class="section-number">9.1. </span>Traits<a class="headerlink" href="#traits" title="Permalink to this headline">¶</a></h2>
-<p>In Java, as well as in Scala, a class can have only one superclass. But what if a class, has several natural types to which it conforms or from which it wants to inherit code?</p>
-<p>Here you could use traits.</p>
-<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">trait</span> <span class="nc">Planar</span><span class="o">{</span>
-    <span class="k">def</span> <span class="n">height</span><span class="k">:</span> <span class="kt">Int</span>
-    <span class="k">def</span> <span class="n">width</span><span class="k">:</span> <span class="kt">Int</span>
-    <span class="k">def</span> <span class="n">surface</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="n">height</span> <span class="o">*</span> <span class="n">width</span>
-<span class="o">}</span>
-</pre></div>
-</div>
-<p>Classes, objects and traits can inherit from at most one class but arbitrary many traits.</p>
-<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Square</span> <span class="k">extends</span> <span class="nc">Shape</span> <span class="k">with</span> <span class="nc">Planar</span> <span class="k">with</span> <span class="nc">Movable</span> <span class="o">...</span>
-</pre></div>
-</div>
-<p>In the above example <code class="docutils literal notranslate"><span class="pre">Square</span></code> extends super class <code class="docutils literal notranslate"><span class="pre">Shape</span></code> but mixes with traits <code class="docutils literal notranslate"><span class="pre">Planar</span></code> and <code class="docutils literal notranslate"><span class="pre">Movable</span></code>. Traits resemble interfaces in Java, but more powerful because they can contains fields and concrete methods.
-On the other hand traits cannot have value parameters, only classes can have it.</p>
-<p>See the below picture of Scala’s class Hierarchy</p>
-<p><img alt="Scala Class Hierarchy" src="../../_images/scala_class_hierarchy.png" /></p>
-<p><code class="docutils literal notranslate"><span class="pre">Nothing</span></code> is at the bottom of the Scala’s type hierarchy. It’s a subtype of every other type. There is no value of type <code class="docutils literal notranslate"><span class="pre">Nothing</span></code>.</p>
-<p>Useful to</p>
-<ul class="simple">
-<li><p>signal abnormal termination</p></li>
-<li><p>an element type of empty collection. (Example : <code class="docutils literal notranslate"><span class="pre">Set[Nothing]</span></code> is empty set).</p></li>
-</ul>
-<p>Another example, the expression</p>
-<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">throw</span> <span class="nc">Exc</span>
-</pre></div>
-</div>
-<p>aborts the evaluation with the Exception <code class="docutils literal notranslate"><span class="pre">Exc</span></code>. The type of the expression is``Nothing`.</p>
-<p><code class="docutils literal notranslate"><span class="pre">Scala.Null</span></code> is subtype of every reference type. It’s value is <code class="docutils literal notranslate"><span class="pre">null</span></code>. It is a value of every reference type. If somebody expects a <code class="docutils literal notranslate"><span class="pre">String</span></code> you can pass <code class="docutils literal notranslate"><span class="pre">Null</span></code>.</p>
-<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">x</span> <span class="o">=</span> <span class="kc">null</span>
-<span class="k">val</span> <span class="n">y</span><span class="k">:</span><span class="kt">String</span> <span class="o">=</span> <span class="n">x</span>
-<span class="k">val</span> <span class="n">z</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="n">x</span> <span class="c1">// Won&#39;t compile. Null is subtype of reference only.</span>
-</pre></div>
-</div>
-<hr class="docutils" />
-<div class="sphinx-bs container pb-4 docutils">
-<div class="row docutils">
-<div class="d-flex col-lg-12 p-2 docutils">
-<div class="card w-100 shadow docutils">
-<div class="card-body docutils">
-<p class="card-text"><span class="sphinx-bs badge">Exercise</span></p>
-<p class="card-text">What is the value of the following expression?</p>
-<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="o">(</span><span class="kc">true</span><span class="o">)</span> <span class="mi">1</span> <span class="k">else</span> <span class="kc">false</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<details class="sphinx-bs dropdown card mb-3">
-<summary class="summary-title card-header">
-Solution<div class="summary-down docutils">
-<svg version="1.1" width="24" height="24" class="octicon octicon-chevron-down" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 8.72a.75.75 0 000 1.06l6.25 6.25a.75.75 0 001.06 0l6.25-6.25a.75.75 0 00-1.06-1.06L12 14.44 6.28 8.72a.75.75 0 00-1.06 0z"></path></svg></div>
-<div class="summary-up docutils">
-<svg version="1.1" width="24" height="24" class="octicon octicon-chevron-up" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M18.78 15.28a.75.75 0 000-1.06l-6.25-6.25a.75.75 0 00-1.06 0l-6.25 6.25a.75.75 0 101.06 1.06L12 9.56l5.72 5.72a.75.75 0 001.06 0z"></path></svg></div>
-</summary><div class="summary-content card-body docutils">
-<p class="card-text"><code class="docutils literal notranslate"><span class="pre">AnyVal</span></code>. See the above chart. The two branches contains <code class="docutils literal notranslate"><span class="pre">Int</span></code> and other one <code class="docutils literal notranslate"><span class="pre">Boolean</span></code>. So the common supertype is <code class="docutils literal notranslate"><span class="pre">AnyVal</span></code>.</p>
-</div>
-</details><hr class="docutils" />
-</div>
+  <div class="section" id="other-collections">
+<h1><span class="section-number">20. </span>Other Collections<a class="headerlink" href="#other-collections" title="Permalink to this headline">¶</a></h1>
+<p>We have seen that lists are <strong>linear</strong>: Access to the first element is much faster than access to the middle or end of a list. The Scala library also defines an alternative sequence implementation, <code class="docutils literal notranslate"><span class="pre">Vector</span></code>.
+This one has more evenly balanced access patterns than <code class="docutils literal notranslate"><span class="pre">List</span></code>. <code class="docutils literal notranslate"><span class="pre">Vector</span></code> is implemented as very very shallow trees. A vector of 32 elements is just an array (stored in sequence). If a vector becomes larger than 32, you would have vector of 32 pointer to arrays of 32 elements. Once we filled 32*32 you would have pointers to pointers to arrays of 32 elements. Each level would go deeper.</p>
+<p>How much time does it take to retrieve for an element?</p>
+<p>The number of access are the depth of the vector. A depth of 6 would give billion elements (actually it’s <span class="math notranslate nohighlight">\(log_{32}(N)\)</span>)</p>
 </div>
 
     <script type="text/x-thebe-config">
@@ -446,7 +352,7 @@ Solution<div class="summary-down docutils">
         },
         kernelOptions: {
             kernelName: "python3",
-            path: "./fpps\week3"
+            path: "./fpps\week6"
         },
         predefinedOutput: true
     }
@@ -461,8 +367,8 @@ Solution<div class="summary-down docutils">
     
     <div class='prev-next-bottom'>
         
-    <a class='left-prev' id="prev-link" href="week3_1.html" title="previous page"><span class="section-number">8. </span>Class Hierarchies</a>
-    <a class='right-next' id="next-link" href="week3_3.html" title="next page"><span class="section-number">10. </span>Polymorphism</a>
+    <a class='left-prev' id="prev-link" href="../week5/week5_3.html" title="previous page"><span class="section-number">19. </span>Higher Order List Functions</a>
+    <a class='right-next' id="next-link" href="../../fpds/week1/week1_1.html" title="next page"><span class="section-number">1. </span>Recap Functions and Pattern Matching</a>
 
     </div>
     <footer class="footer mt-5 mt-md-0">

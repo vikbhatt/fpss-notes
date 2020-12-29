@@ -196,3 +196,12 @@ case x :: xs => op(x, (xs foldRight z)(op))
 
 
 For operators that are associative and commutative `folLeft` and `foldRight` are equivalent.(even thought efficiency may be different). But sometimes only one of the two operators is appropriate.
+
+Here is another formulation of `concat`.
+
+```scala
+def concat[T](xs: List[T], ys: List[T]): List[T] =
+(xs foldRight ys) (_ :: _)
+```
+
+Here you cannot replace `foldRight` with `foldLeft`. You would get type check error.

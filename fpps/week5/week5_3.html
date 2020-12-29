@@ -58,7 +58,7 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="1. Recap Functions and Pattern Matching" href="../../fpds/week1/week1_1.html" />
+    <link rel="next" title="20. Other Collections" href="../week6/week6_1.html" />
     <link rel="prev" title="18. Pairs and Tuples" href="week5_2.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -198,6 +198,11 @@
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
    19. Higher Order List Functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week6/week6_1.html">
+   20. Other Collections
   </a>
  </li>
 </ul>
@@ -549,6 +554,12 @@ Solution<div class="summary-down docutils">
 </pre></div>
 </div>
 <p>For operators that are associative and commutative <code class="docutils literal notranslate"><span class="pre">folLeft</span></code> and <code class="docutils literal notranslate"><span class="pre">foldRight</span></code> are equivalent.(even thought efficiency may be different). But sometimes only one of the two operators is appropriate.</p>
+<p>Here is another formulation of <code class="docutils literal notranslate"><span class="pre">concat</span></code>.</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">concat</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span><span class="n">xs</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">T</span><span class="o">],</span> <span class="n">ys</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">T</span><span class="o">])</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="o">=</span>
+<span class="o">(</span><span class="n">xs</span> <span class="n">foldRight</span> <span class="n">ys</span><span class="o">)</span> <span class="o">(</span><span class="k">_</span> <span class="o">::</span> <span class="k">_</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>Here you cannot replace <code class="docutils literal notranslate"><span class="pre">foldRight</span></code> with <code class="docutils literal notranslate"><span class="pre">foldLeft</span></code>. You would get type check error.</p>
 </div>
 </div>
 </div>
@@ -582,7 +593,7 @@ Solution<div class="summary-down docutils">
     <div class='prev-next-bottom'>
         
     <a class='left-prev' id="prev-link" href="week5_2.html" title="previous page"><span class="section-number">18. </span>Pairs and Tuples</a>
-    <a class='right-next' id="next-link" href="../../fpds/week1/week1_1.html" title="next page"><span class="section-number">1. </span>Recap Functions and Pattern Matching</a>
+    <a class='right-next' id="next-link" href="../week6/week6_1.html" title="next page"><span class="section-number">20. </span>Other Collections</a>
 
     </div>
     <footer class="footer mt-5 mt-md-0">
