@@ -102,6 +102,7 @@ Looking alone at `insert` the worst case element `x` greater than all elements w
 
 ## More Functions on List
 
+### Sublists and elements access
 
 | Property        | Definition           |
 | ------------- |:-------------:|
@@ -111,3 +112,11 @@ Looking alone at `insert` the worst case element `x` greater than all elements w
 | xs take n | A list containing the first n elements of xs or xs if it is shorter than n|  
 | xs drop n| The rest of collection after taking n elements|
 | xs(n)    | The element of xs at index n|
+
+### Creating new lists
+
+| Method        | Definition           |
+| ------------- |:-------------:|
+| xs++ys     | A list containing all elements of xs followed by all elements of ys.|
+|xs.reverse | List containing the elements of xs in reverse order.|
+|xs updated (n,x)| A list containing the same elements as xs except at index n where it contains x |
