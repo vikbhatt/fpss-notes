@@ -44,6 +44,7 @@
     <script src="../../_static/togglebutton.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
+    <script async="async" kind="hypothesis" src="https://hypothes.is/embed.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../../_static/sphinx-book-theme.be0a4a0c39cd630af62a2fcf693f3f06.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
@@ -336,7 +337,18 @@
 <p>We have seen that lists are <strong>linear</strong>: Access to the first element is much faster than access to the middle or end of a list. The Scala library also defines an alternative sequence implementation, <code class="docutils literal notranslate"><span class="pre">Vector</span></code>.
 This one has more evenly balanced access patterns than <code class="docutils literal notranslate"><span class="pre">List</span></code>. <code class="docutils literal notranslate"><span class="pre">Vector</span></code> is implemented as very very shallow trees. A vector of 32 elements is just an array (stored in sequence). If a vector becomes larger than 32, you would have vector of 32 pointer to arrays of 32 elements. Once we filled 32*32 you would have pointers to pointers to arrays of 32 elements. Each level would go deeper.</p>
 <p>How much time does it take to retrieve for an element?</p>
-<p>The number of access are the depth of the vector. A depth of 6 would give billion elements (actually it’s <span class="math notranslate nohighlight">\(log_{32}(N)\)</span>)</p>
+<p>The number of access are the depth of the vector. A depth of 6 would give billion elements (actually it’s <span class="math notranslate nohighlight">\(log_{32}(N)\)</span> where N is number of elements)</p>
+<p>Vectors are created analogously to lists:</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span>val nums = Vector(1, 2, 3, -88)
+val people = Vector(”Bob”, ”James”, ”Peter”)
+</pre></div>
+</div>
+<p>They support the same operations as lists, with the exception of <code class="docutils literal notranslate"><span class="pre">::</span></code>
+Instead of <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">::</span> <span class="pre">xs</span></code>, there is
+<code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">+:</span> <span class="pre">xs</span></code> Create a new vector with leading element <code class="docutils literal notranslate"><span class="pre">x</span></code>, followed by all elements of <code class="docutils literal notranslate"><span class="pre">xs</span></code>.
+<code class="docutils literal notranslate"><span class="pre">xs</span> <span class="pre">:+</span> <span class="pre">x</span></code> Create a new vector with trailing element <code class="docutils literal notranslate"><span class="pre">x</span></code>, preceded by all elements of <code class="docutils literal notranslate"><span class="pre">xs</span></code>.
+(Note that the <code class="docutils literal notranslate"><span class="pre">:</span></code> always points to the sequence.)</p>
+<p>A common base class of <code class="docutils literal notranslate"><span class="pre">List</span></code> and <code class="docutils literal notranslate"><span class="pre">Vector</span></code> is <code class="docutils literal notranslate"><span class="pre">Seq</span></code>, the class of all sequences. <code class="docutils literal notranslate"><span class="pre">Seq</span></code> itself is a subclass of <code class="docutils literal notranslate"><span class="pre">Iterable</span></code></p>
 </div>
 
     <script type="text/x-thebe-config">
