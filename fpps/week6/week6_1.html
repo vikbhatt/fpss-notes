@@ -325,6 +325,20 @@
     <!-- Table of contents -->
     <div class="d-none d-md-block col-md-2 bd-toc show">
         
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#operations-on-sequences">
+   20.1. Operations on sequences
+  </a>
+ </li>
+</ul>
+
+        </nav>
+        
     </div>
 </div>
     <div id="main-content" class="row">
@@ -349,6 +363,64 @@ Instead of <code class="docutils literal notranslate"><span class="pre">x</span>
 <code class="docutils literal notranslate"><span class="pre">xs</span> <span class="pre">:+</span> <span class="pre">x</span></code> Create a new vector with trailing element <code class="docutils literal notranslate"><span class="pre">x</span></code>, preceded by all elements of <code class="docutils literal notranslate"><span class="pre">xs</span></code>.
 (Note that the <code class="docutils literal notranslate"><span class="pre">:</span></code> always points to the sequence.)</p>
 <p>A common base class of <code class="docutils literal notranslate"><span class="pre">List</span></code> and <code class="docutils literal notranslate"><span class="pre">Vector</span></code> is <code class="docutils literal notranslate"><span class="pre">Seq</span></code>, the class of all sequences. <code class="docutils literal notranslate"><span class="pre">Seq</span></code> itself is a subclass of <code class="docutils literal notranslate"><span class="pre">Iterable</span></code></p>
+<p>Arrays and Strings support the same operations as Seq and can
+implicitly be converted to sequences where needed.
+(They cannot be subclasses of Seq because they come from Java)</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">xs</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="o">=</span> <span class="nc">Array</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">)</span>
+<span class="n">xs</span> <span class="n">map</span> <span class="o">(</span><span class="n">x</span> <span class="o">=&gt;</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">x</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">ys</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">&quot;Hello world!&quot;</span>
+<span class="n">ys</span> <span class="n">filter</span> <span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">isUpper</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>Another simple kind of sequence is the range. It represents a sequence of evenly spaced integers.
+Three operators:
+<code class="docutils literal notranslate"><span class="pre">to</span></code> (inclusive), <code class="docutils literal notranslate"><span class="pre">until</span></code> (exclusive), <code class="docutils literal notranslate"><span class="pre">by</span></code> (to determine step value):</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">r</span><span class="k">:</span> <span class="kt">Range</span> <span class="o">=</span> <span class="mi">1</span> <span class="n">until</span> <span class="mi">5</span>
+<span class="k">val</span> <span class="n">s</span><span class="k">:</span> <span class="kt">Range</span> <span class="o">=</span> <span class="mi">1</span> <span class="n">to</span> <span class="mi">5</span>
+<span class="mi">1</span> <span class="n">to</span> <span class="mi">10</span> <span class="n">by</span> <span class="mi">3</span>
+<span class="mi">6</span> <span class="n">to</span> <span class="mi">1</span> <span class="n">by</span> <span class="o">-</span><span class="mi">2</span>
+</pre></div>
+</div>
+<p>Ranges are represented as single objects with three fields: lower bound, upper bound, step value.</p>
+<div class="section" id="operations-on-sequences">
+<h2><span class="section-number">20.1. </span>Operations on sequences<a class="headerlink" href="#operations-on-sequences" title="Permalink to this headline">¶</a></h2>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Operation</p></th>
+<th class="text-align:center head"><p>Definition</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">xs</span> <span class="pre">exists</span> <span class="pre">p</span></code></p></td>
+<td class="text-align:center"><p>true if there is an element <code class="docutils literal notranslate"><span class="pre">x</span></code> of <code class="docutils literal notranslate"><span class="pre">xs</span></code> such that <code class="docutils literal notranslate"><span class="pre">p(x)</span></code> holds, false otherwise.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">xs</span> <span class="pre">forall</span> <span class="pre">p</span></code></p></td>
+<td class="text-align:center"><p>true if <code class="docutils literal notranslate"><span class="pre">p(x)</span></code> holds for all elements <code class="docutils literal notranslate"><span class="pre">x</span></code> of <code class="docutils literal notranslate"><span class="pre">xs</span></code>, false otherwise.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">xs</span> <span class="pre">zip</span> <span class="pre">ys</span></code></p></td>
+<td class="text-align:center"><p>A sequence of pairs drawn from corresponding elements of sequences <code class="docutils literal notranslate"><span class="pre">xs</span></code> and <code class="docutils literal notranslate"><span class="pre">ys</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">xs.unzip</span></code></p></td>
+<td class="text-align:center"><p>Splits a sequence of pairs <code class="docutils literal notranslate"><span class="pre">xs</span></code> into two sequences consisting of the first, respectively second halves of all pairs.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">xs.flatMap</span> <span class="pre">f</span></code></p></td>
+<td class="text-align:center"><p>Applies collection-valued function <code class="docutils literal notranslate"><span class="pre">f</span></code> to all elements of <code class="docutils literal notranslate"><span class="pre">xs</span></code> and concatenates the results</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">xs.sum</span></code></p></td>
+<td class="text-align:center"><p>The sum of all elements of this numeric collection.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">xs.product</span></code></p></td>
+<td class="text-align:center"><p>The product of all elements of this numeric collection</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">xs.max</span></code></p></td>
+<td class="text-align:center"><p>The maximum of all elements of this collection (an Ordering must exist)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">xs.min</span></code></p></td>
+<td class="text-align:center"><p>The minimum of all elements of this collection</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 
     <script type="text/x-thebe-config">
