@@ -107,6 +107,7 @@ def encode[T](xs: List[T]): List[(T, Int)] = pack(xs).map(x => (x.head, x.length
 }
 ```
 ````
+
 ---
 
 
@@ -167,5 +168,29 @@ case Nil => z
 case x :: xs => (xs foldLeft op(z, x))(op)
 }
 }
+```
 
+
+Applications of `foldLeft` and `reduceLeft` unfold on trees that lean to the left.
+
+
+### Reduce Right
+
+Two dual functions `foldRight` and `reduceRight` which produce trees lean to the right. They are defined as follows.
+
+`List(x1, ..., x{n-1}, xn) reduceRight op = x1 op ( ... (x{n-1} op xn) ... )
+
+(List(x1, ..., xn) foldRight acc)(op) = x1 op ( ... (xn op acc) ... )`
+
+```scala
+
+def reduceRight(op: (T, T) => T): T = this match {
+case Nil => throw new Error("Nil.reduceRight")
+case x :: Nil => x
+case x :: xs => op(x, xs.reduceRight(op))
+}
+def foldRight[](z: U)(op: (T, U) => U): U = this match {
+case Nil => z
+case x :: xs => op(x, (xs foldRight z)(op))
+}
 ```
