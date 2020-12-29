@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>18. Pairs and Tuples &#8212; Functional Programming in Scala Specialization -- Complied Notes</title>
+    <title>19. Implicit Parameters &#8212; Functional Programming in Scala Specialization -- Complied Notes</title>
     
   <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
 
@@ -58,8 +58,8 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="19. Implicit Parameters" href="week5_3.html" />
-    <link rel="prev" title="17. Lists" href="week5_1.html" />
+    <link rel="next" title="1. Recap Functions and Pattern Matching" href="../../fpds/week1/week1_1.html" />
+    <link rel="prev" title="18. Pairs and Tuples" href="week5_2.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -190,13 +190,13 @@
    17. Lists
   </a>
  </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
+ <li class="toctree-l1">
+  <a class="reference internal" href="week5_2.html">
    18. Pairs and Tuples
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="week5_3.html">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
    19. Implicit Parameters
   </a>
  </li>
@@ -294,7 +294,7 @@
         <!-- ipynb file if we had a myst markdown file -->
         
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../../_sources/fpps/week5/week5_2.md"><button type="button"
+        <a class="dropdown-buttons" href="../../_sources/fpps/week5/week5_3.md"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
                 data-placement="left">.md</button></a>
         <!-- Download PDF via print -->
@@ -319,6 +319,32 @@
     <!-- Table of contents -->
     <div class="d-none d-md-block col-md-2 bd-toc show">
         
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#higher-order-list-functions">
+   19.1. Higher Order List Functions
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#map">
+     19.1.1. Map
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#filter">
+     19.1.2. Filter
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+        </nav>
+        
     </div>
 </div>
     <div id="main-content" class="row">
@@ -326,61 +352,80 @@
         
               <div>
                 
-  <div class="section" id="pairs-and-tuples">
-<h1><span class="section-number">18. </span>Pairs and Tuples<a class="headerlink" href="#pairs-and-tuples" title="Permalink to this headline">¶</a></h1>
-<p>As a non-trivial example, let’s design a function to sort lists that is more efficient than insertion sort.
-A good algorithm for this is merge sort. The idea is as follows:
-If the list consists of zero or one elements, it is already sorted.
-Otherwise,</p>
+  <div class="section" id="implicit-parameters">
+<h1><span class="section-number">19. </span>Implicit Parameters<a class="headerlink" href="#implicit-parameters" title="Permalink to this headline">¶</a></h1>
+<p>Problem: How to parameterize <code class="docutils literal notranslate"><span class="pre">msort</span></code> so that it can also be used for
+lists with elements other than <code class="docutils literal notranslate"><span class="pre">Int</span></code>?</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">msort</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span><span class="n">xs</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">T</span><span class="o">])</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="o">=</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>does not work, because the comparison <code class="docutils literal notranslate"><span class="pre">&lt;</span></code> in merge is not defined for arbitrary types <code class="docutils literal notranslate"><span class="pre">T</span></code>.</p>
+<p>The most flexible design is to make the function sort polymorphic and to pass the comparison operation as an additional parameter:</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">msort</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span><span class="n">xs</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">T</span><span class="o">])(</span><span class="n">lt</span><span class="k">:</span> <span class="o">(</span><span class="kt">T</span><span class="o">,</span> <span class="kt">T</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="nc">Boolean</span><span class="o">)</span> <span class="o">=</span> <span class="o">{</span>
+<span class="o">...</span>
+<span class="n">merge</span><span class="o">(</span><span class="n">msort</span><span class="o">(</span><span class="n">fst</span><span class="o">)(</span><span class="n">lt</span><span class="o">),</span> <span class="n">msort</span><span class="o">(</span><span class="n">snd</span><span class="o">)(</span><span class="n">lt</span><span class="o">))</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>There is already a class in the standard library that represents orderings.
+<code class="docutils literal notranslate"><span class="pre">scala.math.Ordering[T]</span></code> provides ways to compare elements of type T. So instead of parameterized with the <code class="docutils literal notranslate"><span class="pre">lt</span></code> operation directly, we could parameterize with <code class="docutils literal notranslate"><span class="pre">Ordering</span></code> instead:</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">msort</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span><span class="n">xs</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">T</span><span class="o">])(</span><span class="n">ord</span><span class="k">:</span> <span class="kt">Ordering</span><span class="o">)</span> <span class="o">=</span>
+<span class="k">def</span> <span class="n">merge</span><span class="o">(</span><span class="n">xs</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">T</span><span class="o">],</span> <span class="n">ys</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">T</span><span class="o">])</span> <span class="o">=</span>
+<span class="o">...</span> <span class="k">if</span> <span class="o">(</span><span class="n">ord</span><span class="o">.</span><span class="n">lt</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">y</span><span class="o">))</span> <span class="o">...</span>
+<span class="o">...</span> <span class="n">merge</span><span class="o">(</span><span class="n">msort</span><span class="o">(</span><span class="n">fst</span><span class="o">)(</span><span class="n">ord</span><span class="o">),</span> <span class="n">msort</span><span class="o">(</span><span class="n">snd</span><span class="o">)(</span><span class="n">ord</span><span class="o">))</span> <span class="o">...</span>
+</pre></div>
+</div>
+<div class="section" id="higher-order-list-functions">
+<h2><span class="section-number">19.1. </span>Higher Order List Functions<a class="headerlink" href="#higher-order-list-functions" title="Permalink to this headline">¶</a></h2>
+<p>We have several recurring patterns like</p>
 <ul class="simple">
-<li><p>Separate the list into two sub-lists, each containing around half of the elements of the original list.</p></li>
-<li><p>Sort the two sub-lists.</p></li>
-<li><p>Merge the two sorted sub-lists into a single sorted list.</p></li>
+<li><p>transforming each element in a list in a certain way</p></li>
+<li><p>retrieving a list of all elements which satisfy certain criterion</p></li>
+<li><p>combining the elements of a list using an operator</p></li>
 </ul>
-<p>Here is the implementation of that algorithm in Scala:</p>
-<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">msort</span><span class="o">(</span><span class="n">xs</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Int</span><span class="o">])</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="o">=</span> <span class="o">{</span>
-<span class="k">val</span> <span class="n">n</span> <span class="o">=</span> <span class="n">xs</span><span class="o">.</span><span class="n">length</span><span class="o">/</span><span class="mi">2</span>
-<span class="k">if</span> <span class="o">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="n">xs</span>
-<span class="k">else</span> <span class="o">{</span>
-<span class="k">def</span> <span class="n">merge</span><span class="o">(</span><span class="n">xs</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Int</span><span class="o">],</span> <span class="n">ys</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Int</span><span class="o">])</span> <span class="o">=</span> <span class="o">???</span>
-<span class="k">val</span> <span class="o">(</span><span class="n">fst</span><span class="o">,</span> <span class="n">snd</span><span class="o">)</span> <span class="o">=</span> <span class="n">xs</span> <span class="n">splitAt</span> <span class="n">n</span>
-<span class="n">merge</span><span class="o">(</span><span class="n">msort</span><span class="o">(</span><span class="n">fst</span><span class="o">),</span> <span class="n">msort</span><span class="o">(</span><span class="n">snd</span><span class="o">))</span>
-<span class="o">}</span>
-<span class="o">}</span>
-</pre></div>
-</div>
-<p>Here is a definition of the merge function:</p>
-<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">merge</span><span class="o">(</span><span class="n">xs</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Int</span><span class="o">],</span> <span class="n">ys</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Int</span><span class="o">])</span> <span class="o">=</span>
-<span class="n">xs</span> <span class="k">match</span> <span class="o">{</span>
-<span class="k">case</span> <span class="nc">Nil</span> <span class="o">=&gt;</span>
-<span class="n">ys</span>
-<span class="k">case</span> <span class="n">x</span> <span class="o">::</span> <span class="n">xs1</span> <span class="o">=&gt;</span>
-<span class="n">ys</span> <span class="k">match</span> <span class="o">{</span>
-<span class="k">case</span> <span class="nc">Nil</span> <span class="o">=&gt;</span>
-<span class="n">xs</span>
-<span class="k">case</span> <span class="n">y</span> <span class="o">::</span> <span class="n">ys1</span> <span class="o">=&gt;</span>
-<span class="k">if</span> <span class="o">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="n">y</span><span class="o">)</span> <span class="n">x</span> <span class="o">::</span> <span class="n">merge</span><span class="o">(</span><span class="n">xs1</span><span class="o">,</span> <span class="n">ys</span><span class="o">)</span>
-<span class="k">else</span> <span class="n">y</span> <span class="o">::</span> <span class="n">merge</span><span class="o">(</span><span class="n">xs</span><span class="o">,</span> <span class="n">ys1</span><span class="o">)</span>
-<span class="o">}</span>
+<p>Functional languages allow programmers to write generic functions that implement patterns such as these with higher-order functions.</p>
+<div class="section" id="map">
+<h3><span class="section-number">19.1.1. </span>Map<a class="headerlink" href="#map" title="Permalink to this headline">¶</a></h3>
+<p>A simple way to define map on lists</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">abstract</span> <span class="k">class</span> <span class="nc">List</span><span class="o">[</span><span class="kt">T</span><span class="o">]{</span>
+    <span class="k">def</span> <span class="n">map</span><span class="o">[</span><span class="kt">U</span><span class="o">](</span><span class="n">f</span><span class="k">:</span> <span class="kt">T</span> <span class="o">=&gt;</span> <span class="n">U</span><span class="o">)</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">U</span><span class="o">]</span> <span class="o">=</span> <span class="k">this</span> <span class="k">match</span> <span class="o">{</span>
+        <span class="k">case</span> <span class="nc">Nil</span> <span class="o">=&gt;</span> <span class="nc">Nil</span>
+        <span class="k">case</span> <span class="n">x</span><span class="o">::</span><span class="n">xs</span> <span class="o">=&gt;</span> <span class="n">f</span><span class="o">(</span><span class="n">x</span><span class="o">)::</span><span class="n">xs</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">f</span><span class="o">)</span>
+    <span class="o">}</span>
 <span class="o">}</span>
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">splitAt</span></code> function on lists returns two sublists</p>
-<ul class="simple">
-<li><p>the elements up the the given index</p></li>
-<li><p>the elements from that index</p></li>
-</ul>
-<p>The lists are returned in a pair. The pair consisting of <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> is written <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y)</span></code> in Scala. This works analogously for tuples with more than two elements.</p>
-<p>A tuple type <code class="docutils literal notranslate"><span class="pre">(T1,</span> <span class="pre">...,</span> <span class="pre">Tn)</span></code> is an abbreviation of the parameterized type <code class="docutils literal notranslate"><span class="pre">scala.Tuplen[T1,</span> <span class="pre">...,</span> <span class="pre">Tn]</span></code>.
-A tuple expression <code class="docutils literal notranslate"><span class="pre">(e1,</span> <span class="pre">...,</span> <span class="pre">en)</span></code> is equivalent to the function application <code class="docutils literal notranslate"><span class="pre">scala.Tuplen(e1,</span> <span class="pre">...,</span> <span class="pre">en)</span></code>.
-A tuple pattern <code class="docutils literal notranslate"><span class="pre">(p1,</span> <span class="pre">...,</span> <span class="pre">pn)</span></code> is equivalent to the constructor pattern <code class="docutils literal notranslate"><span class="pre">scala.Tuplen(p1,</span> <span class="pre">...,</span> <span class="pre">pn)</span></code>.</p>
-<p>Here, all <code class="docutils literal notranslate"><span class="pre">Tuplen</span></code> classes are modeled after the following pattern:</p>
-<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span>case class Tuple2[T1, T2](_1: +T1, _2: +T2) {
-override def toString = ”(” + _1 + ”,” + _2 +”)”
-}
+<p>The actual definition of <code class="docutils literal notranslate"><span class="pre">map</span></code> is bit complicated because it is tail recursive and because it works for arbitrary collections.</p>
+</div>
+<div class="section" id="filter">
+<h3><span class="section-number">19.1.2. </span>Filter<a class="headerlink" href="#filter" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">abstract</span> <span class="k">class</span> <span class="nc">List</span><span class="o">[</span><span class="kt">T</span><span class="o">]{</span>
+    <span class="k">def</span> <span class="n">filter</span><span class="o">(</span><span class="n">p</span><span class="k">:</span> <span class="kt">T</span> <span class="o">=&gt;</span> <span class="nc">Boolean</span><span class="o">)</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="o">=</span> <span class="k">this</span> <span class="k">match</span> <span class="o">{</span>
+        <span class="k">case</span> <span class="nc">Nil</span> <span class="o">=&gt;</span> <span class="nc">Nil</span>
+        <span class="k">case</span> <span class="n">x</span><span class="o">::</span><span class="n">xs</span> <span class="o">=&gt;</span> <span class="k">if</span> <span class="n">p</span><span class="o">(</span><span class="n">x</span><span class="o">)</span> <span class="n">x</span><span class="o">::</span><span class="n">xs</span><span class="o">.</span><span class="n">filter</span><span class="o">(</span><span class="n">p</span><span class="o">)</span> <span class="k">else</span> <span class="n">xs</span><span class="o">.</span><span class="n">filter</span><span class="o">(</span><span class="n">p</span><span class="o">)</span>
+    <span class="o">}</span>
+<span class="o">}</span>
 </pre></div>
 </div>
-<p>The fields of a tuple can be accessed with names <code class="docutils literal notranslate"><span class="pre">_1,</span> <span class="pre">_2,</span> <span class="pre">…</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">filter</span></code> returns list of all elements for which the predicate is true. As a matter of fact, <code class="docutils literal notranslate"><span class="pre">partition</span></code> method on <code class="docutils literal notranslate"><span class="pre">List</span></code>.</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">partition</span><span class="o">(</span><span class="n">p</span><span class="k">:</span> <span class="o">(</span><span class="kt">A</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="nc">Boolean</span><span class="o">)</span><span class="k">:</span> <span class="o">(</span><span class="kt">List</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="nc">List</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span>
+</pre></div>
+</div>
+<p>A pair of, first, all elements that satisfy predicate p and, second, all elements that do not. Interesting because it splits a collection in two.</p>
+<p>Another method of list</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">final</span> <span class="k">def</span> <span class="n">takeWhile</span><span class="o">(</span><span class="n">p</span><span class="k">:</span> <span class="o">(</span><span class="kt">A</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="nc">Boolean</span><span class="o">)</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span>
+</pre></div>
+</div>
+<p>takes longest prefix of elements that satisfy a predicate.</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">dropWhile</span><span class="o">(</span><span class="n">p</span><span class="k">:</span> <span class="o">(</span><span class="kt">A</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="nc">Boolean</span><span class="o">)</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span>
+</pre></div>
+</div>
+<p>drops longest prefix of elements that satisfy a predicate.</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">final</span> <span class="k">def</span> <span class="n">span</span><span class="o">(</span><span class="n">p</span><span class="k">:</span> <span class="o">(</span><span class="kt">A</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="nc">Boolean</span><span class="o">)</span><span class="k">:</span> <span class="o">(</span><span class="kt">List</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="nc">List</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span>
+</pre></div>
+</div>
+<p>Splits this list into a prefix/suffix pair according to a predicate. Returns
+a pair consisting of the longest prefix of this list whose elements all satisfy <code class="docutils literal notranslate"><span class="pre">p</span></code>, and the rest of this list.</p>
 <hr class="docutils" />
 <div class="sphinx-bs container pb-4 docutils">
 <div class="row docutils">
@@ -420,6 +465,8 @@ Solution<div class="summary-down docutils">
 </div>
 </details><hr class="docutils" />
 </div>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {
@@ -449,8 +496,8 @@ Solution<div class="summary-down docutils">
     
     <div class='prev-next-bottom'>
         
-    <a class='left-prev' id="prev-link" href="week5_1.html" title="previous page"><span class="section-number">17. </span>Lists</a>
-    <a class='right-next' id="next-link" href="week5_3.html" title="next page"><span class="section-number">19. </span>Implicit Parameters</a>
+    <a class='left-prev' id="prev-link" href="week5_2.html" title="previous page"><span class="section-number">18. </span>Pairs and Tuples</a>
+    <a class='right-next' id="next-link" href="../../fpds/week1/week1_1.html" title="next page"><span class="section-number">1. </span>Recap Functions and Pattern Matching</a>
 
     </div>
     <footer class="footer mt-5 mt-md-0">
