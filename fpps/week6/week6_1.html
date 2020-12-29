@@ -420,6 +420,18 @@ Three operators:
 </tr>
 </tbody>
 </table>
+<p><strong>Example</strong></p>
+<p>To compute the scalar product of two vectors:</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">scalarProduct</span><span class="o">(</span><span class="n">xs</span><span class="k">:</span> <span class="kt">Vector</span><span class="o">[</span><span class="kt">Double</span><span class="o">],</span> <span class="n">ys</span><span class="k">:</span> <span class="kt">Vector</span><span class="o">[</span><span class="kt">Double</span><span class="o">])</span><span class="k">:</span> <span class="kt">Double</span> <span class="o">=</span>
+<span class="o">(</span><span class="n">xs</span> <span class="n">zip</span> <span class="n">ys</span><span class="o">).</span><span class="n">map</span><span class="o">(</span><span class="n">xy</span> <span class="o">=&gt;</span> <span class="n">xy</span><span class="o">.</span><span class="n">_1</span> <span class="o">*</span> <span class="n">xy</span><span class="o">.</span><span class="n">_2</span><span class="o">).</span><span class="n">sum</span>
+</pre></div>
+</div>
+<p>An alternative way to write this is with a pattern matching function value.</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">scalarProduct</span><span class="o">(</span><span class="n">xs</span><span class="k">:</span> <span class="kt">Vector</span><span class="o">[</span><span class="kt">Double</span><span class="o">],</span> <span class="n">ys</span><span class="k">:</span> <span class="kt">Vector</span><span class="o">[</span><span class="kt">Double</span><span class="o">])</span><span class="k">:</span> <span class="kt">Double</span> <span class="o">=</span>
+<span class="o">(</span><span class="n">xs</span> <span class="n">zip</span> <span class="n">ys</span><span class="o">).</span><span class="n">map</span><span class="o">{</span> <span class="k">case</span> <span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">y</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span> <span class="o">}.</span><span class="n">sum</span>
+</pre></div>
+</div>
+<p>Generally, the function value <code class="docutils literal notranslate"><span class="pre">{</span> <span class="pre">case</span> <span class="pre">p1</span> <span class="pre">=&gt;</span> <span class="pre">e1</span> <span class="pre">...</span> <span class="pre">case</span> <span class="pre">pn</span> <span class="pre">=&gt;</span> <span class="pre">en</span> <span class="pre">}</span></code> is equivalent to <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">=&gt;</span> <span class="pre">x</span> <span class="pre">match</span> <span class="pre">{</span> <span class="pre">case</span> <span class="pre">p1</span> <span class="pre">=&gt;</span> <span class="pre">e1</span> <span class="pre">...</span> <span class="pre">case</span> <span class="pre">pn</span> <span class="pre">=&gt;</span> <span class="pre">en</span> <span class="pre">}</span></code></p>
 </div>
 </div>
 

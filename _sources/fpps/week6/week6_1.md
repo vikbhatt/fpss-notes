@@ -59,3 +59,22 @@ Ranges are represented as single objects with three fields: lower bound, upper b
 |`xs.product`| The product of all elements of this numeric collection|
 |`xs.max`| The maximum of all elements of this collection (an Ordering must exist)|
 |`xs.min`| The minimum of all elements of this collection|
+
+
+**Example** 
+
+To compute the scalar product of two vectors:
+
+```scala
+def scalarProduct(xs: Vector[Double], ys: Vector[Double]): Double =
+(xs zip ys).map(xy => xy._1 * xy._2).sum
+```
+
+An alternative way to write this is with a pattern matching function value.
+
+```scala
+def scalarProduct(xs: Vector[Double], ys: Vector[Double]): Double =
+(xs zip ys).map{ case (x, y) => x * y }.sum
+```
+
+Generally, the function value `{ case p1 => e1 ... case pn => en }` is equivalent to `x => x match { case p1 => e1 ... case pn => en }`
