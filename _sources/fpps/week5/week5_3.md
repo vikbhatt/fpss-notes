@@ -178,19 +178,21 @@ Applications of `foldLeft` and `reduceLeft` unfold on trees that lean to the lef
 
 Two dual functions `foldRight` and `reduceRight` which produce trees lean to the right. They are defined as follows.
 
-`List(x1, ..., x{n-1}, xn) reduceRight op = x1 op ( ... (x{n-1} op xn) ... )
+`List(x1, ..., x{n-1}, xn) reduceRight op = x1 op ( ... (x{n-1} op xn) ... )`
 
-(List(x1, ..., xn) foldRight acc)(op) = x1 op ( ... (xn op acc) ... )`
+`(List(x1, ..., xn) foldRight acc)(op) = x1 op ( ... (xn op acc) ... )`
 
 ```scala
-
 def reduceRight(op: (T, T) => T): T = this match {
 case Nil => throw new Error("Nil.reduceRight")
 case x :: Nil => x
 case x :: xs => op(x, xs.reduceRight(op))
 }
-def foldRight[](z: U)(op: (T, U) => U): U = this match {
+def foldRight[U](z: U)(op: (T, U) => U): U = this match {
 case Nil => z
 case x :: xs => op(x, (xs foldRight z)(op))
 }
 ```
+
+
+For operators that are associative and commutative `folLeft` and `foldRight` are equivalent.(even thought efficiency may be different). But sometimes only one of the two operators is appropriate.
