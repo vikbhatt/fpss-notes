@@ -61,7 +61,7 @@ Ranges are represented as single objects with three fields: lower bound, upper b
 |`xs.min`| The minimum of all elements of this collection|
 
 
-**Example** 
+**Example**
 
 To compute the scalar product of two vectors:
 
