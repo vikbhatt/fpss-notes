@@ -361,6 +361,15 @@
 <li><p>Generate the sequence of pair of integers <span class="math notranslate nohighlight">\((i,j)\)</span> such that <span class="math notranslate nohighlight">\(i \leq j &lt; i &lt; n \)</span>.</p></li>
 <li><p>Filter the pairs for which <span class="math notranslate nohighlight">\(i+j\)</span> is prime.</p></li>
 </ul>
+<p>One way to generate the natural sequence of pairs</p>
+<ul class="simple">
+<li><p>Generate all the integers between <span class="math notranslate nohighlight">\(1\)</span> and <span class="math notranslate nohighlight">\(n\)</span> (excluded).</p></li>
+<li><p>For each integer <span class="math notranslate nohighlight">\(i\)</span>, we generate the list of pairs <span class="math notranslate nohighlight">\((i,1), \dots, (i, i-1)\)</span></p></li>
+</ul>
+<p>It can be achieved by combining <code class="docutils literal notranslate"><span class="pre">map</span></code> and <code class="docutils literal notranslate"><span class="pre">until</span></code></p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="o">(</span><span class="mi">1</span> <span class="n">until</span> <span class="n">n</span><span class="o">)</span> <span class="n">map</span> <span class="o">(</span><span class="n">i</span> <span class="o">=&gt;</span> <span class="o">(</span><span class="mi">1</span> <span class="n">until</span> <span class="n">i</span><span class="o">)</span> <span class="n">map</span> <span class="o">(</span><span class="n">j</span> <span class="o">=&gt;</span> <span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="n">j</span><span class="o">)))</span>
+</pre></div>
+</div>
 </div>
 </div>
 
