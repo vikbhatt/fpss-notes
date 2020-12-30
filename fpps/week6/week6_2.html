@@ -398,7 +398,7 @@
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Spark Web UI available at http://MININT-PN59L2S.fareast.corp.microsoft.com:4041
-SparkContext available as &#39;sc&#39; (version = 3.0.1, master = local[*], app id = local-1609317026359)
+SparkContext available as &#39;sc&#39; (version = 3.0.1, master = local[*], app id = local-1609317852403)
 SparkSession available as &#39;spark&#39;
 </pre></div>
 </div>
@@ -492,7 +492,24 @@ res0: scala.collection.immutable.IndexedSeq[scala.collection.immutable.IndexedSe
 <li><p>The sequence must start with a generator.</p></li>
 <li><p>If there are several generators in the sequence, the last generators vary faster than the first.</p></li>
 </ul>
-<p>Instead of</p>
+<p>Instead of <code class="docutils literal notranslate"><span class="pre">(s)</span></code> we can use braces <code class="docutils literal notranslate"><span class="pre">{s}</span></code> and then the sequence of generators and fiters can be written on multiple lines without requiring semicolons.</p>
+<p>We can solve the above problem in new way.
+Given a positive integer <span class="math notranslate nohighlight">\(n\)</span> find all pairs of positive integers <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> with <span class="math notranslate nohighlight">\(i \leq j &lt; i &lt; n \)</span> such that <span class="math notranslate nohighlight">\(i+j\)</span> is prime.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">for</span><span class="o">{</span>
+    <span class="n">i</span> <span class="o">&lt;-</span> <span class="mi">1</span> <span class="n">until</span> <span class="n">n</span>
+    <span class="n">j</span> <span class="o">&lt;-</span> <span class="n">i</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">console</span><span class="o">&gt;</span><span class="p">:</span> <span class="n">error</span><span class="p">:</span> <span class="n">incomplete</span> <span class="nb">input</span>
+</pre></div>
+</div>
+</div>
+</div>
 </div>
 </div>
 
