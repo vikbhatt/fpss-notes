@@ -19,3 +19,4 @@ It can be achieved by combining `map` and `until`
 ```scala
 (1 until n) map (i => (1 until i) map (j => (i, j)))
 ```
+
