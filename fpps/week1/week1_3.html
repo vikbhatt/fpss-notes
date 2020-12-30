@@ -221,16 +221,6 @@
    23. Maps
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../week6/week6_4.html#maps-are-functions">
-   24. Maps are functions
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../week6/week6_4.html#sorted-and-group-by">
-   25. Sorted and Group By
-  </a>
- </li>
 </ul>
 <p class="caption">
  <span class="caption-text">
@@ -415,8 +405,8 @@ Note that we have two branches for if-condition but both returns immediately and
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">factorial</span></code> function is not tail recursive. Let’s take a look trace of <code class="docutils literal notranslate"><span class="pre">factorial(4)</span></code></p>
-<div class="amsmath math notranslate nohighlight" id="equation-7e40b453-b988-463e-ba4f-73d6d648d46b">
-<span class="eqno">(4.1)<a class="headerlink" href="#equation-7e40b453-b988-463e-ba4f-73d6d648d46b" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-8507eb43-2398-478c-b881-cc42508b40fb">
+<span class="eqno">(4.1)<a class="headerlink" href="#equation-8507eb43-2398-478c-b881-cc42508b40fb" title="Permalink to this equation">¶</a></span>\[\begin{align}
 &amp; factorial(4) \\
 \Longrightarrow &amp; 4*factorial(3) \\
 \Longrightarrow &amp; 4*3*factorial(2) \\  
@@ -439,8 +429,8 @@ Note that we have two branches for if-condition but both returns immediately and
 </div>
 <p>Now stack frame for <code class="docutils literal notranslate"><span class="pre">factorial</span></code> can be replaced by <code class="docutils literal notranslate"><span class="pre">accumulator</span></code> routine (tail call optimization!),and the accumulator function is itself is tail recursive. So its essentially a loop and takes <span class="math notranslate nohighlight">\(\mathcal{O}(1)\)</span> space.</p>
 <p>Let’s look at the stack trace of <code class="docutils literal notranslate"><span class="pre">factorial(4)</span></code>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-d3c46e77-9d42-44ad-ba00-d08ef1c425ce">
-<span class="eqno">(4.2)<a class="headerlink" href="#equation-d3c46e77-9d42-44ad-ba00-d08ef1c425ce" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-66cc50a4-9ef2-49df-bd0e-fd2bbcee2d6e">
+<span class="eqno">(4.2)<a class="headerlink" href="#equation-66cc50a4-9ef2-49df-bd0e-fd2bbcee2d6e" title="Permalink to this equation">¶</a></span>\[\begin{align}
 &amp; factorial(4)  \\
 \Longrightarrow &amp; accumulator(1,4) \\
 \Longrightarrow &amp; accumulator(1*4,3) \\
