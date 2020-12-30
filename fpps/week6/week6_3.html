@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>&lt;no title&gt; &#8212; Functional Programming in Scala Specialization -- Complied Notes</title>
+    <title>22. Combinatorial Search Example &#8212; Functional Programming in Scala Specialization -- Complied Notes</title>
     
   <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
 
@@ -59,6 +59,8 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="23. Maps" href="week6_4.html" />
+    <link rel="prev" title="21. Combinatorial Search and For-Expressions" href="week6_2.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -103,7 +105,7 @@
   Functional Programming Principles in Scala
  </span>
 </p>
-<ul class="nav sidenav_l1">
+<ul class="current nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="../week1/intro.html">
    1. Introduction
@@ -207,6 +209,26 @@
  <li class="toctree-l1">
   <a class="reference internal" href="week6_2.html">
    21. Combinatorial Search and For-Expressions
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   22. Combinatorial Search Example
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="week6_4.html">
+   23. Maps
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="week6_4.html#maps-are-functions">
+   24. Maps are functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="week6_4.html#sorted-and-group-by">
+   25. Sorted and Group By
   </a>
  </li>
 </ul>
@@ -323,6 +345,23 @@
 
         <!-- Launch buttons -->
 
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/fpps/week6/week6_3.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
     </div>
 
     <!-- Table of contents -->
@@ -332,7 +371,17 @@
             <i class="fas fa-list"></i> Contents
         </div>
         <nav id="bd-toc-nav">
-            <ul class="simple nav section-nav flex-column">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#n-queens-problem">
+   22.1. N-Queens Problem
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#algorithm">
+   22.2. Algorithm
+  </a>
+ </li>
 </ul>
 
         </nav>
@@ -344,7 +393,202 @@
         
               <div>
                 
-  
+  <div class="section" id="combinatorial-search-example">
+<h1><span class="section-number">22. </span>Combinatorial Search Example<a class="headerlink" href="#combinatorial-search-example" title="Permalink to this headline">¶</a></h1>
+<p>So far, we  have sequences. We are going to see</p>
+<ul class="simple">
+<li><p>Sets</p></li>
+<li><p>Maps
+Now we look at sets.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">fruits</span> <span class="o">=</span> <span class="nc">Set</span><span class="o">(</span><span class="s">&quot;apple&quot;</span><span class="o">,</span><span class="s">&quot;banana&quot;</span><span class="o">,</span><span class="s">&quot;orange&quot;</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">s</span> <span class="o">=</span> <span class="o">(</span><span class="mi">1</span> <span class="n">to</span> <span class="mi">6</span><span class="o">).</span><span class="n">toSet</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Intitializing Scala interpreter ...
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Spark Web UI available at http://MININT-PN59L2S.fareast.corp.microsoft.com:4040
+SparkContext available as &#39;sc&#39; (version = 3.0.1, master = local[*], app id = local-1609318136037)
+SparkSession available as &#39;spark&#39;
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>fruits: scala.collection.immutable.Set[String] = Set(apple, banana, orange)
+s: scala.collection.immutable.Set[Int] = Set(5, 1, 6, 2, 3, 4)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Most operations on sequences are available on sets. See <code class="docutils literal notranslate"><span class="pre">Iterables</span></code> on Scaladoc for more information. <code class="docutils literal notranslate"><span class="pre">Seq</span></code> itself is subclass of <code class="docutils literal notranslate"><span class="pre">Iterable</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="n">println</span><span class="o">(</span><span class="n">s</span> <span class="n">map</span> <span class="o">(</span><span class="k">_</span> <span class="o">+</span> <span class="mi">2</span><span class="o">))</span>
+<span class="n">println</span><span class="o">(</span><span class="n">fruits</span> <span class="n">filter</span> <span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">startsWith</span><span class="o">(</span><span class="s">&quot;app&quot;</span><span class="o">)))</span>
+<span class="n">println</span><span class="o">(</span><span class="n">s</span><span class="o">.</span><span class="n">nonEmpty</span><span class="o">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Set(5, 6, 7, 3, 8, 4)
+Set(apple)
+true
+</pre></div>
+</div>
+</div>
+</div>
+<p>The principle differences between sets and sequences.</p>
+<ul class="simple">
+<li><p>Sets are unordered.</p></li>
+<li><p>Sets do not have duplicate elements</p></li>
+<li><p>The fundamental operation on set is <code class="docutils literal notranslate"><span class="pre">contains</span></code></p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="n">s</span> <span class="n">contains</span> <span class="mi">5</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>res16: Boolean = true
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="n-queens-problem">
+<h2><span class="section-number">22.1. </span>N-Queens Problem<a class="headerlink" href="#n-queens-problem" title="Permalink to this headline">¶</a></h2>
+<p>The queens problem is to place the eight queens on chessboard so that no queen is threatened by another. In other words two queens can’t be in same row, or column, or diagonal. We now develop solution for chessboard of any size. One way is to place a queen on each row. Once we have place <span class="math notranslate nohighlight">\(k-1\)</span> queens, one must place the <span class="math notranslate nohighlight">\(k\)</span> th queen in a column which is not in check with any other queen on the board.</p>
+</div>
+<div class="section" id="algorithm">
+<h2><span class="section-number">22.2. </span>Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Suppose we have already generated all the solutions consisting of placing <span class="math notranslate nohighlight">\(k-1\)</span> queens on board of size <span class="math notranslate nohighlight">\(n\)</span>.</p></li>
+<li><p>Each solution is represented by a list of length <span class="math notranslate nohighlight">\(k-1\)</span> containing the number of columns (between <span class="math notranslate nohighlight">\(0\)</span> and <span class="math notranslate nohighlight">\(n-1\)</span>).</p></li>
+<li><p>The column number of queen in the <span class="math notranslate nohighlight">\(k-1\)</span>th row comes first, followed by queen in row <span class="math notranslate nohighlight">\(k-2\)</span> etc.</p></li>
+<li><p>The solution is thus represented as set of lists, with one element for each solution.</p></li>
+<li><p>Now to place the <span class="math notranslate nohighlight">\(k\)</span>th queen, we generate all the possible extensions of each solution preceded by a new queen.</p></li>
+</ul>
+<p>Write a function</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">isSafe</span><span class="o">(</span><span class="n">col</span><span class="k">:</span><span class="kt">Int</span><span class="o">,</span> <span class="n">queens</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Int</span><span class="o">])</span><span class="k">:</span> <span class="kt">Boolean</span>
+</pre></div>
+</div>
+<p>which tests if a queen placed in indicated columns is secure amongst the other placed queens. It is assumed that new queen is placed in the next available row after the placed queens. (in row <code class="docutils literal notranslate"><span class="pre">queens.length</span></code>)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">isSafe</span><span class="o">(</span><span class="n">col</span><span class="k">:</span><span class="kt">Int</span><span class="o">,</span> <span class="n">queens</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Int</span><span class="o">])</span><span class="k">:</span> <span class="kt">Boolean</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">row</span> <span class="o">=</span> <span class="n">queens</span><span class="o">.</span><span class="n">length</span>
+    <span class="k">val</span> <span class="n">queensWithRow</span> <span class="o">=</span> <span class="o">(</span><span class="n">row</span><span class="o">-</span><span class="mi">1</span> <span class="n">to</span> <span class="mi">0</span> <span class="n">by</span> <span class="o">-</span><span class="mi">1</span><span class="o">)</span> <span class="n">zip</span> <span class="n">queens</span> 
+    <span class="n">queensWithRow</span> <span class="n">forall</span> <span class="o">{</span>
+        <span class="k">case</span> <span class="o">(</span><span class="n">r</span><span class="o">,</span><span class="n">c</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">col</span> <span class="o">!=</span><span class="n">c</span> <span class="o">&amp;&amp;</span> <span class="n">math</span><span class="o">.</span><span class="n">abs</span><span class="o">(</span><span class="n">col</span> <span class="o">-</span> <span class="n">c</span><span class="o">)</span> <span class="o">!=</span> <span class="n">math</span><span class="o">.</span><span class="n">abs</span><span class="o">(</span><span class="n">row</span> <span class="o">-</span> <span class="n">r</span><span class="o">)</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>isSafe: (col: Int, queens: List[Int])Boolean
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">object</span> <span class="nc">nqueens</span><span class="o">{</span>
+    <span class="k">def</span> <span class="n">queens</span><span class="o">(</span><span class="n">n</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Set</span><span class="o">[</span><span class="kt">List</span><span class="o">[</span><span class="kt">Int</span><span class="o">]]</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">def</span> <span class="n">placeQueens</span><span class="o">(</span><span class="n">k</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Set</span><span class="o">[</span><span class="kt">List</span><span class="o">[</span><span class="kt">Int</span><span class="o">]]</span> <span class="o">=</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">k</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="nc">Set</span><span class="o">(</span><span class="nc">List</span><span class="o">())</span>
+        <span class="k">else</span> 
+        <span class="k">for</span><span class="o">{</span>
+            <span class="n">queens</span> <span class="o">&lt;-</span> <span class="n">placeQueens</span><span class="o">(</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="o">)</span>
+            <span class="n">col</span> <span class="o">&lt;-</span> <span class="mi">0</span> <span class="n">until</span> <span class="n">n</span>
+            <span class="k">if</span> <span class="n">isSafe</span><span class="o">(</span><span class="n">col</span><span class="o">,</span> <span class="n">queens</span><span class="o">)</span>
+        <span class="o">}</span> <span class="k">yield</span> <span class="n">col</span><span class="o">::</span><span class="n">queens</span>
+        
+    <span class="o">}</span>
+        <span class="n">placeQueens</span><span class="o">(</span><span class="n">n</span><span class="o">)</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>defined object nqueens
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">show</span><span class="o">(</span><span class="n">queens</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Int</span><span class="o">])</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">lines</span> <span class="o">=</span> <span class="k">for</span> <span class="o">(</span><span class="n">col</span> <span class="o">&lt;-</span> <span class="n">queens</span><span class="o">.</span><span class="n">reverse</span><span class="o">)</span> <span class="k">yield</span> <span class="nc">Vector</span><span class="o">.</span><span class="n">fill</span><span class="o">(</span><span class="n">queens</span><span class="o">.</span><span class="n">length</span><span class="o">)(</span><span class="s">&quot;* &quot;</span><span class="o">).</span><span class="n">updated</span><span class="o">(</span><span class="n">col</span><span class="o">,</span> <span class="s">&quot;X &quot;</span><span class="o">).</span><span class="n">mkString</span>
+    <span class="s">&quot;\n&quot;</span> <span class="o">+</span> <span class="o">(</span><span class="n">lines</span> <span class="n">mkString</span> <span class="s">&quot;\n&quot;</span><span class="o">)</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>show: (queens: List[Int])String
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">solution</span> <span class="o">=</span> <span class="n">nqueens</span><span class="o">.</span><span class="n">queens</span><span class="o">(</span><span class="mi">8</span><span class="o">).</span><span class="n">take</span><span class="o">(</span><span class="mi">3</span><span class="o">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>solution: scala.collection.immutable.Set[List[Int]] = Set(List(2, 0, 6, 4, 7, 1, 3, 5), List(5, 2, 0, 7, 3, 1, 6, 4), List(4, 1, 7, 0, 3, 6, 2, 5))
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="o">(</span><span class="n">solution</span> <span class="n">map</span> <span class="n">show</span><span class="o">)</span> <span class="n">mkString</span> <span class="s">&quot;\n&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>res28: String =
+&quot;
+* * * * * X * *
+* * X * * * * *
+* * * * * * X *
+* * * X * * * *
+X * * * * * * *
+* * * * * * * X
+* X * * * * * *
+* * * * X * * *
+
+* * * * X * * *
+* * * * * * X *
+* X * * * * * *
+* * * X * * * *
+* * * * * * * X
+X * * * * * * *
+* * X * * * * *
+* * * * * X * *
+
+* * * * * X * *
+* * * X * * * *
+* X * * * * * *
+* * * * * * * X
+* * * * X * * *
+* * * * * * X *
+X * * * * * * *
+* * X * * * * * &quot;
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
     <script type="text/x-thebe-config">
     {
         requestKernel: true,
@@ -354,16 +598,16 @@
         },
         codeMirrorConfig: {
             theme: "abcdef",
-            mode: "python"
+            mode: "spylon-kernel"
         },
         kernelOptions: {
-            kernelName: "python3",
+            kernelName: "spylon-kernel",
             path: "./fpps\week6"
         },
         predefinedOutput: true
     }
     </script>
-    <script>kernelName = 'python3'</script>
+    <script>kernelName = 'spylon-kernel'</script>
 
               </div>
               
@@ -373,6 +617,8 @@
     
     <div class='prev-next-bottom'>
         
+    <a class='left-prev' id="prev-link" href="week6_2.html" title="previous page"><span class="section-number">21. </span>Combinatorial Search and For-Expressions</a>
+    <a class='right-next' id="next-link" href="week6_4.html" title="next page"><span class="section-number">23. </span>Maps</a>
 
     </div>
     <footer class="footer mt-5 mt-md-0">
