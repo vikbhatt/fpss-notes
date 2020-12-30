@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Combinatorial Search and For-Expressions &#8212; Functional Programming in Scala Specialization -- Complied Notes</title>
+    <title>21. Combinatorial Search and For-Expressions &#8212; Functional Programming in Scala Specialization -- Complied Notes</title>
     
   <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
 
@@ -59,6 +59,8 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="1. Recap Functions and Pattern Matching" href="../../fpds/week1/week1_1.html" />
+    <link rel="prev" title="20. Other Collections" href="week6_1.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -103,7 +105,7 @@
   Functional Programming Principles in Scala
  </span>
 </p>
-<ul class="nav sidenav_l1">
+<ul class="current nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="../week1/intro.html">
    1. Introduction
@@ -202,6 +204,11 @@
  <li class="toctree-l1">
   <a class="reference internal" href="week6_1.html">
    20. Other Collections
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   21. Combinatorial Search and For-Expressions
   </a>
  </li>
 </ul>
@@ -330,7 +337,7 @@
             <ul class="nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#algorithm">
-   Algorithm
+   21.1. Algorithm
   </a>
  </li>
 </ul>
@@ -345,10 +352,10 @@
               <div>
                 
   <div class="section" id="combinatorial-search-and-for-expressions">
-<h1>Combinatorial Search and For-Expressions<a class="headerlink" href="#combinatorial-search-and-for-expressions" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">21. </span>Combinatorial Search and For-Expressions<a class="headerlink" href="#combinatorial-search-and-for-expressions" title="Permalink to this headline">¶</a></h1>
 <p>Given a positive integer <span class="math notranslate nohighlight">\(n\)</span> find all pairs of positive integers <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> with <span class="math notranslate nohighlight">\(i \leq j &lt; i &lt; n \)</span> such that <span class="math notranslate nohighlight">\(i+j\)</span> is prime.</p>
 <div class="section" id="algorithm">
-<h2>Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">21.1. </span>Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this headline">¶</a></h2>
 <p>A natural way to do this is to:</p>
 <ul class="simple">
 <li><p>Generate the sequence of pair of integers <span class="math notranslate nohighlight">\((i,j)\)</span> such that <span class="math notranslate nohighlight">\(i \leq j &lt; i &lt; n \)</span>.</p></li>
@@ -385,6 +392,8 @@
     
     <div class='prev-next-bottom'>
         
+    <a class='left-prev' id="prev-link" href="week6_1.html" title="previous page"><span class="section-number">20. </span>Other Collections</a>
+    <a class='right-next' id="next-link" href="../../fpds/week1/week1_1.html" title="next page"><span class="section-number">1. </span>Recap Functions and Pattern Matching</a>
 
     </div>
     <footer class="footer mt-5 mt-md-0">
