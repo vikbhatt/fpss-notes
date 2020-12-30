@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Combinatorial Search and For-Expressions &#8212; Functional Programming in Scala Specialization -- Complied Notes</title>
+    <title>21. Combinatorial Search and For-Expressions &#8212; Functional Programming in Scala Specialization -- Complied Notes</title>
     
   <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
 
@@ -59,6 +59,8 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="1. Recap Functions and Pattern Matching" href="../../fpds/week1/week1_1.html" />
+    <link rel="prev" title="20. Other Collections" href="week6_1.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -103,7 +105,7 @@
   Functional Programming Principles in Scala
  </span>
 </p>
-<ul class="nav sidenav_l1">
+<ul class="current nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="../week1/intro.html">
    1. Introduction
@@ -204,8 +206,8 @@
    20. Other Collections
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../week6_combinatorial_search_for_expression.html">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
    21. Combinatorial Search and For-Expressions
   </a>
  </li>
@@ -303,9 +305,9 @@
         <!-- ipynb file if we had a myst markdown file -->
         
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../../_sources/fpps/week6/week6_2.md"><button type="button"
+        <a class="dropdown-buttons" href="../../_sources/fpps/week6/week6_2.ipynb"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
-                data-placement="left">.md</button></a>
+                data-placement="left">.ipynb</button></a>
         <!-- Download PDF via print -->
         <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
             onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
@@ -323,6 +325,23 @@
 
         <!-- Launch buttons -->
 
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/fpps/week6/week6_2.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
     </div>
 
     <!-- Table of contents -->
@@ -335,7 +354,7 @@
             <ul class="nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#algorithm">
-   Algorithm
+   21.1. Algorithm
   </a>
  </li>
 </ul>
@@ -350,10 +369,10 @@
               <div>
                 
   <div class="section" id="combinatorial-search-and-for-expressions">
-<h1>Combinatorial Search and For-Expressions<a class="headerlink" href="#combinatorial-search-and-for-expressions" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">21. </span>Combinatorial Search and For-Expressions<a class="headerlink" href="#combinatorial-search-and-for-expressions" title="Permalink to this headline">¶</a></h1>
 <p>Given a positive integer <span class="math notranslate nohighlight">\(n\)</span> find all pairs of positive integers <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> with <span class="math notranslate nohighlight">\(i \leq j &lt; i &lt; n \)</span> such that <span class="math notranslate nohighlight">\(i+j\)</span> is prime.</p>
 <div class="section" id="algorithm">
-<h2>Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">21.1. </span>Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this headline">¶</a></h2>
 <p>A natural way to do this is to:</p>
 <ul class="simple">
 <li><p>Generate the sequence of pair of integers <span class="math notranslate nohighlight">\((i,j)\)</span> such that <span class="math notranslate nohighlight">\(i \leq j &lt; i &lt; n \)</span>.</p></li>
@@ -368,6 +387,112 @@
 <div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="o">(</span><span class="mi">1</span> <span class="n">until</span> <span class="n">n</span><span class="o">)</span> <span class="n">map</span> <span class="o">(</span><span class="n">i</span> <span class="o">=&gt;</span> <span class="o">(</span><span class="mi">1</span> <span class="n">until</span> <span class="n">i</span><span class="o">)</span> <span class="n">map</span> <span class="o">(</span><span class="n">j</span> <span class="o">=&gt;</span> <span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="n">j</span><span class="o">)))</span>
 </pre></div>
 </div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">isPrime</span><span class="o">(</span><span class="n">n</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="o">=</span>  <span class="o">(</span><span class="mi">2</span> <span class="n">until</span> <span class="n">n</span><span class="o">)</span> <span class="n">forall</span><span class="o">(</span><span class="n">n</span> <span class="o">%</span> <span class="k">_</span> <span class="o">!=</span> <span class="mi">0</span><span class="o">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Intitializing Scala interpreter ...
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Spark Web UI available at http://MININT-PN59L2S.fareast.corp.microsoft.com:4041
+SparkContext available as &#39;sc&#39; (version = 3.0.1, master = local[*], app id = local-1609317026359)
+SparkSession available as &#39;spark&#39;
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>isPrime: (n: Int)Boolean
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="o">(</span><span class="mi">1</span> <span class="n">until</span> <span class="n">n</span><span class="o">)</span> <span class="n">map</span> <span class="o">(</span><span class="n">i</span> <span class="o">=&gt;</span> <span class="o">(</span><span class="mi">1</span> <span class="n">until</span> <span class="n">i</span><span class="o">)</span> <span class="n">map</span> <span class="o">(</span><span class="n">j</span> <span class="o">=&gt;</span> <span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="n">j</span><span class="o">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>n: Int = 6
+res0: scala.collection.immutable.IndexedSeq[scala.collection.immutable.IndexedSeq[(Int, Int)]] = Vector(Vector(), Vector((2,1)), Vector((3,1), (3,2)), Vector((4,1), (4,2), (4,3)), Vector((5,1), (5,2), (5,3), (5,4)))
+</pre></div>
+</div>
+</div>
+</div>
+<p>Why did I get vector of vectors?
+<code class="docutils literal notranslate"><span class="pre">Range</span></code> is subtype of <code class="docutils literal notranslate"><span class="pre">Seq</span></code>. The range we started with <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">until</span> <span class="pre">n</span></code> got transformed with map, that map produce a sequence of pairs, (they are not elements of <code class="docutils literal notranslate"><span class="pre">Range</span></code>). So we need anothe representation. A type sits between <code class="docutils literal notranslate"><span class="pre">Seq</span></code> and <code class="docutils literal notranslate"><span class="pre">Range</span></code> is <code class="docutils literal notranslate"><span class="pre">IndexSeq</span></code>. A prototypical implementation of <code class="docutils literal notranslate"><span class="pre">IndexSeq</span></code> is <code class="docutils literal notranslate"><span class="pre">Vector</span></code>. So the type inference decided to go with <code class="docutils literal notranslate"><span class="pre">Vector</span></code>.</p>
+<p>Above step give seqquence of sequences (call it <code class="docutils literal notranslate"><span class="pre">xss</span></code>). We need just a sequence of pairs. We can combine all the sub-sequences using <code class="docutils literal notranslate"><span class="pre">foldRight</span></code> with <code class="docutils literal notranslate"><span class="pre">++</span></code>.</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="o">(</span><span class="n">xss</span> <span class="n">foldRight</span> <span class="nc">Seq</span><span class="o">[</span><span class="kt">Int</span><span class="o">]())(</span><span class="k">_</span> <span class="o">++</span> <span class="k">_</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>Or equivalently use a built-in method <code class="docutils literal notranslate"><span class="pre">flatten</span></code>
+(1 until n) map (i =&gt; (1 until i) map (j =&gt; (i, j))).flatten</p>
+<p>Here is a useful law</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="n">xs</span> <span class="n">flatMap</span> <span class="n">f</span> <span class="o">=</span> <span class="o">(</span><span class="n">xs</span> <span class="n">map</span> <span class="n">f</span><span class="o">).</span><span class="n">flatten</span>
+</pre></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="o">(</span><span class="mi">1</span> <span class="n">until</span> <span class="n">n</span><span class="o">)</span> <span class="n">flatMap</span> <span class="o">(</span><span class="n">i</span> <span class="o">=&gt;</span> <span class="o">(</span><span class="mi">1</span> <span class="n">until</span> <span class="n">i</span><span class="o">)</span> <span class="n">map</span> <span class="o">(</span><span class="n">j</span> <span class="o">=&gt;</span> <span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="n">j</span><span class="o">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>res1: scala.collection.immutable.IndexedSeq[(Int, Int)] = Vector((2,1), (3,1), (3,2), (4,1), (4,2), (4,3), (5,1), (5,2), (5,3), (5,4))
+</pre></div>
+</div>
+</div>
+</div>
+<p>We need to filter the sequence according to criteria sum of pair is prime.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="o">(</span><span class="mi">1</span> <span class="n">until</span> <span class="n">n</span><span class="o">)</span> <span class="n">flatMap</span> <span class="o">(</span><span class="n">i</span> <span class="o">=&gt;</span> <span class="o">(</span><span class="mi">1</span> <span class="n">until</span> <span class="n">i</span><span class="o">)</span> <span class="n">map</span> <span class="o">(</span><span class="n">j</span> <span class="o">=&gt;</span> <span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="n">j</span><span class="o">)))</span> <span class="n">filter</span> <span class="o">{</span> <span class="k">case</span> <span class="o">(</span><span class="n">x</span><span class="o">,</span><span class="n">y</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">isPrime</span><span class="o">(</span><span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="o">)}</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>res2: scala.collection.immutable.IndexedSeq[(Int, Int)] = Vector((2,1), (3,2), (4,1), (4,3), (5,2))
+</pre></div>
+</div>
+</div>
+</div>
+<p>We indeed get the sequence we wanted. Is thee a simpler way to organize the expression?</p>
+<p>Let <code class="docutils literal notranslate"><span class="pre">persons</span></code> be list of classes <code class="docutils literal notranslate"><span class="pre">Person</span></code>, with fields <code class="docutils literal notranslate"><span class="pre">name</span></code> and <code class="docutils literal notranslate"><span class="pre">age</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">case</span> <span class="k">class</span> <span class="nc">Person</span><span class="o">(</span><span class="n">name</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">age</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>defined class Person
+</pre></div>
+</div>
+</div>
+</div>
+<p>To obtain the name of person age over 20 years old, you can write</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">for</span><span class="o">(</span><span class="n">p</span> <span class="o">&lt;-</span> <span class="n">persons</span> <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">age</span> <span class="o">&gt;</span> <span class="mi">20</span><span class="o">)</span> <span class="k">yield</span> <span class="n">p</span><span class="o">.</span><span class="n">name</span>
+</pre></div>
+</div>
+<p>which is equivalent to</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="n">persons</span> <span class="n">filter</span> <span class="o">(</span> <span class="n">p</span> <span class="o">=&gt;</span> <span class="n">p</span><span class="o">.</span><span class="n">age</span> <span class="o">&gt;</span> <span class="mi">20</span><span class="o">)</span> <span class="n">map</span> <span class="o">(</span><span class="n">p</span> <span class="o">=&gt;</span> <span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>The for-expression is similar to loops in imperative language, except it builds a list of the results of all iterations. It has no side effect.</p>
+<p>A for expression is of the form</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="o">(</span><span class="n">s</span><span class="o">)</span> <span class="k">yield</span> <span class="n">e</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">s</span></code> is sequence of genrators and filters and <code class="docutils literal notranslate"><span class="pre">e</span></code> is an expression whose value is returned by an iteration.</p>
+<ul class="simple">
+<li><p>A <strong>generator</strong> is of the form <code class="docutils literal notranslate"><span class="pre">p</span> <span class="pre">&lt;-</span> <span class="pre">e</span></code> where <code class="docutils literal notranslate"><span class="pre">p</span></code> is a patern and <code class="docutils literal notranslate"><span class="pre">e</span></code> is a expression whose value is a collection.</p></li>
+<li><p>A <strong>filter</strong> is of the form <code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">f</span> </code> where <code class="docutils literal notranslate"><span class="pre">f</span></code> is a boolean expression.</p></li>
+<li><p>The sequence must start with a generator.</p></li>
+<li><p>If there are several generators in the sequence, the last generators vary faster than the first.</p></li>
+</ul>
+<p>Instead of</p>
 </div>
 </div>
 
@@ -380,16 +505,16 @@
         },
         codeMirrorConfig: {
             theme: "abcdef",
-            mode: "python"
+            mode: "spylon-kernel"
         },
         kernelOptions: {
-            kernelName: "python3",
+            kernelName: "spylon-kernel",
             path: "./fpps\week6"
         },
         predefinedOutput: true
     }
     </script>
-    <script>kernelName = 'python3'</script>
+    <script>kernelName = 'spylon-kernel'</script>
 
               </div>
               
@@ -399,6 +524,8 @@
     
     <div class='prev-next-bottom'>
         
+    <a class='left-prev' id="prev-link" href="week6_1.html" title="previous page"><span class="section-number">20. </span>Other Collections</a>
+    <a class='right-next' id="next-link" href="../../fpds/week1/week1_1.html" title="next page"><span class="section-number">1. </span>Recap Functions and Pattern Matching</a>
 
     </div>
     <footer class="footer mt-5 mt-md-0">
