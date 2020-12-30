@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>8. Type Class &#8212; Functional Programming in Scala Specialization -- Complied Notes</title>
+    <title>8. Type Classes &#8212; Functional Programming in Scala Specialization -- Complied Notes</title>
     
   <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
 
@@ -270,7 +270,7 @@
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   8. Type Class
+   8. Type Classes
   </a>
  </li>
  <li class="toctree-l1">
@@ -320,9 +320,9 @@
         <!-- ipynb file if we had a myst markdown file -->
         
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../../_sources/fpds/week3/week3_2.md"><button type="button"
+        <a class="dropdown-buttons" href="../../_sources/fpds/week3/week3_2.ipynb"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
-                data-placement="left">.md</button></a>
+                data-placement="left">.ipynb</button></a>
         <!-- Download PDF via print -->
         <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
             onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
@@ -340,10 +340,46 @@
 
         <!-- Launch buttons -->
 
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/fpds/week3/week3_2.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
     </div>
 
     <!-- Table of contents -->
     <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#retroactive-extension">
+   8.1. Retroactive Extension
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#summary">
+   8.2. Summary
+  </a>
+ </li>
+</ul>
+
+        </nav>
         
     </div>
 </div>
@@ -352,8 +388,111 @@
         
               <div>
                 
-  <div class="section" id="type-class">
-<h1><span class="section-number">8. </span>Type Class<a class="headerlink" href="#type-class" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="type-classes">
+<h1><span class="section-number">8. </span>Type Classes<a class="headerlink" href="#type-classes" title="Permalink to this headline">¶</a></h1>
+<p>In the previous lectures we have seen a particular pattern of code combining parameterized types and implicits. We have defined a parameterized type <code class="docutils literal notranslate"><span class="pre">Ordering[A]</span></code>, implicit instances of that type for concrete types <code class="docutils literal notranslate"><span class="pre">A</span></code>, and implicit parameters of type <code class="docutils literal notranslate"><span class="pre">Ordering[A]</span></code>:</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">trait</span> <span class="nc">Ordering</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">compare</span><span class="o">(</span><span class="n">a1</span><span class="k">:</span> <span class="kt">A</span><span class="o">,</span> <span class="n">a2</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span>
+<span class="o">}</span>
+
+<span class="k">object</span> <span class="nc">Ordering</span> <span class="o">{</span>
+  <span class="k">implicit</span> <span class="k">val</span> <span class="nc">Int</span><span class="k">:</span> <span class="kt">Ordering</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="o">=</span>
+    <span class="k">new</span> <span class="nc">Ordering</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="o">{</span>
+      <span class="k">def</span> <span class="n">compare</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">y</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="o">=</span> <span class="k">if</span> <span class="o">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="n">y</span><span class="o">)</span> <span class="o">-</span><span class="mi">1</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">x</span> <span class="o">&gt;</span> <span class="n">y</span><span class="o">)</span> <span class="mi">1</span> <span class="k">else</span> <span class="mi">0</span>
+    <span class="o">}</span>
+  <span class="k">implicit</span> <span class="k">val</span> <span class="nc">String</span><span class="k">:</span> <span class="kt">Ordering</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span> <span class="o">=</span>
+    <span class="k">new</span> <span class="nc">Ordering</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span> <span class="o">{</span>
+      <span class="k">def</span> <span class="n">compare</span><span class="o">(</span><span class="n">s</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">t</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">compareTo</span><span class="o">(</span><span class="n">t</span><span class="o">)</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="k">def</span> <span class="n">sort</span><span class="o">[</span><span class="kt">A:</span> <span class="kt">Ordering</span><span class="o">](</span><span class="n">xs</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="o">=</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>We say that Ordering is a type class.</p>
+<p>Type classes provide yet another form of polymorphism. The method sort can be called with lists containing elements of any type A for which there is an implicit value of type <code class="docutils literal notranslate"><span class="pre">Ordering[A]</span></code>. Type classes are a powerful feature of Scala that allow us to extend existing libraries with new func􀦞onality, without using inheritance and without having
+access to the original library source code.</p>
+<p>At compile-time, the compiler resolves the specific Ordering implementation that matches the type of the list elements.</p>
+<p>A simple example of a type class is the <code class="docutils literal notranslate"><span class="pre">Ordering</span></code> trait. For a type <code class="docutils literal notranslate"><span class="pre">A</span></code>, an
+<code class="docutils literal notranslate"><span class="pre">Ordering[A]</span></code> defines a comparison method compare that compares two instances
+of <code class="docutils literal notranslate"><span class="pre">A</span></code> by some ordering. To construct an <code class="docutils literal notranslate"><span class="pre">Ordering</span></code> we can use the
+convenience method <code class="docutils literal notranslate"><span class="pre">fromLessThan</span></code> defined on the companion object.
+Imagine we want to sort a <code class="docutils literal notranslate"><span class="pre">List</span></code> of <code class="docutils literal notranslate"><span class="pre">Int</span></code>s. There are many different ways to sort
+such a list. For example, we could sort from highest to lowest, or we could sort
+from lowest to highest. There is a method <code class="docutils literal notranslate"><span class="pre">sorted</span></code> on List that will sort a list,
+but to use it we must pass in an <code class="docutils literal notranslate"><span class="pre">Orderin</span></code>g to give the particular ordering we want.
+Let’s define some Orderings and see them in action.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">scala.math.Ordering</span>
+<span class="k">import</span> <span class="nn">scala.util.Random</span>
+<span class="k">val</span> <span class="n">minOrdering</span> <span class="o">=</span> <span class="nc">Ordering</span><span class="o">.</span><span class="n">fromLessThan</span><span class="o">[</span><span class="kt">Int</span><span class="o">](</span><span class="k">_</span> <span class="o">&lt;</span> <span class="k">_</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">maxOrdering</span> <span class="o">=</span> <span class="nc">Ordering</span><span class="o">.</span><span class="n">fromLessThan</span><span class="o">[</span><span class="kt">Int</span><span class="o">](</span><span class="k">_</span> <span class="o">&gt;</span> <span class="k">_</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">p</span> <span class="o">=</span> <span class="nc">Seq</span><span class="o">.</span><span class="n">fill</span><span class="o">(</span><span class="mi">4</span><span class="o">)(</span><span class="nc">Random</span><span class="o">.</span><span class="n">nextInt</span><span class="o">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">sorted</span><span class="o">(</span><span class="n">minOrdering</span><span class="o">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>import scala.math.Ordering
+import scala.util.Random
+minOrdering: scala.math.Ordering[Int] = scala.math.Ordering$$anon$6@17dba93
+maxOrdering: scala.math.Ordering[Int] = scala.math.Ordering$$anon$6@1fe986b
+p: Seq[Int] = List(575986169, 868806559, 493526361, -1103739054)
+res0: Seq[Int] = List(-1103739054, 493526361, 575986169, 868806559)
+</pre></div>
+</div>
+</div>
+</div>
+<p>The type class pattern separates the implementation of functionality (the type
+class instance, an <code class="docutils literal notranslate"><span class="pre">Ordering[A]</span></code> in our example) from the type the functionality
+is provided for (the <code class="docutils literal notranslate"><span class="pre">A</span></code> in an <code class="docutils literal notranslate"><span class="pre">Ordering[A]</span></code>). This is the basic pattern for type
+classes. Everything else we will see just provides extra convenience.</p>
+<div class="section" id="retroactive-extension">
+<h2><span class="section-number">8.1. </span>Retroactive Extension<a class="headerlink" href="#retroactive-extension" title="Permalink to this headline">¶</a></h2>
+<p>Type classes let us add new features to data types without changing the original definition of these data types. For instance, consider the following Rational type, modeling a rational number:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="cm">/** A rational number</span>
+<span class="cm">  * @param num   Numerator</span>
+<span class="cm">  * @param denom Denominator</span>
+<span class="cm">  */</span>
+<span class="k">case</span> <span class="k">class</span> <span class="nc">Rational</span><span class="o">(</span><span class="n">num</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">denom</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>defined class Rational
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can add the capability “to be compared” to the type <code class="docutils literal notranslate"><span class="pre">Rational</span></code> by defining an implicit instance of type <code class="docutils literal notranslate"><span class="pre">Ordering[Rational]</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">object</span> <span class="nc">RationalOrdering</span> <span class="o">{</span>
+  <span class="k">implicit</span> <span class="k">val</span> <span class="n">orderingRational</span><span class="k">:</span> <span class="kt">Ordering</span><span class="o">[</span><span class="kt">Rational</span><span class="o">]</span> <span class="o">=</span>
+    <span class="k">new</span> <span class="nc">Ordering</span><span class="o">[</span><span class="kt">Rational</span><span class="o">]</span> <span class="o">{</span>
+      <span class="k">def</span> <span class="n">compare</span><span class="o">(</span><span class="n">q</span><span class="k">:</span> <span class="kt">Rational</span><span class="o">,</span> <span class="n">r</span><span class="k">:</span> <span class="kt">Rational</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span>
+        <span class="n">q</span><span class="o">.</span><span class="n">num</span> <span class="o">*</span> <span class="n">r</span><span class="o">.</span><span class="n">denom</span> <span class="o">-</span> <span class="n">r</span><span class="o">.</span><span class="n">num</span> <span class="o">*</span> <span class="n">q</span><span class="o">.</span><span class="n">denom</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>defined object RationalOrdering
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="summary">
+<h2><span class="section-number">8.2. </span>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<p>In this lesson we have identified a new programming pattern: type classes.</p>
+<p>Type classes provide a form of polymorphism: they can be used to implement algorithms that can be applied to various types. The compiler selects the type class implementation for a specific type at compile-time.</p>
+<p>A type class definition is a trait that takes type parameters and defines operations that apply to these types. Generally, a type class definition is accompanied by laws, checking that implementations of their operations are correct.</p>
+</div>
 </div>
 
     <script type="text/x-thebe-config">
@@ -365,16 +504,16 @@
         },
         codeMirrorConfig: {
             theme: "abcdef",
-            mode: "python"
+            mode: "spylon-kernel"
         },
         kernelOptions: {
-            kernelName: "python3",
+            kernelName: "spylon-kernel",
             path: "./fpds\week3"
         },
         predefinedOutput: true
     }
     </script>
-    <script>kernelName = 'python3'</script>
+    <script>kernelName = 'spylon-kernel'</script>
 
               </div>
               
