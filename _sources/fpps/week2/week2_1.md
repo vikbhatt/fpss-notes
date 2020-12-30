@@ -80,7 +80,7 @@ $$\text{def } f(args_1)(args_2)..(args_n) = E;$$
 
 equivalent to
 
-$$\text{def } f(args_1)(args_2)..(args_{n-1}) = \{ \text{def } f(args_n) = E; g \}$$
+$$\text{def } f(args_1)(args_2)..(args_{n-1}) = \{ \text{def } g(args_n) = E; g \}$$
 
 or
 

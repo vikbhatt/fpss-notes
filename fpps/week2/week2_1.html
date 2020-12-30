@@ -424,7 +424,7 @@ x = i(c)
 \[\text{def } f(args_1)(args_2)..(args_n) = E;\]</div>
 <p>equivalent to</p>
 <div class="math notranslate nohighlight">
-\[\text{def } f(args_1)(args_2)..(args_{n-1}) = \{ \text{def } f(args_n) = E; g \}\]</div>
+\[\text{def } f(args_1)(args_2)..(args_{n-1}) = \{ \text{def } g(args_n) = E; g \}\]</div>
 <p>or</p>
 <div class="math notranslate nohighlight">
 \[\text{def } f(args_1)(args_2)..(args_{n-1}) = \{ args_n \Longrightarrow E \}\]</div>
