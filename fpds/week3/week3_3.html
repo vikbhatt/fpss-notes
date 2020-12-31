@@ -418,6 +418,14 @@
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Intitializing Scala interpreter ...
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Spark Web UI available at http://MININT-PN59L2S.mshome.net:4040
+SparkContext available as &#39;sc&#39; (version = 3.0.1, master = local[*], app id = local-1609400245700)
+SparkSession available as &#39;spark&#39;
+</pre></div>
+</div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>defined trait Json
 defined class JNumber
 defined class JString
@@ -500,7 +508,7 @@ defined class JBoolean
 defined class JArray
 defined class JObject
 defined object Json
-res11: JArray = JArray(List(JString(Int), JString(String)))
+res1: JArray = JArray(List(JString(Int), JString(String)))
 </pre></div>
 </div>
 </div>
@@ -539,7 +547,7 @@ defined class Duration
 <div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">delay</span> <span class="o">=</span> <span class="mf">15.</span><span class="n">seconds</span>
 </pre></div>
 </div>
-<p>We need to enrich the type Int with a method seconds. We achieve this by creating an implicit class HasSeconds that has a method seconds and that takes a number of seconds as a constructor parameter:</p>
+<p>We need to enrich the type <code class="docutils literal notranslate"><span class="pre">Int</span></code> with a method <code class="docutils literal notranslate"><span class="pre">seconds</span></code>. We achieve this by creating an <code class="docutils literal notranslate"><span class="pre">implicit</span> <span class="pre">class</span> <span class="pre">HasSeconds</span></code> that has a method <code class="docutils literal notranslate"><span class="pre">seconds</span></code> and that takes a number of seconds as a constructor parameter:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">case</span> <span class="k">class</span> <span class="nc">Duration</span><span class="o">(</span><span class="n">value</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">unit</span><span class="k">:</span> <span class="kt">TimeUnit</span><span class="o">)</span>
@@ -596,7 +604,7 @@ We have seen two examples of usage of implicit conversions. In this section, we 
 <p>Implicit conversions are implicit methods (or implicit class constructors) that take exactly one non-implicit parameter (and possibly additional implicit parameters).</p>
 <p>Note: at most one implicit conversion can be applied to a given expression.</p>
 <p>Implicit conversions are searched in the same places as implicit definitions: in the enclosing lexical scope (local definitions, inherited definitions, or imported definitions), or in the implicit search scope (companion objects) of the expected type or the expression’s type.</p>
-<p>For instance, in the second example the implicit class HasSeconds is found in the imported implicit definitions (import Duration.Syntax._). However, in the first example, the implicit conversions are found in the companion object of the expected type Json (the method obj expects arguments of type Json).</p>
+<p>For instance, in the second example the implicit class HasSeconds is found in the imported implicit definitions (<code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">Duration.Syntax._</span></code>). However, in the first example, the implicit conversions are found in the companion object of the expected type Json (the method obj expects arguments of type <code class="docutils literal notranslate"><span class="pre">Json</span></code>).</p>
 <p>We conclude this lesson with a warning. Because implicit conversions are silently applied by the compiler and they change the type of expressions, they can confuse developers reading code. Care must be taken when using implicit conversions: reducing boilerplate is a good purpose, but this should always be balanced with the possible drawbacks of not seeing pieces of code that are yet part of the program.</p>
 </div>
 </div>
