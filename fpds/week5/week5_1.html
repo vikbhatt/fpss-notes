@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>15. Imperative Event Handling: The Observer Pattern &#8212; Functional Programming in Scala Specialization -- Complied Notes</title>
+    <title>16. Imperative Event Handling: The Observer Pattern &#8212; Functional Programming in Scala Specialization -- Complied Notes</title>
     
   <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
 
@@ -59,8 +59,8 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="16. Functional Reactive Programming" href="week5_2.html" />
-    <link rel="prev" title="14. Discrete Event Simulation: API and Usage" href="../week4/week4_5.html" />
+    <link rel="next" title="17. Functional Reactive Programming" href="week5_2.html" />
+    <link rel="prev" title="15. Discrete Event Simulation: Implementation and Test" href="../week4/week4_6.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -300,19 +300,24 @@
    14. Discrete Event Simulation: API and Usage
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week4/week4_6.html">
+   15. Discrete Event Simulation: Implementation and Test
+  </a>
+ </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   15. Imperative Event Handling: The Observer Pattern
+   16. Imperative Event Handling: The Observer Pattern
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="week5_2.html">
-   16. Functional Reactive Programming
+   17. Functional Reactive Programming
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="week5_3.html">
-   17. A Simple FRP Implementation
+   18. A Simple FRP Implementation
   </a>
  </li>
 </ul>
@@ -404,12 +409,12 @@
             <ul class="nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#observer-pattern-the-good">
-   15.1. Observer Pattern, The Good
+   16.1. Observer Pattern, The Good
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#observer-pattern-the-bad">
-   15.2. Observer Pattern, The Bad
+   16.2. Observer Pattern, The Bad
   </a>
  </li>
 </ul>
@@ -424,7 +429,7 @@
               <div>
                 
   <div class="section" id="imperative-event-handling-the-observer-pattern">
-<h1><span class="section-number">15. </span>Imperative Event Handling: The Observer Pattern<a class="headerlink" href="#imperative-event-handling-the-observer-pattern" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">16. </span>Imperative Event Handling: The Observer Pattern<a class="headerlink" href="#imperative-event-handling-the-observer-pattern" title="Permalink to this headline">¶</a></h1>
 <p>We are going to look at traditional ways to handle event handling. The traditional way to deal with user interface is with observer pattern. We are going to look at different way to treat events in these programs functional reactive programming where events are essentially summarized as signals.</p>
 <p>The Observer Pattern is widely used when views need to react to changes in a model.
 Some variants are also called</p>
@@ -588,7 +593,7 @@ One could envision many ways to do this. Finally <code class="docutils literal n
 </div>
 </div>
 <div class="section" id="observer-pattern-the-good">
-<h2><span class="section-number">15.1. </span>Observer Pattern, The Good<a class="headerlink" href="#observer-pattern-the-good" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">16.1. </span>Observer Pattern, The Good<a class="headerlink" href="#observer-pattern-the-good" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Decouples views from state</p></li>
 <li><p>Allows to have a varying number of views of a given state</p></li>
@@ -596,7 +601,7 @@ One could envision many ways to do this. Finally <code class="docutils literal n
 </ul>
 </div>
 <div class="section" id="observer-pattern-the-bad">
-<h2><span class="section-number">15.2. </span>Observer Pattern, The Bad<a class="headerlink" href="#observer-pattern-the-bad" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">16.2. </span>Observer Pattern, The Bad<a class="headerlink" href="#observer-pattern-the-bad" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Forces imperative style, since handlers are Unit-typed</p></li>
 <li><p>Many moving parts that need to be co-ordinated (every publisher has to announce and every subscriber handler need to be called)</p></li>
@@ -634,8 +639,8 @@ One could envision many ways to do this. Finally <code class="docutils literal n
     
     <div class='prev-next-bottom'>
         
-    <a class='left-prev' id="prev-link" href="../week4/week4_5.html" title="previous page"><span class="section-number">14. </span>Discrete Event Simulation: API and Usage</a>
-    <a class='right-next' id="next-link" href="week5_2.html" title="next page"><span class="section-number">16. </span>Functional Reactive Programming</a>
+    <a class='left-prev' id="prev-link" href="../week4/week4_6.html" title="previous page"><span class="section-number">15. </span>Discrete Event Simulation: Implementation and Test</a>
+    <a class='right-next' id="next-link" href="week5_2.html" title="next page"><span class="section-number">17. </span>Functional Reactive Programming</a>
 
     </div>
     <footer class="footer mt-5 mt-md-0">

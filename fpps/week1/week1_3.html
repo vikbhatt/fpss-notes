@@ -301,18 +301,23 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week4/week4_6.html">
+   15. Discrete Event Simulation: Implementation and Test
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="../../fpds/week5/week5_1.html">
-   15. Imperative Event Handling: The Observer Pattern
+   16. Imperative Event Handling: The Observer Pattern
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../../fpds/week5/week5_2.html">
-   16. Functional Reactive Programming
+   17. Functional Reactive Programming
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../../fpds/week5/week5_3.html">
-   17. A Simple FRP Implementation
+   18. A Simple FRP Implementation
   </a>
  </li>
 </ul>
@@ -445,8 +450,8 @@ Note that we have two branches for if-condition but both returns immediately and
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">factorial</span></code> function is not tail recursive. Let’s take a look trace of <code class="docutils literal notranslate"><span class="pre">factorial(4)</span></code></p>
-<div class="amsmath math notranslate nohighlight" id="equation-798e162c-ee3f-4f7f-a597-9c0deadcd5d2">
-<span class="eqno">(4.1)<a class="headerlink" href="#equation-798e162c-ee3f-4f7f-a597-9c0deadcd5d2" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-b78e10c9-e235-45c2-87c0-4a82c215d0d4">
+<span class="eqno">(4.1)<a class="headerlink" href="#equation-b78e10c9-e235-45c2-87c0-4a82c215d0d4" title="Permalink to this equation">¶</a></span>\[\begin{align}
 &amp; factorial(4) \\
 \Longrightarrow &amp; 4*factorial(3) \\
 \Longrightarrow &amp; 4*3*factorial(2) \\  
@@ -469,8 +474,8 @@ Note that we have two branches for if-condition but both returns immediately and
 </div>
 <p>Now stack frame for <code class="docutils literal notranslate"><span class="pre">factorial</span></code> can be replaced by <code class="docutils literal notranslate"><span class="pre">accumulator</span></code> routine (tail call optimization!),and the accumulator function is itself is tail recursive. So its essentially a loop and takes <span class="math notranslate nohighlight">\(\mathcal{O}(1)\)</span> space.</p>
 <p>Let’s look at the stack trace of <code class="docutils literal notranslate"><span class="pre">factorial(4)</span></code>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-07ab1c2e-c611-4a7a-8ed0-ded7bcc39a5a">
-<span class="eqno">(4.2)<a class="headerlink" href="#equation-07ab1c2e-c611-4a7a-8ed0-ded7bcc39a5a" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-28efa356-0d32-4259-b45c-21dcac7f0fbd">
+<span class="eqno">(4.2)<a class="headerlink" href="#equation-28efa356-0d32-4259-b45c-21dcac7f0fbd" title="Permalink to this equation">¶</a></span>\[\begin{align}
 &amp; factorial(4)  \\
 \Longrightarrow &amp; accumulator(1,4) \\
 \Longrightarrow &amp; accumulator(1*4,3) \\

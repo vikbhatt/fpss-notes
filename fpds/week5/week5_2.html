@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>16. Functional Reactive Programming &#8212; Functional Programming in Scala Specialization -- Complied Notes</title>
+    <title>17. Functional Reactive Programming &#8212; Functional Programming in Scala Specialization -- Complied Notes</title>
     
   <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
 
@@ -59,8 +59,8 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="17. A Simple FRP Implementation" href="week5_3.html" />
-    <link rel="prev" title="15. Imperative Event Handling: The Observer Pattern" href="week5_1.html" />
+    <link rel="next" title="18. A Simple FRP Implementation" href="week5_3.html" />
+    <link rel="prev" title="16. Imperative Event Handling: The Observer Pattern" href="week5_1.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -301,18 +301,23 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="../week4/week4_6.html">
+   15. Discrete Event Simulation: Implementation and Test
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="week5_1.html">
-   15. Imperative Event Handling: The Observer Pattern
+   16. Imperative Event Handling: The Observer Pattern
   </a>
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   16. Functional Reactive Programming
+   17. Functional Reactive Programming
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="week5_3.html">
-   17. A Simple FRP Implementation
+   18. A Simple FRP Implementation
   </a>
  </li>
 </ul>
@@ -404,17 +409,17 @@
             <ul class="nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#fundamental-signal-operations">
-   16.1. Fundamental Signal Operations
+   17.1. Fundamental Signal Operations
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#variable-signals">
-   16.2. Variable Signals
+   17.2. Variable Signals
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#example">
-   16.3. Example
+   17.3. Example
   </a>
  </li>
 </ul>
@@ -429,7 +434,7 @@
               <div>
                 
   <div class="section" id="functional-reactive-programming">
-<h1><span class="section-number">16. </span>Functional Reactive Programming<a class="headerlink" href="#functional-reactive-programming" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">17. </span>Functional Reactive Programming<a class="headerlink" href="#functional-reactive-programming" title="Permalink to this headline">¶</a></h1>
 <p>In functional view, we can take sequence of events and aggregate into a signal.
 Imperative reactive programming is about reacting to sequences of events that happen in time.</p>
 <p><strong>Functional view:</strong> Aggregate an event sequence into a signal.</p>
@@ -460,7 +465,7 @@ signals in terms of existing ones.</p></li>
 We will introduce FRP by means of of a minimal class, <code class="docutils literal notranslate"><span class="pre">frp.Signal</span></code> whose implementation is explained at the end of this module.
 <code class="docutils literal notranslate"><span class="pre">frp.Signal</span></code> is modelled after <code class="docutils literal notranslate"><span class="pre">Scala.react</span></code>, which is described in the paper <em>Deprecating the Observer Pattern.</em></p>
 <div class="section" id="fundamental-signal-operations">
-<h2><span class="section-number">16.1. </span>Fundamental Signal Operations<a class="headerlink" href="#fundamental-signal-operations" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">17.1. </span>Fundamental Signal Operations<a class="headerlink" href="#fundamental-signal-operations" title="Permalink to this headline">¶</a></h2>
 <p>There are two fundamental operations over signals:</p>
 <ol class="simple">
 <li><p>Obtain the value of the signal at the current time.</p></li>
@@ -489,7 +494,7 @@ We will introduce FRP by means of of a minimal class, <code class="docutils lite
 </div>
 </div>
 <div class="section" id="variable-signals">
-<h2><span class="section-number">16.2. </span>Variable Signals<a class="headerlink" href="#variable-signals" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">17.2. </span>Variable Signals<a class="headerlink" href="#variable-signals" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Values of type Signal are immutable.</p></li>
 <li><p>But our library also defines a subclass Var of Signal for signals that can be changed.</p></li>
@@ -539,7 +544,7 @@ Hence,</p>
 No such mechanism exists for mutable variables; we have to propagate all updates manually</p>
 </div>
 <div class="section" id="example">
-<h2><span class="section-number">16.3. </span>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">17.3. </span>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
 <p>Repeat the <code class="docutils literal notranslate"><span class="pre">BankAccount</span></code> example of last section with signals.</p>
 <p>Add a signal <code class="docutils literal notranslate"><span class="pre">balance</span></code> to BankAccounts.</p>
 <p>Define a function consolidated which produces the sum of all balances of a given list of accounts.</p>
@@ -841,8 +846,8 @@ This obviously makes no sense!</p>
     
     <div class='prev-next-bottom'>
         
-    <a class='left-prev' id="prev-link" href="week5_1.html" title="previous page"><span class="section-number">15. </span>Imperative Event Handling: The Observer Pattern</a>
-    <a class='right-next' id="next-link" href="week5_3.html" title="next page"><span class="section-number">17. </span>A Simple FRP Implementation</a>
+    <a class='left-prev' id="prev-link" href="week5_1.html" title="previous page"><span class="section-number">16. </span>Imperative Event Handling: The Observer Pattern</a>
+    <a class='right-next' id="next-link" href="week5_3.html" title="next page"><span class="section-number">18. </span>A Simple FRP Implementation</a>
 
     </div>
     <footer class="footer mt-5 mt-md-0">

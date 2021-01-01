@@ -1,0 +1,829 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>15. Discrete Event Simulation: Implementation and Test &#8212; Functional Programming in Scala Specialization -- Complied Notes</title>
+    
+  <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../../_static/sphinx-book-theme.40e2e510f6b7d1648584402491bb10fe.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script async="async" kind="hypothesis" src="https://hypothes.is/embed.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="16. Imperative Event Handling: The Observer Pattern" href="../week5/week5_1.html" />
+    <link rel="prev" title="14. Discrete Event Simulation: API and Usage" href="week4_5.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../../index.html">
+  
+  <img src="../../_static/logo.png" class="logo" alt="logo">
+  
+  
+  <h1 class="site-logo" id="site-title">Functional Programming in Scala Specialization -- Complied Notes</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../intro.html">
+   Functional Programming in Scala Specialization
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Functional Programming Principles in Scala
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week1/intro.html">
+   1. Introduction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week1/week1_1.html">
+   2. Imperative vs Functional Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week1/week1_2.html">
+   3. Expressions and Evaluation model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week1/week1_3.html">
+   4. Tail Recursion
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week1/week1_4.html">
+   5. Exercise Session
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week2/week2_1.html">
+   6. Higher Order Functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week2/week2_2.html">
+   7. Class and Objects
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week3/week3_1.html">
+   8. Class Hierarchies
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week3/week3_2.html">
+   9. How classes are organized?
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week3/week3_3.html">
+   10. Polymorphism
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week4/week4_1.html">
+   11. Objects Everywhere
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week4/week4_2.html">
+   12. Functions as objects
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week4/week4_3.html">
+   13. Subtyping and Generics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week4/week4_4.html">
+   14. Variance
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week4/week4_5.html">
+   15. Decomposition
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week4/week4_6.html">
+   16. Pattern Matching
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week5/week5_1.html">
+   17. Lists
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week5/week5_2.html">
+   18. Pairs and Tuples
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week5/week5_3.html">
+   19. Higher Order List Functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week6/week6_1.html">
+   20. Other Collections
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week6/week6_2.html">
+   21. Combinatorial Search and For-Expressions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week6/week6_3.html">
+   22. Combinatorial Search Example
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week6/week6_4.html">
+   23. Maps
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week6/week6_5.html">
+   24. Putting Pieces Together
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Functional Program Design in Scala
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week1/week1_1.html">
+   1. Recap Functions and Pattern Matching
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week1/week1_2.html">
+   2. Recap: Collections
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week1/week1_3.html">
+   3. Functional Random Generators
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week1/week1_4.html">
+   4. Monads
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week2/week2_1.html">
+   5. Streams
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week2/week2_2.html">
+   6. Case Study: The Water Pouring Problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week3/week3_1.html">
+   7. Type-Directed Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week3/week3_2.html">
+   8. Type Classes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week3/week3_3.html">
+   9. Implicit Conversions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="week4_1.html">
+   10. Functions and State
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="week4_2.html">
+   11. Identity and Change
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="week4_3.html">
+   12. Loops
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="week4_4.html">
+   13. Discrete Event Simulation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="week4_5.html">
+   14. Discrete Event Simulation: API and Usage
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   15. Discrete Event Simulation: Implementation and Test
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week5/week5_1.html">
+   16. Imperative Event Handling: The Observer Pattern
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week5/week5_2.html">
+   17. Functional Reactive Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week5/week5_3.html">
+   18. A Simple FRP Implementation
+  </a>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/fpds/week4/week4_6.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+        <!-- Source interaction buttons -->
+
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                title="Fullscreen mode"><i
+                    class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/fpds/week4/week4_6.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+    </div>
+
+    <!-- Table of contents -->
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="discrete-event-simulation-implementation-and-test">
+<h1><span class="section-number">15. </span>Discrete Event Simulation: Implementation and Test<a class="headerlink" href="#discrete-event-simulation-implementation-and-test" title="Permalink to this headline">¶</a></h1>
+<p>All we have left to do now is to implement the Simulation trait.
+The idea is to keep in every instance of the Simulation trait an agenda of
+actions to perform.
+The agenda is a list of (simulated) events. Each event consists of an
+action and the time when it must be produced.
+The agenda list is sorted in such a way that the actions to be performed
+first are in the beginning.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">trait</span> <span class="nc">Simulation</span> <span class="o">{</span>
+    <span class="k">type</span> <span class="kt">Action</span> <span class="o">=</span> <span class="o">()</span> <span class="o">=&gt;</span> <span class="nc">Unit</span>
+
+    <span class="k">case</span> <span class="k">class</span> <span class="nc">Event</span><span class="o">(</span><span class="n">time</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">action</span><span class="k">:</span> <span class="kt">Action</span><span class="o">)</span>
+
+    <span class="k">private</span> <span class="k">type</span> <span class="kt">Agenda</span> <span class="o">=</span> <span class="nc">List</span><span class="o">[</span><span class="kt">Event</span><span class="o">]</span>
+
+    <span class="k">private</span> <span class="k">var</span> <span class="n">agenda</span><span class="k">:</span> <span class="kt">Agenda</span> <span class="o">=</span> <span class="nc">List</span><span class="o">()</span>
+    
+    <span class="k">private</span> <span class="k">var</span> <span class="n">curtime</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="k">def</span> <span class="n">currentTime</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="n">curtime</span>
+
+    <span class="k">def</span> <span class="n">afterDelay</span><span class="o">(</span><span class="n">delay</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)(</span><span class="n">block</span><span class="k">:</span> <span class="o">=&gt;</span> <span class="nc">Unit</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+
+        <span class="k">val</span> <span class="n">item</span> <span class="o">=</span> <span class="nc">Event</span><span class="o">(</span><span class="n">currentTime</span> <span class="o">+</span> <span class="n">delay</span><span class="o">,</span> <span class="o">()</span> <span class="o">=&gt;</span> <span class="n">block</span><span class="o">)</span>
+        <span class="n">agenda</span> <span class="o">=</span> <span class="n">insert</span><span class="o">(</span><span class="n">agenda</span><span class="o">,</span> <span class="n">item</span><span class="o">)</span>
+    <span class="o">}</span>
+    
+    <span class="k">private</span> <span class="k">def</span> <span class="n">insert</span><span class="o">(</span><span class="n">ag</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Event</span><span class="o">],</span> <span class="n">item</span><span class="k">:</span> <span class="kt">Event</span><span class="o">)</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Event</span><span class="o">]</span> <span class="o">=</span> <span class="n">ag</span> <span class="k">match</span> <span class="o">{</span>
+        <span class="k">case</span> <span class="n">first</span> <span class="o">::</span> <span class="n">rest</span> <span class="k">if</span> <span class="n">first</span><span class="o">.</span><span class="n">time</span> <span class="o">&lt;=</span> <span class="n">item</span><span class="o">.</span><span class="n">time</span> <span class="o">=&gt;</span>
+                <span class="n">first</span> <span class="o">::</span> <span class="n">insert</span><span class="o">(</span><span class="n">rest</span><span class="o">,</span> <span class="n">item</span><span class="o">)</span>
+        <span class="k">case</span> <span class="k">_</span> <span class="o">=&gt;</span>
+       <span class="n">item</span> <span class="o">::</span> <span class="n">ag</span>
+    <span class="o">}</span>
+    <span class="k">private</span> <span class="k">def</span> <span class="n">loop</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="n">agenda</span> <span class="k">match</span> <span class="o">{</span>
+        <span class="k">case</span> <span class="n">first</span> <span class="o">::</span> <span class="n">rest</span> <span class="k">=&gt;</span><span class="n">agenda</span> <span class="o">=</span> <span class="n">rest</span>
+        <span class="n">curtime</span> <span class="o">=</span> <span class="n">first</span><span class="o">.</span><span class="n">time</span>
+        <span class="n">first</span><span class="o">.</span><span class="n">action</span><span class="o">()</span>
+        <span class="n">loop</span><span class="o">()</span>
+        <span class="k">case</span> <span class="nc">Nil</span> <span class="o">=&gt;</span>
+    <span class="o">}</span>
+    
+    <span class="k">def</span> <span class="n">run</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+        <span class="n">afterDelay</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">println</span><span class="o">(</span><span class="s">&quot;*** simulation started, time = &quot;</span><span class="o">+</span><span class="n">currentTime</span><span class="o">+</span><span class="s">&quot; ***&quot;</span><span class="o">)</span>
+        <span class="o">}</span>
+        <span class="n">loop</span><span class="o">()</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>defined <span class=" -Color -Color-Green">trait</span> <span class=" -Color -Color-Cyan">Simulation</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>There is also a private variable, <code class="docutils literal notranslate"><span class="pre">curtime</span></code>, that contains the current simulation time:</p>
+<p><code class="docutils literal notranslate"><span class="pre">private</span> <span class="pre">var</span> <span class="pre">curtime</span> <span class="pre">=</span> <span class="pre">0</span></code>
+It can be accessed with a getter function <code class="docutils literal notranslate"><span class="pre">currentTime</span></code>:</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">currentTime</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="n">curtime</span>
+</pre></div>
+</div>
+<p>An application of the <code class="docutils literal notranslate"><span class="pre">afterDelay(delay)(block)</span></code> method inserts the task</p>
+<p><code class="docutils literal notranslate"><span class="pre">Event(curtime</span> <span class="pre">+</span> <span class="pre">delay,</span> <span class="pre">()</span> <span class="pre">=&gt;</span> <span class="pre">block)</span></code></p>
+<p>into the agenda list at the right position.</p>
+<p>The event handling loop (method <code class="docutils literal notranslate"><span class="pre">loop</span></code>) removes successive elements from the agenda, and performs the associated actions.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">run</span></code> method executes the event loop after installing an initial message that signals the start of simulation.</p>
+<p>Before launching the simulation, we still need a way to examine the changes of the signals on the wires.</p>
+<p>To this end, we define the function <code class="docutils literal notranslate"><span class="pre">probe</span></code>.</p>
+<p>It’s convenient to pack all delay constants into their own trait which can
+be mixed into a simulation. For instance:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">trait</span> <span class="nc">Parameters</span> <span class="o">{</span>
+<span class="k">def</span> <span class="nc">InverterDelay</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="k">def</span> <span class="nc">AndGateDelay</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="k">def</span> <span class="nc">OrGateDelay</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>defined <span class=" -Color -Color-Green">trait</span> <span class=" -Color -Color-Cyan">Parameters</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">abstract</span> <span class="k">class</span> <span class="nc">Gates</span> <span class="k">extends</span> <span class="nc">Simulation</span><span class="o">{</span>
+    <span class="k">def</span> <span class="nc">InverterDelay</span><span class="k">:</span> <span class="kt">Int</span>
+    <span class="k">def</span> <span class="nc">AndGateDelay</span><span class="k">:</span> <span class="kt">Int</span>
+    <span class="k">def</span> <span class="nc">OrGateDelay</span><span class="k">:</span> <span class="kt">Int</span>
+    
+    <span class="k">class</span> <span class="nc">Wire</span> <span class="o">{</span>
+        <span class="k">type</span> <span class="kt">Action</span> <span class="o">=</span> <span class="o">()</span> <span class="o">=&gt;</span> <span class="nc">Unit</span>
+        <span class="k">private</span> <span class="k">var</span> <span class="n">sigVal</span> <span class="o">=</span> <span class="kc">false</span>
+        <span class="k">private</span> <span class="k">var</span> <span class="n">actions</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Action</span><span class="o">]</span> <span class="o">=</span> <span class="nc">Nil</span>
+        <span class="k">def</span> <span class="n">getSignal</span><span class="k">:</span> <span class="kt">Boolean</span> <span class="o">=</span> <span class="n">sigVal</span>
+        <span class="k">def</span> <span class="n">setSignal</span><span class="o">(</span><span class="n">s</span><span class="k">:</span> <span class="kt">Boolean</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">s</span> <span class="o">!=</span> <span class="n">sigVal</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">sigVal</span> <span class="o">=</span> <span class="n">s</span>
+            <span class="n">actions</span> <span class="n">foreach</span> <span class="o">(</span><span class="k">_</span><span class="o">())</span>
+        <span class="o">}</span>
+        <span class="k">def</span> <span class="n">addAction</span><span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">Action</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+            <span class="n">actions</span> <span class="o">=</span> <span class="n">a</span> <span class="o">::</span> <span class="n">actions</span>
+            <span class="n">a</span><span class="o">()</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    
+    <span class="k">def</span> <span class="n">inverter</span><span class="o">(</span><span class="n">input</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">,</span> <span class="n">output</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+        <span class="k">def</span> <span class="n">invertAction</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+            <span class="k">val</span> <span class="n">inputSig</span> <span class="o">=</span> <span class="n">input</span><span class="o">.</span><span class="n">getSignal</span>
+        <span class="n">afterDelay</span><span class="o">(</span><span class="nc">InverterDelay</span><span class="o">)</span> <span class="o">{</span> <span class="n">output</span> <span class="n">setSignal</span> <span class="o">!</span><span class="n">inputSig</span> <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="n">input</span> <span class="n">addAction</span> <span class="n">invertAction</span>
+    <span class="o">}</span>
+    
+    <span class="k">def</span> <span class="n">andGate</span><span class="o">(</span><span class="n">in1</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">,</span> <span class="n">in2</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">,</span> <span class="n">output</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+        <span class="k">def</span> <span class="n">andAction</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+            <span class="k">val</span> <span class="n">in1Sig</span> <span class="o">=</span> <span class="n">in1</span><span class="o">.</span><span class="n">getSignal</span>
+            <span class="k">val</span> <span class="n">in2Sig</span> <span class="o">=</span> <span class="n">in2</span><span class="o">.</span><span class="n">getSignal</span>
+            <span class="n">afterDelay</span><span class="o">(</span><span class="nc">AndGateDelay</span><span class="o">)</span> <span class="o">{</span> <span class="n">output</span> <span class="n">setSignal</span> <span class="o">(</span><span class="n">in1Sig</span> <span class="o">&amp;</span> <span class="n">in2Sig</span><span class="o">)</span> <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="n">in1</span> <span class="n">addAction</span> <span class="n">andAction</span>
+        <span class="n">in2</span> <span class="n">addAction</span> <span class="n">andAction</span>
+    <span class="o">}</span>
+    
+    <span class="k">def</span> <span class="n">orGate</span><span class="o">(</span><span class="n">in1</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">,</span> <span class="n">in2</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">,</span> <span class="n">output</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+        <span class="k">def</span> <span class="n">orAction</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+            <span class="k">val</span> <span class="n">in1Sig</span> <span class="o">=</span> <span class="n">in1</span><span class="o">.</span><span class="n">getSignal</span>
+            <span class="k">val</span> <span class="n">in2Sig</span> <span class="o">=</span> <span class="n">in2</span><span class="o">.</span><span class="n">getSignal</span>
+        <span class="n">afterDelay</span><span class="o">(</span><span class="nc">OrGateDelay</span><span class="o">)</span> <span class="o">{</span> <span class="n">output</span> <span class="n">setSignal</span> <span class="o">(</span><span class="n">in1Sig</span> <span class="o">|</span> <span class="n">in2Sig</span><span class="o">)</span> <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="n">in1</span> <span class="n">addAction</span> <span class="n">orAction</span>
+        <span class="n">in2</span> <span class="n">addAction</span> <span class="n">orAction</span>
+    <span class="o">}</span>
+    
+    <span class="k">def</span> <span class="n">probe</span><span class="o">(</span><span class="n">name</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">wire</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+        <span class="k">def</span> <span class="n">probeAction</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+            <span class="n">println</span><span class="o">(</span><span class="s">s&quot;</span><span class="si">$name</span><span class="s"> </span><span class="si">$currentTime</span><span class="s"> value = </span><span class="si">${</span><span class="n">wire</span><span class="o">.</span><span class="n">getSignal</span><span class="si">}</span><span class="s">&quot;</span><span class="o">)</span>
+        <span class="o">}</span>
+        <span class="n">wire</span> <span class="n">addAction</span> <span class="n">probeAction</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>defined <span class=" -Color -Color-Green">class</span> <span class=" -Color -Color-Cyan">Gates</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">abstract</span> <span class="k">class</span> <span class="nc">Circuits</span> <span class="k">extends</span> <span class="nc">Gates</span><span class="o">{</span>
+    
+    <span class="k">def</span> <span class="n">halfAdder</span><span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">,</span> <span class="n">b</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">,</span> <span class="n">s</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">,</span> <span class="n">c</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+        <span class="k">val</span> <span class="n">d</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Wire</span>
+        <span class="k">val</span> <span class="n">e</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Wire</span>
+        <span class="n">orGate</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">,</span> <span class="n">d</span><span class="o">)</span>
+        <span class="n">andGate</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">,</span> <span class="n">c</span><span class="o">)</span>
+        <span class="n">inverter</span><span class="o">(</span><span class="n">c</span><span class="o">,</span> <span class="n">e</span><span class="o">)</span>
+        <span class="n">andGate</span><span class="o">(</span><span class="n">d</span><span class="o">,</span> <span class="n">e</span><span class="o">,</span> <span class="n">s</span><span class="o">)</span>
+    <span class="o">}</span>
+    
+    <span class="k">def</span> <span class="n">fullAdder</span><span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">,</span> <span class="n">b</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">,</span> <span class="n">cin</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">,</span> <span class="n">sum</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">,</span> <span class="n">cout</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+        <span class="k">val</span> <span class="n">s</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Wire</span>
+        <span class="k">val</span> <span class="n">c1</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Wire</span>
+        <span class="k">val</span> <span class="n">c2</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Wire</span>
+        <span class="n">halfAdder</span><span class="o">(</span><span class="n">b</span><span class="o">,</span> <span class="n">cin</span><span class="o">,</span> <span class="n">s</span><span class="o">,</span> <span class="n">c1</span><span class="o">)</span>
+        <span class="n">halfAdder</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">s</span><span class="o">,</span> <span class="n">sum</span><span class="o">,</span> <span class="n">c2</span><span class="o">)</span>
+        <span class="n">orGate</span><span class="o">(</span><span class="n">c1</span><span class="o">,</span> <span class="n">c2</span><span class="o">,</span> <span class="n">cout</span><span class="o">)</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>defined <span class=" -Color -Color-Green">class</span> <span class=" -Color -Color-Cyan">Circuits</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now let’s run a concrete simulation</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">object</span> <span class="nc">sim</span> <span class="k">extends</span> <span class="nc">Circuits</span> <span class="k">with</span> <span class="nc">Parameters</span>
+<span class="k">import</span> <span class="nn">sim._</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>defined <span class=" -Color -Color-Green">object</span> <span class=" -Color -Color-Cyan">sim</span>
+<span class=" -Color -Color-Green">import </span><span class=" -Color -Color-Cyan">sim._</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">in1</span><span class="o">,</span> <span class="n">in2</span><span class="o">,</span> <span class="n">sum</span><span class="o">,</span> <span class="n">carry</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Wire</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Cyan">in1</span>: <span class=" -Color -Color-Green">Wire</span> = ammonite.$sess.cmd2$Helper$Gates$Wire@dc0e89
+<span class=" -Color -Color-Cyan">in2</span>: <span class=" -Color -Color-Green">Wire</span> = ammonite.$sess.cmd2$Helper$Gates$Wire@f31cb5
+<span class=" -Color -Color-Cyan">sum</span>: <span class=" -Color -Color-Green">Wire</span> = ammonite.$sess.cmd2$Helper$Gates$Wire@15a3fbf
+<span class=" -Color -Color-Cyan">carry</span>: <span class=" -Color -Color-Green">Wire</span> = ammonite.$sess.cmd2$Helper$Gates$Wire@fdf473
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="n">halfAdder</span><span class="o">(</span><span class="n">in1</span><span class="o">,</span> <span class="n">in2</span><span class="o">,</span> <span class="n">sum</span><span class="o">,</span> <span class="n">carry</span><span class="o">)</span>
+<span class="n">probe</span><span class="o">(</span><span class="s">&quot;sum&quot;</span><span class="o">,</span> <span class="n">sum</span><span class="o">)</span>
+<span class="n">probe</span><span class="o">(</span><span class="s">&quot;carry&quot;</span><span class="o">,</span> <span class="n">carry</span><span class="o">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sum 0 value = false
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>carry 0 value = false
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="n">in1</span> <span class="n">setSignal</span> <span class="kc">true</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="n">run</span><span class="o">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>*** simulation started, time = 0 ***
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sum 8 value = true
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="n">in2</span> <span class="n">setSignal</span> <span class="kc">true</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="n">run</span><span class="o">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>*** simulation started, time = 8 ***
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>carry 11 value = true
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sum 16 value = false
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="n">in1</span> <span class="n">setSignal</span> <span class="kc">false</span>
+<span class="n">run</span><span class="o">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>*** simulation started, time = 16 ***
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>carry 19 value = false
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sum 24 value = true
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>An alternative version of the OR-gate can be defined in terms of AND and INV
+.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">orGateAlt</span><span class="o">(</span><span class="n">in1</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">,</span> <span class="n">in2</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">,</span> <span class="n">output</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+<span class="k">val</span> <span class="n">notIn1</span><span class="o">,</span> <span class="n">notIn2</span><span class="o">,</span> <span class="n">notOut</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Wire</span>
+<span class="n">inverter</span><span class="o">(</span><span class="n">in1</span><span class="o">,</span> <span class="n">notIn1</span><span class="o">);</span> <span class="n">inverter</span><span class="o">(</span><span class="n">in2</span><span class="o">,</span> <span class="n">notIn2</span><span class="o">)</span>
+<span class="n">andGate</span><span class="o">(</span><span class="n">notIn1</span><span class="o">,</span> <span class="n">notIn2</span><span class="o">,</span> <span class="n">notOut</span><span class="o">)</span>
+<span class="n">inverter</span><span class="o">(</span><span class="n">notOut</span><span class="o">,</span> <span class="n">output</span><span class="o">)</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>defined <span class=" -Color -Color-Green">function</span> <span class=" -Color -Color-Cyan">orGateAlt</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Question:</strong></p>
+<p>What would change in the circuit simulation if the implementation of <code class="docutils literal notranslate"><span class="pre">orGateAlt</span></code> was used for OR?</p>
+<p>State and assignments make our mental model of computation more complicated.</p>
+<p>In particular, we lose referential transparency.</p>
+<p>On the other hand, assignments allow us to formulate certain programs in an elegant way.</p>
+<p>Example: discrete event simulation.</p>
+<ul class="simple">
+<li><p>Here, a system is represented by a mutable list of actions.</p></li>
+<li><p>The effect of actions, when they’re called, change the state of objects and can also install other actions to be executed in the future.</p></li>
+</ul>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "scala"
+        },
+        kernelOptions: {
+            kernelName: "scala",
+            path: "./fpds/week4"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'scala'</script>
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+    <a class='left-prev' id="prev-link" href="week4_5.html" title="previous page"><span class="section-number">14. </span>Discrete Event Simulation: API and Usage</a>
+    <a class='right-next' id="next-link" href="../week5/week5_1.html" title="next page"><span class="section-number">16. </span>Imperative Event Handling: The Observer Pattern</a>
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Vikram Bhatt<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="../../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    
+  </body>
+</html>

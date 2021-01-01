@@ -59,7 +59,7 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="15. Imperative Event Handling: The Observer Pattern" href="../week5/week5_1.html" />
+    <link rel="next" title="15. Discrete Event Simulation: Implementation and Test" href="week4_6.html" />
     <link rel="prev" title="13. Discrete Event Simulation" href="week4_4.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -301,18 +301,23 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="week4_6.html">
+   15. Discrete Event Simulation: Implementation and Test
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="../week5/week5_1.html">
-   15. Imperative Event Handling: The Observer Pattern
+   16. Imperative Event Handling: The Observer Pattern
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../week5/week5_2.html">
-   16. Functional Reactive Programming
+   17. Functional Reactive Programming
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../week5/week5_3.html">
-   17. A Simple FRP Implementation
+   18. A Simple FRP Implementation
   </a>
  </li>
 </ul>
@@ -414,7 +419,109 @@
 <div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">type</span> <span class="kt">Action</span> <span class="o">=</span> <span class="o">()</span> <span class="o">=&gt;</span> <span class="nc">Unit</span>
 </pre></div>
 </div>
+<p><code class="docutils literal notranslate"><span class="pre">Action</span></code> do everything by side effect.</p>
 <p>The time is simulated; it has nothing to with the actual time.</p>
+<p>A concrete simulation happens inside an object that inherits from the trait
+Simulation, which has the following signature:</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">trait</span> <span class="nc">Simulation</span> <span class="o">{</span>
+<span class="cm">/** The current simulated time */</span>
+<span class="k">def</span> <span class="n">currentTime</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="o">???</span>
+<span class="cm">/** Registers an action ‘block‘ to perform after a given delay</span>
+<span class="cm">* relative to the current time */</span>
+<span class="k">def</span> <span class="n">afterDelay</span><span class="o">(</span><span class="n">delay</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)(</span><span class="n">block</span><span class="k">:</span> <span class="o">=&gt;</span> <span class="nc">Unit</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">???</span>
+<span class="cm">/** Performs the simulation until there are no actions waiting */</span>
+<span class="k">def</span> <span class="n">run</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">???</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Here <code class="docutils literal notranslate"><span class="pre">currentTime</span></code> returns current simulated time, after in the form of an integer.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">afterDelay</span></code> registers an action to perform after a certain delay (relative to the current delay).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">run</span></code> performs the simulation untill there are no more actions waiting.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">Simulation</span></code> trait would be inherited by <code class="docutils literal notranslate"><span class="pre">Wire</span></code>, and <code class="docutils literal notranslate"><span class="pre">gates</span></code>.</p>
+<p>A wire must support three basic operations:</p>
+<p><code class="docutils literal notranslate"><span class="pre">getSignal:</span> <span class="pre">Boolean</span></code></p>
+<p>Returns the current value of the signal transported by the wire.</p>
+<p><code class="docutils literal notranslate"><span class="pre">setSignal(sig:</span> <span class="pre">Boolean):</span> <span class="pre">Unit</span></code></p>
+<p>Modifies the value of the signal transported by the wire.</p>
+<p><code class="docutils literal notranslate"><span class="pre">addAction(a:</span> <span class="pre">Action):</span> <span class="pre">Unit</span></code></p>
+<p>Attaches the specified procedure to the actions of the wire. All of the attached actions are executed at each change of the transported signal. When the signal of wires, certain things should happen, those actions can be installed using this method.</p>
+<p>Here is an implementation of the class <code class="docutils literal notranslate"><span class="pre">Wire</span></code>:</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Wire</span> <span class="o">{</span>
+<span class="k">private</span> <span class="k">var</span> <span class="n">sigVal</span> <span class="o">=</span> <span class="kc">false</span>
+<span class="k">private</span> <span class="k">var</span> <span class="n">actions</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Action</span><span class="o">]</span> <span class="o">=</span> <span class="nc">Nil</span>
+<span class="k">def</span> <span class="n">getSignal</span><span class="k">:</span> <span class="kt">Boolean</span> <span class="o">=</span> <span class="n">sigVal</span>
+<span class="k">def</span> <span class="n">setSignal</span><span class="o">(</span><span class="n">s</span><span class="k">:</span> <span class="kt">Boolean</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span>
+<span class="k">if</span> <span class="o">(</span><span class="n">s</span> <span class="o">!=</span> <span class="n">sigVal</span><span class="o">)</span> <span class="o">{</span>
+<span class="n">sigVal</span> <span class="o">=</span> <span class="n">s</span>
+<span class="n">actions</span> <span class="n">foreach</span> <span class="o">(</span><span class="k">_</span><span class="o">())</span>
+<span class="o">}</span>
+<span class="k">def</span> <span class="n">addAction</span><span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">Action</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+<span class="n">actions</span> <span class="o">=</span> <span class="n">a</span> <span class="o">::</span> <span class="n">actions</span>
+<span class="n">a</span><span class="o">()</span>
+<span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">sigVal</span></code> represents value of current signal in wire. <code class="docutils literal notranslate"><span class="pre">actions</span></code> are list of actions to be performed when signal is changed. <code class="docutils literal notranslate"><span class="pre">setSignal</span></code> would check for change in <code class="docutils literal notranslate"><span class="pre">sigVal</span></code>, if there is change, then it would go through each of the actions and trigger them.</p>
+<p>The state of a wire is modeled by two private variables:</p>
+<p><code class="docutils literal notranslate"><span class="pre">sigVal</span></code> represents the current value of the signal.</p>
+<p><code class="docutils literal notranslate"><span class="pre">actions</span></code> represents the actions currently attached to the wire.</p>
+<p>We implement the inverter by installing an action on its input wire. This action produces the inverse of the input signal on the output wire. The change must be effective after a delay of <code class="docutils literal notranslate"><span class="pre">InverterDelay</span></code> units of simulated time.</p>
+<p>We thus obtain the following implementation:</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">inverter</span><span class="o">(</span><span class="n">input</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">,</span> <span class="n">output</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+<span class="k">def</span> <span class="n">invertAction</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+<span class="k">val</span> <span class="n">inputSig</span> <span class="o">=</span> <span class="n">input</span><span class="o">.</span><span class="n">getSignal</span>
+<span class="n">afterDelay</span><span class="o">(</span><span class="nc">InverterDelay</span><span class="o">)</span> <span class="o">{</span> <span class="n">output</span> <span class="n">setSignal</span> <span class="o">!</span><span class="n">inputSig</span> <span class="o">}</span>
+<span class="o">}</span>
+<span class="n">input</span> <span class="n">addAction</span> <span class="n">invertAction</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">input</span></code> will perform the action <code class="docutils literal notranslate"><span class="pre">invertAction</span></code> everytime it’s input changes.</p>
+<p>The AND gate is implemented in a similar way.
+The action of an AND gate produces the conjunction of input signals on
+the output wire.
+This happens after a delay of AndGateDelay units of simulated time.
+We thus obtain the following implementation:</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">andGate</span><span class="o">(</span><span class="n">in1</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">,</span> <span class="n">in2</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">,</span> <span class="n">output</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+<span class="k">def</span> <span class="n">andAction</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+<span class="k">val</span> <span class="n">in1Sig</span> <span class="o">=</span> <span class="n">in1</span><span class="o">.</span><span class="n">getSignal</span>
+<span class="k">val</span> <span class="n">in2Sig</span> <span class="o">=</span> <span class="n">in2</span><span class="o">.</span><span class="n">getSignal</span>
+<span class="n">afterDelay</span><span class="o">(</span><span class="nc">AndGateDelay</span><span class="o">)</span> <span class="o">{</span> <span class="n">output</span> <span class="n">setSignal</span> <span class="o">(</span><span class="n">in1Sig</span> <span class="o">&amp;</span> <span class="n">in2Sig</span><span class="o">)</span> <span class="o">}</span>
+<span class="o">}</span>
+<span class="n">in1</span> <span class="n">addAction</span> <span class="n">andAction</span>
+<span class="n">in2</span> <span class="n">addAction</span> <span class="n">andAction</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>When any of the <code class="docutils literal notranslate"><span class="pre">in1</span></code> and <code class="docutils literal notranslate"><span class="pre">in2</span></code> changes, <code class="docutils literal notranslate"><span class="pre">andAction</span></code> is triggered.</p>
+<p>The OR gate is implemented analogously to the AND gate.</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">orGate</span><span class="o">(</span><span class="n">in1</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">,</span> <span class="n">in2</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">,</span> <span class="n">output</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+<span class="k">def</span> <span class="n">orAction</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+<span class="k">val</span> <span class="n">in1Sig</span> <span class="o">=</span> <span class="n">in1</span><span class="o">.</span><span class="n">getSignal</span>
+<span class="k">val</span> <span class="n">in2Sig</span> <span class="o">=</span> <span class="n">in2</span><span class="o">.</span><span class="n">getSignal</span>
+<span class="n">afterDelay</span><span class="o">(</span><span class="nc">OrGateDelay</span><span class="o">)</span> <span class="o">{</span> <span class="n">output</span> <span class="n">setSignal</span> <span class="o">(</span><span class="n">in1Sig</span> <span class="o">|</span> <span class="n">in2Sig</span><span class="o">)</span> <span class="o">}</span>
+<span class="o">}</span>
+<span class="n">in1</span> <span class="n">addAction</span> <span class="n">orAction</span>
+<span class="n">in2</span> <span class="n">addAction</span> <span class="n">orAction</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>What happens if we compute <code class="docutils literal notranslate"><span class="pre">in1Sig</span></code> and <code class="docutils literal notranslate"><span class="pre">in2Sig</span></code> inline inside <code class="docutils literal notranslate"><span class="pre">afterDelay</span></code>
+instead of computing them as values?</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">orGate2</span><span class="o">(</span><span class="n">in1</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">,</span> <span class="n">in2</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">,</span> <span class="n">output</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+<span class="k">def</span> <span class="n">orAction</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+<span class="n">afterDelay</span><span class="o">(</span><span class="nc">OrGateDelay</span><span class="o">)</span> <span class="o">{</span>
+<span class="n">output</span> <span class="n">setSignal</span> <span class="o">(</span><span class="n">in1</span><span class="o">.</span><span class="n">getSignal</span> <span class="o">|</span> <span class="n">in2</span><span class="o">.</span><span class="n">getSignal</span><span class="o">)</span> <span class="o">}</span>
+<span class="o">}</span>
+<span class="n">in1</span> <span class="n">addAction</span> <span class="n">orAction</span>
+<span class="n">in2</span> <span class="n">addAction</span> <span class="n">orAction</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>In the original <code class="docutils literal notranslate"><span class="pre">orGate</span></code> we would sample first and wait for delay time units and set output afterwards. Obviously, when we sample after the delay, it is not the same as original one. So it doesn’t represent <code class="docutils literal notranslate"><span class="pre">orGate</span></code> faithfully.</p>
 </div>
 
     <script type="text/x-thebe-config">
@@ -446,7 +553,7 @@
     <div class='prev-next-bottom'>
         
     <a class='left-prev' id="prev-link" href="week4_4.html" title="previous page"><span class="section-number">13. </span>Discrete Event Simulation</a>
-    <a class='right-next' id="next-link" href="../week5/week5_1.html" title="next page"><span class="section-number">15. </span>Imperative Event Handling: The Observer Pattern</a>
+    <a class='right-next' id="next-link" href="week4_6.html" title="next page"><span class="section-number">15. </span>Discrete Event Simulation: Implementation and Test</a>
 
     </div>
     <footer class="footer mt-5 mt-md-0">

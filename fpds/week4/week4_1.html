@@ -301,18 +301,23 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="week4_6.html">
+   15. Discrete Event Simulation: Implementation and Test
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="../week5/week5_1.html">
-   15. Imperative Event Handling: The Observer Pattern
+   16. Imperative Event Handling: The Observer Pattern
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../week5/week5_2.html">
-   16. Functional Reactive Programming
+   17. Functional Reactive Programming
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../week5/week5_3.html">
-   17. A Simple FRP Implementation
+   18. A Simple FRP Implementation
   </a>
  </li>
 </ul>
@@ -355,9 +360,9 @@
         <!-- ipynb file if we had a myst markdown file -->
         
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../../_sources/fpds/week4/week4_1.md"><button type="button"
+        <a class="dropdown-buttons" href="../../_sources/fpds/week4/week4_1.ipynb"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
-                data-placement="left">.md</button></a>
+                data-placement="left">.ipynb</button></a>
         <!-- Download PDF via print -->
         <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
             onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
@@ -374,6 +379,23 @@
                     class="fas fa-expand"></i></button></a>
 
         <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/fpds/week4/week4_1.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
 
     </div>
 
@@ -423,19 +445,104 @@ The most important rewrite rule covers function applications:</p>
 <p>Let’s introduce state in the objects. States can change over the course of time. An object has a state, if it’s behavior is influenced by the history.</p>
 <p>Every form of state is constructed from variable. In Scala, we use the keyword <code class="docutils literal notranslate"><span class="pre">var</span></code> to create variable. In practice object with state are represented as object with variables as members.</p>
 <p>Here is an example of bank account:</p>
-<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span>class BankAccount {
-private var balance = 0
-def deposit(amount: Int): Unit = {
-if (amount &gt; 0) balance = balance + amount
-}
-def withdraw(amount: Int): Int =
-if (0 &lt; amount &amp;&amp; amount &lt;= balance) {
-balance = balance - amount
-balance
-} else throw new Error(”insufficient funds”)
-}
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">BankAccount</span> <span class="o">{</span>
+<span class="k">private</span> <span class="k">var</span> <span class="n">balance</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">def</span> <span class="n">deposit</span><span class="o">(</span><span class="n">amount</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+<span class="k">if</span> <span class="o">(</span><span class="n">amount</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span> <span class="n">balance</span> <span class="o">=</span> <span class="n">balance</span> <span class="o">+</span> <span class="n">amount</span>
+<span class="o">}</span>
+<span class="k">def</span> <span class="n">withdraw</span><span class="o">(</span><span class="n">amount</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span>
+<span class="k">if</span> <span class="o">(</span><span class="mi">0</span> <span class="o">&lt;</span> <span class="n">amount</span> <span class="o">&amp;&amp;</span> <span class="n">amount</span> <span class="o">&lt;=</span> <span class="n">balance</span><span class="o">)</span> <span class="o">{</span>
+<span class="n">balance</span> <span class="o">=</span> <span class="n">balance</span> <span class="o">-</span> <span class="n">amount</span>
+<span class="n">balance</span>
+<span class="o">}</span> <span class="k">else</span> <span class="k">throw</span> <span class="k">new</span> <span class="nc">Error</span><span class="o">(</span><span class="s">&quot;insufficient funds&quot;</span><span class="o">)</span>
+<span class="o">}</span>
 </pre></div>
 </div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">BankAccount</span> <span class="o">{</span>
+<span class="k">private</span> <span class="k">var</span> <span class="n">balance</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">def</span> <span class="n">deposit</span><span class="o">(</span><span class="n">amount</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+<span class="k">if</span> <span class="o">(</span><span class="n">amount</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span> <span class="n">balance</span> <span class="o">=</span> <span class="n">balance</span> <span class="o">+</span> <span class="n">amount</span>
+<span class="o">}</span>
+<span class="k">def</span> <span class="n">withdraw</span><span class="o">(</span><span class="n">amount</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span>
+<span class="k">if</span> <span class="o">(</span><span class="mi">0</span> <span class="o">&lt;</span> <span class="n">amount</span> <span class="o">&amp;&amp;</span> <span class="n">amount</span> <span class="o">&lt;=</span> <span class="n">balance</span><span class="o">)</span> <span class="o">{</span>
+<span class="n">balance</span> <span class="o">=</span> <span class="n">balance</span> <span class="o">-</span> <span class="n">amount</span>
+<span class="n">balance</span>
+<span class="o">}</span> <span class="k">else</span> <span class="k">throw</span> <span class="k">new</span> <span class="nc">Error</span><span class="o">(</span><span class="s">&quot;insufficient funds&quot;</span><span class="o">)</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>defined <span class=" -Color -Color-Green">class</span> <span class=" -Color -Color-Cyan">BankAccount</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">acct</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BankAccount</span>
+<span class="n">acct</span> <span class="n">deposit</span> <span class="mi">50</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Cyan">acct</span>: <span class=" -Color -Color-Green">BankAccount</span> = ammonite.$sess.cmd0$Helper$BankAccount@aed5c5
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="n">acct</span> <span class="n">withdraw</span> <span class="mi">20</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Cyan">res2</span>: <span class=" -Color -Color-Green">Int</span> = <span class=" -Color -Color-Green">30</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="n">acct</span> <span class="n">withdraw</span> <span class="mi">40</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span>java.lang.Error: insufficient funds
+  ammonite.$sess.cmd0$Helper$BankAccount.withdraw(cmd0.sc:10)
+  ammonite.$sess.cmd3$Helper.&lt;init&gt;(cmd3.sc:1)
+  ammonite.$sess.cmd3$.&lt;clinit&gt;(cmd3.sc:7)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Clearly accounts are stateful objects. Effect of withdraw depends on the history of the object. Statefullness and variables are connected, let’s how tight (or lossely) coupled.</p>
+<p>Remember the definition of streams (lazy sequences). Instead of using a <code class="docutils literal notranslate"><span class="pre">lazy</span> <span class="pre">val</span></code>, we could also implement non-empty streams using a mutable variable:</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">cons</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span><span class="n">hd</span><span class="k">:</span> <span class="kt">T</span><span class="o">,</span> <span class="n">tl</span><span class="k">:</span> <span class="o">=&gt;</span> <span class="nc">Stream</span><span class="o">[</span><span class="kt">T</span><span class="o">])</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Stream</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="o">{</span>
+<span class="k">def</span> <span class="n">head</span> <span class="o">=</span> <span class="n">hd</span>
+<span class="k">private</span> <span class="k">var</span> <span class="n">tlOpt</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">Stream</span><span class="o">[</span><span class="kt">T</span><span class="o">]]</span> <span class="o">=</span> <span class="nc">None</span>
+<span class="k">def</span> <span class="n">tail</span><span class="k">:</span> <span class="kt">T</span> <span class="o">=</span> <span class="n">tlOpt</span> <span class="k">match</span> <span class="o">{</span>
+<span class="k">case</span> <span class="nc">Some</span><span class="o">(</span><span class="n">x</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">x</span>
+<span class="k">case</span> <span class="nc">None</span> <span class="o">=&gt;</span> <span class="n">tlOpt</span> <span class="o">=</span> <span class="nc">Some</span><span class="o">(</span><span class="n">tl</span><span class="o">);</span> <span class="n">tail</span>
+<span class="o">}}</span>
+</pre></div>
+</div>
+<p>Is the result of  <code class="docutils literal notranslate"><span class="pre">cons</span></code> a stateful object?</p>
+<p>It depends on the assumption you make on the rest of the system. One common assumption is streams are defined over purely functional computations. So the tail operation should not have side effects. In that case, optimization to cache <code class="docutils literal notranslate"><span class="pre">tail</span></code> and <code class="docutils literal notranslate"><span class="pre">tailOpt</span></code> to reuse it on all previous call to tails is purely a optimization that doesn’t have a observable side effect outside the class of streams.</p>
+<p>On the other hand, let’s say tail could have a printing statement, then you would see that the second time tail is called in this string. It would come straight out of the cache, so there would be no side effect performed. Whereas, the first time, it would be called the operation would be performed, including the printing statement. So that means clearly the operation tail depends on the previous history of the object. It would be different depending on whether a previous tail was performed or not. So in that sense, the answer would be cons is a stateful object, provided that you also allow imperative side effect in computations for tail.</p>
+<p>Consider the following class:</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">BankAccountProxy</span><span class="o">(</span><span class="n">ba</span><span class="k">:</span> <span class="kt">BankAccount</span><span class="o">)</span> <span class="o">{</span>
+<span class="k">def</span> <span class="n">deposit</span><span class="o">(</span><span class="n">amount</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="n">ba</span><span class="o">.</span><span class="n">deposit</span><span class="o">(</span><span class="n">amount</span><span class="o">)</span>
+<span class="k">def</span> <span class="n">withdraw</span><span class="o">(</span><span class="n">amount</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="n">ba</span><span class="o">.</span><span class="n">withdraw</span><span class="o">(</span><span class="n">amount</span><span class="o">)</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>Question: Are instances of <code class="docutils literal notranslate"><span class="pre">BankAccountProxy</span></code> stateful objects?</p>
+<p>Clearly, <code class="docutils literal notranslate"><span class="pre">BankAccountProxy</span></code> are stateful objects, because calling withdraw twice might lead to out of balance.</p>
 </div>
 
     <script type="text/x-thebe-config">
@@ -447,16 +554,16 @@ balance
         },
         codeMirrorConfig: {
             theme: "abcdef",
-            mode: "python"
+            mode: "scala"
         },
         kernelOptions: {
-            kernelName: "python3",
+            kernelName: "scala",
             path: "./fpds/week4"
         },
         predefinedOutput: true
     }
     </script>
-    <script>kernelName = 'python3'</script>
+    <script>kernelName = 'scala'</script>
 
               </div>
               
