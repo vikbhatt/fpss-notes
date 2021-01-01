@@ -16,6 +16,16 @@
     - file: fpps\week4\week4_2
     - file: fpps\week4\week4_3
     - file: fpps\week4\week4_4
+    - file: fpps\week4\week4_5
+    - file: fpps\week4\week4_6
+    - file: fpps\week5\week5_1
+    - file: fpps\week5\week5_2
+    - file: fpps\week5\week5_3
+    - file: fpps\week6\week6_1
+    - file: fpps\week6\week6_2
+    - file: fpps\week6\week6_3
+    - file: fpps\week6\week6_4
+    - file: fpps\week6\week6_5
 
 - part: Functional Program Design in Scala
   numbered: true
@@ -28,6 +38,8 @@
     - file: fpds\week2\week2_2
     - file: fpds\week3\week3_1
     - file: fpds\week3\week3_2
+    - file: fpds\week3\week3_3
     - file: fpds\week4\week4_1
+    - file: fpds\week5\week5_1
     
 

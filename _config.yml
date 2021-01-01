@@ -12,3 +12,5 @@ parse:
 
 html:
   favicon: images/favicon.ico
+  comments:
+    hypothesis: true
