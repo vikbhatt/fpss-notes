@@ -1,0 +1,40 @@
+Traceback (most recent call last):
+  File "/home/vikrambhatt/anaconda3/lib/python3.8/site-packages/jupyter_cache/executors/utils.py", line 51, in single_nb_execution
+    executenb(
+  File "/home/vikrambhatt/anaconda3/lib/python3.8/site-packages/nbclient/client.py", line 1087, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+  File "/home/vikrambhatt/anaconda3/lib/python3.8/site-packages/nbclient/util.py", line 74, in wrapped
+    return just_run(coro(*args, **kwargs))
+  File "/home/vikrambhatt/anaconda3/lib/python3.8/site-packages/nbclient/util.py", line 53, in just_run
+    return loop.run_until_complete(coro)
+  File "/home/vikrambhatt/anaconda3/lib/python3.8/asyncio/base_events.py", line 616, in run_until_complete
+    return future.result()
+  File "/home/vikrambhatt/anaconda3/lib/python3.8/site-packages/nbclient/client.py", line 540, in async_execute
+    await self.async_execute_cell(
+  File "/home/vikrambhatt/anaconda3/lib/python3.8/site-packages/nbclient/client.py", line 832, in async_execute_cell
+    self._check_raise_for_error(cell, exec_reply)
+  File "/home/vikrambhatt/anaconda3/lib/python3.8/site-packages/nbclient/client.py", line 740, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply['content'])
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+import scala.io.Source
+
+val in = Source.fromURL("file:///D:\\func_prog_notes\\fpps\\week6\\linuxwords.txt")
+val words = in.getLines.toList.filter(word => word forall (c => c.isLetter ))
+val mnemo = Map('2'-> "ABC", '3' -> "DEF", '4' -> "GHI",'5' -> "JKL", '6' -> "MNO", '7' ->"PQRS", '8' -> "TUV", '9' -> "WXYZ")
+------------------
+
+java.io.FileNotFoundException: /D:\func_prog_notes\fpps\week6\linuxwords.txt (No such file or directory)
+  at java.base/java.io.FileInputStream.open0(Native Method)
+  at java.base/java.io.FileInputStream.open(FileInputStream.java:219)
+  at java.base/java.io.FileInputStream.<init>(FileInputStream.java:157)
+  at java.base/java.io.FileInputStream.<init>(FileInputStream.java:112)
+  at java.base/sun.net.www.protocol.file.FileURLConnection.connect(FileURLConnection.java:86)
+  at java.base/sun.net.www.protocol.file.FileURLConnection.getInputStream(FileURLConnection.java:184)
+  at java.base/java.net.URL.openStream(URL.java:1140)
+  at scala.io.Source$.fromURL(Source.scala:144)
+  at scala.io.Source$.fromURL(Source.scala:134)
+  ... 37 elided
+
+java.io.FileNotFoundException:  /D:\func_prog_notes\fpps\week6\linuxwords.txt (No such file or directory)
+

@@ -25,7 +25,7 @@
     href="../../_static/vendor/lato_latin-ext/1.44.1/index.css">
 
     
-    <link rel="stylesheet" href="../../_static/sphinx-book-theme.2d2078699c18a0efb88233928e1cf6ed.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/sphinx-book-theme.40e2e510f6b7d1648584402491bb10fe.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
@@ -46,7 +46,7 @@
     <script src="../../_static/copybutton.js"></script>
     <script async="async" kind="hypothesis" src="https://hypothes.is/embed.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../../_static/sphinx-book-theme.be0a4a0c39cd630af62a2fcf693f3f06.js"></script>
+    <script src="../../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
@@ -85,22 +85,19 @@
   <h1 class="site-logo" id="site-title">Functional Programming in Scala Specialization -- Complied Notes</h1>
   
 </a>
-</div>
-
-<form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
   <i class="icon fas fa-search"></i>
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
 </form>
-
 <nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
-  <ul class="nav sidenav_l1">
+    <ul class="nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="../../intro.html">
    Functional Programming in Scala Specialization
   </a>
  </li>
 </ul>
-<p class="caption">
+<p class="caption collapsible-parent">
  <span class="caption-text">
   Functional Programming Principles in Scala
  </span>
@@ -227,7 +224,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p class="caption collapsible-parent">
  <span class="caption-text">
   Functional Program Design in Scala
  </span>
@@ -288,11 +285,24 @@
    11. Imperative Event Handling: The Observer Pattern
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week5/week5_2.html">
+   12. Functional Reactive Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week5/week5_3.html">
+   13. The Signal API
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week5/week5_3.html#the-var-api">
+   14. The Var API
+  </a>
+ </li>
 </ul>
 
-</nav>
-
- <!-- To handle the deprecated key -->
+</nav> <!-- To handle the deprecated key -->
 
 <div class="navbar_extra_footer">
   Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
@@ -321,11 +331,11 @@
             <i class="fas fa-arrow-up"></i>
         </button>
         
-        <div class="dropdown-buttons-trigger">
+        
+<div class="dropdown-buttons-trigger">
     <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
             class="fas fa-download"></i></button>
 
-    
     <div class="dropdown-buttons">
         <!-- ipynb file if we had a myst markdown file -->
         
@@ -337,8 +347,8 @@
         <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
             onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
     </div>
-    
 </div>
+
         <!-- Source interaction buttons -->
 
 
@@ -444,12 +454,20 @@ Let’s define some Orderings and see them in action.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Intitializing Scala interpreter ...
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Spark Web UI available at http://192.168.29.74:4040
+SparkContext available as &#39;sc&#39; (version = 3.0.1, master = local[*], app id = local-1609509133512)
+SparkSession available as &#39;spark&#39;
+</pre></div>
+</div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>import scala.math.Ordering
 import scala.util.Random
-minOrdering: scala.math.Ordering[Int] = scala.math.Ordering$$anon$6@17dba93
-maxOrdering: scala.math.Ordering[Int] = scala.math.Ordering$$anon$6@1fe986b
-p: Seq[Int] = List(575986169, 868806559, 493526361, -1103739054)
-res0: Seq[Int] = List(-1103739054, 493526361, 575986169, 868806559)
+minOrdering: scala.math.Ordering[Int] = scala.math.Ordering$$anon$6@13020e7
+maxOrdering: scala.math.Ordering[Int] = scala.math.Ordering$$anon$6@146868e
+p: Seq[Int] = List(1827009775, -1675834358, -321048932, 1544820708)
+res0: Seq[Int] = List(-1675834358, -321048932, 1544820708, 1827009775)
 </pre></div>
 </div>
 </div>
@@ -518,7 +536,7 @@ classes. Everything else we will see just provides extra convenience.</p>
         },
         kernelOptions: {
             kernelName: "spylon-kernel",
-            path: "./fpds\week3"
+            path: "./fpds/week3"
         },
         predefinedOutput: true
     }
