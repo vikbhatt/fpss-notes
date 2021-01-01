@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>6. Case Study: The Water Pouring Problem &#8212; Functional Programming in Scala Specialization -- Complied Notes</title>
+    <title>11. Identity and Change &#8212; Functional Programming in Scala Specialization -- Complied Notes</title>
     
   <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
 
@@ -59,8 +59,8 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="7. Type-Directed Programming" href="../week3/week3_1.html" />
-    <link rel="prev" title="5. Streams" href="week2_1.html" />
+    <link rel="next" title="12. Loops" href="week4_3.html" />
+    <link rel="prev" title="10. Functions and State" href="week4_1.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -251,12 +251,12 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="week2_1.html">
+  <a class="reference internal" href="../week2/week2_1.html">
    5. Streams
   </a>
  </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week2/week2_2.html">
    6. Case Study: The Water Pouring Problem
   </a>
  </li>
@@ -276,27 +276,27 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../week4/week4_1.html">
+  <a class="reference internal" href="week4_1.html">
    10. Functions and State
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../week4/week4_2.html">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
    11. Identity and Change
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../week4/week4_3.html">
+  <a class="reference internal" href="week4_3.html">
    12. Loops
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../week4/week4_4.html">
+  <a class="reference internal" href="week4_4.html">
    13. Discrete Event Simulation
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../week4/week4_5.html">
+  <a class="reference internal" href="week4_5.html">
    14. Discrete Event Simulation: API and Usage
   </a>
  </li>
@@ -355,9 +355,9 @@
         <!-- ipynb file if we had a myst markdown file -->
         
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../../_sources/fpds/week2/week2_2.md"><button type="button"
+        <a class="dropdown-buttons" href="../../_sources/fpds/week4/week4_2.ipynb"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
-                data-placement="left">.md</button></a>
+                data-placement="left">.ipynb</button></a>
         <!-- Download PDF via print -->
         <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
             onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
@@ -375,6 +375,23 @@
 
         <!-- Launch buttons -->
 
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/fpds/week4/week4_2.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
     </div>
 
     <!-- Table of contents -->
@@ -387,57 +404,83 @@
         
               <div>
                 
-  <div class="section" id="case-study-the-water-pouring-problem">
-<h1><span class="section-number">6. </span>Case Study: The Water Pouring Problem<a class="headerlink" href="#case-study-the-water-pouring-problem" title="Permalink to this headline">¶</a></h1>
-<p>For the sake of example, say you have two glasses of size 4 liters, and 9 liters. You need to produce given quantity (say 6 liters) in one of the glasses. There is no marking on glasses. Moves available to you are, either you can fill a glass completely with a faucet, or you can pour from one glass to another until the glass which you pour is empty or the glass you are pouring into are full.
-Let’s generalize the problem. We have <code class="docutils literal notranslate"><span class="pre">n</span></code> number of glasses, each with arbitrary capacity</p>
-<p>We are going to represent</p>
-<ul class="simple">
-<li><p>Glass: <code class="docutils literal notranslate"><span class="pre">Int</span></code> (ranging from 0 to n-1)</p></li>
-<li><p>State: <code class="docutils literal notranslate"><span class="pre">Vector[Int]</span></code>, for each glass the number of deciliters of water in the glass.</p></li>
-<li><p>Moves:</p>
-<ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">Empty(glass)</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Fill(glass)</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Pour(from,</span> <span class="pre">to)</span></code></p></li>
-</ul>
-</li>
-</ul>
-<p>The idea would be to generate all move sequences (call them <code class="docutils literal notranslate"><span class="pre">Paths</span></code>) until we hit a path where one glass contains right amount of liquid in the target glass.</p>
-<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Pouring</span><span class="o">(</span><span class="n">capacity</span><span class="k">:</span> <span class="kt">Vector</span><span class="o">[</span><span class="kt">Int</span><span class="o">]){</span>
-    <span class="c1">//States</span>
-    <span class="k">type</span> <span class="kt">State</span> <span class="o">=</span> <span class="nc">Vector</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span>
-    <span class="k">val</span> <span class="n">initialState</span> <span class="o">=</span> <span class="n">capacity</span> <span class="n">map</span> <span class="o">(</span><span class="n">x</span> <span class="o">=&gt;</span> <span class="mi">0</span><span class="o">)</span>
-
-    <span class="c1">// Moves</span>
-    <span class="k">trait</span> <span class="nc">Move</span> <span class="o">{</span>
-        <span class="k">def</span> <span class="n">change</span><span class="o">(</span><span class="n">state</span><span class="k">:</span> <span class="kt">State</span><span class="o">)</span><span class="k">:</span> <span class="kt">State</span> 
-    <span class="o">}</span>
-    <span class="k">case</span> <span class="k">class</span> <span class="nc">Empty</span><span class="o">(</span><span class="n">glass</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">extends</span> <span class="nc">Move</span> <span class="o">{</span>
-        <span class="k">def</span> <span class="n">change</span><span class="o">(</span><span class="n">state</span><span class="k">:</span> <span class="kt">State</span><span class="o">)</span> <span class="o">=</span> <span class="n">state</span> <span class="n">updated</span> <span class="o">(</span><span class="n">glass</span><span class="o">,</span> <span class="mi">0</span><span class="o">)</span>
-    <span class="o">}</span>
-    <span class="k">case</span> <span class="k">class</span> <span class="nc">Fill</span><span class="o">(</span><span class="n">glass</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">extends</span> <span class="nc">Move</span><span class="o">{</span>
-        <span class="k">def</span> <span class="n">change</span><span class="o">(</span><span class="n">state</span><span class="k">:</span> <span class="kt">State</span><span class="o">)</span> <span class="o">=</span> <span class="n">state</span> <span class="n">updated</span> <span class="o">(</span><span class="n">glass</span><span class="o">,</span> <span class="n">capacity</span><span class="o">(</span><span class="n">glass</span><span class="o">))</span>
-    <span class="o">}</span>
-    <span class="k">case</span> <span class="k">class</span> <span class="nc">Pour</span><span class="o">(</span><span class="n">from</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">to</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">extends</span> <span class="nc">Move</span><span class="o">{</span>
-        <span class="k">def</span> <span class="n">change</span><span class="o">(</span><span class="n">state</span><span class="k">:</span> <span class="kt">State</span><span class="o">)</span> <span class="o">=</span>  <span class="o">{</span>
-            <span class="k">val</span> <span class="n">amount</span> <span class="o">=</span> <span class="n">state</span><span class="o">(</span><span class="n">from</span><span class="o">)</span> <span class="n">min</span> <span class="o">(</span><span class="n">capacity</span><span class="o">(</span><span class="n">to</span><span class="o">)</span> <span class="o">-</span> <span class="n">state</span><span class="o">(</span><span class="n">to</span><span class="o">))</span>
-            <span class="n">state</span> <span class="n">updated</span> <span class="o">(</span><span class="n">from</span><span class="o">,</span> <span class="n">state</span><span class="o">(</span><span class="n">from</span><span class="o">)-</span><span class="n">amount</span><span class="o">)</span> <span class="n">updated</span> <span class="o">(</span><span class="n">to</span><span class="o">,</span> <span class="n">state</span><span class="o">(</span><span class="n">to</span><span class="o">)+</span><span class="n">amount</span><span class="o">)</span>
-        <span class="o">}</span>
-    <span class="o">}</span>
-
-    <span class="k">val</span> <span class="n">glasses</span> <span class="o">=</span> <span class="mi">0</span> <span class="n">until</span> <span class="n">capacity</span><span class="o">.</span><span class="n">length</span>
-    <span class="k">val</span> <span class="n">moves</span> <span class="o">=</span> <span class="o">(</span><span class="k">for</span><span class="o">(</span><span class="n">g</span> <span class="o">&lt;-</span> <span class="n">glasses</span> <span class="o">)</span> <span class="k">yield</span> <span class="nc">Empty</span><span class="o">(</span><span class="n">g</span><span class="o">)</span> <span class="o">++</span>
-                <span class="k">for</span><span class="o">(</span><span class="n">g</span> <span class="o">&lt;-</span> <span class="n">glasses</span><span class="o">)</span> <span class="k">yield</span>  <span class="nc">Fill</span><span class="o">(</span><span class="n">g</span><span class="o">)</span> <span class="o">++</span>
-                <span class="k">for</span><span class="o">(</span><span class="n">from</span> <span class="o">&lt;-</span> <span class="n">glasses</span><span class="o">;</span> <span class="n">to</span> <span class="o">&lt;-</span> <span class="n">glasses</span> <span class="k">if</span> <span class="n">from</span> <span class="o">!=</span><span class="n">to</span><span class="o">)</span> <span class="k">yield</span> <span class="nc">Pour</span><span class="o">(</span><span class="n">from</span><span class="o">,</span> <span class="n">to</span><span class="o">))</span>
-
-    <span class="c1">//Paths</span>
-    <span class="k">class</span> <span class="nc">Path</span><span class="o">(</span><span class="n">history</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Move</span><span class="o">]){</span>
-        <span class="k">def</span> <span class="n">endState</span><span class="k">:</span> <span class="kt">state</span>
-    <span class="o">}</span>
-<span class="o">}</span>
+  <div class="section" id="identity-and-change">
+<h1><span class="section-number">11. </span>Identity and Change<a class="headerlink" href="#identity-and-change" title="Permalink to this headline">¶</a></h1>
+<p>Assignment poses the new problem of deciding whether two expressions
+are “the same”
+When one excludes assignments and one writes:</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">x</span> <span class="o">=</span> <span class="n">E</span><span class="o">;</span> <span class="k">val</span> <span class="n">y</span> <span class="o">=</span> <span class="n">E</span>
 </pre></div>
 </div>
+<p>where <code class="docutils literal notranslate"><span class="pre">E</span></code> is an arbitrary expression, then it is reasonable to assume that <code class="docutils literal notranslate"><span class="pre">x</span></code>
+and <code class="docutils literal notranslate"><span class="pre">y</span></code> are the same.
+That is to say that we could have also written:</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">x</span> <span class="o">=</span> <span class="n">E</span><span class="o">;</span> <span class="k">val</span> <span class="n">y</span> <span class="o">=</span> <span class="n">x</span>
+</pre></div>
+</div>
+<p>(This property is usually called referential transparency)</p>
+<p>But once we allow the assignment, the two formulations are different. For example:</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">x</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BankAccount</span>
+<span class="k">val</span> <span class="n">y</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BankAccount</span>
+</pre></div>
+</div>
+<p>Are <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> same here?</p>
+<p>To respond to the last question, we must specify what is meant by “the same”.</p>
+<p>The precise meaning of “being the same” is defined by the property of operational equivalence.</p>
+<p>In a somewhat informal way, this property is stated as follows.</p>
+<p>Suppose we have two definitions <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> are operationally equivalent if no possible test can distinguish
+between them.</p>
+<p>To test if x and y are the same, we must</p>
+<ul class="simple">
+<li><p>Execute the definitions followed by an arbitrary sequence of operations that involves x and y, observing the possible outcomes.</p></li>
+</ul>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">x</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BankAccount</span>  
+<span class="k">val</span> <span class="n">y</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BankAccount</span> 
+<span class="n">f</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">y</span><span class="o">)</span> 
+</pre></div>
+</div>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">x</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BankAccount</span>
+<span class="k">val</span> <span class="n">y</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BankAccount</span>
+<span class="n">f</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">x</span><span class="o">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Then, execute the definitions with another sequence <code class="docutils literal notranslate"><span class="pre">S’</span></code> obtained by renaming all occurrences of <code class="docutils literal notranslate"><span class="pre">y</span></code> by <code class="docutils literal notranslate"><span class="pre">x</span></code> in <code class="docutils literal notranslate"><span class="pre">S</span></code>.</p></li>
+<li><p>If the results are different, then the expressions <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> are certainly different.</p></li>
+<li><p>On the other hand, if all possible pairs of sequences (<code class="docutils literal notranslate"><span class="pre">S</span></code>, <code class="docutils literal notranslate"><span class="pre">S’</span></code>) produce the same result, then <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> are the same.</p></li>
+</ul>
+<p>Let’s follow the definitions by a test sequence:</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">x</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BankAccount</span>
+<span class="k">val</span> <span class="n">y</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BankAccount</span>
+<span class="n">x</span> <span class="n">deposit</span> <span class="mi">30</span> <span class="c1">// val res1: Int = 30</span>
+<span class="n">y</span> <span class="n">withdraw</span> <span class="mi">20</span>
+</pre></div>
+</div>
+<p>Now rename all occurrences of <code class="docutils literal notranslate"><span class="pre">y</span></code> with <code class="docutils literal notranslate"><span class="pre">x</span></code> in this sequence. We obtain:</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">x</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BankAccount</span>
+<span class="k">val</span> <span class="n">y</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BankAccount</span>
+<span class="n">x</span> <span class="n">deposit</span> <span class="mi">30</span> <span class="c1">// val res1: Int = 30</span>
+<span class="n">x</span> <span class="n">withdraw</span> <span class="mi">20</span> <span class="c1">// val res2: Int = 10</span>
+</pre></div>
+</div>
+<p>The final results are different. We conclude that <code class="docutils literal notranslate"><span class="pre">x</span></code> and `y are not the same.</p>
+<p>The preceding examples show that our model of computation by substitution cannot be used.</p>
+<p>Indeed, according to this model, one can always replace the name of a
+value by the expression that defines it. For example, in</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">x</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BankAccount</span> 
+<span class="k">val</span> <span class="n">y</span> <span class="o">=</span> <span class="n">x</span> 
+</pre></div>
+</div>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">y</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BankAccount</span>
+<span class="k">val</span> <span class="n">x</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BankAccount</span>
+</pre></div>
+</div>
+<p>the <code class="docutils literal notranslate"><span class="pre">x</span></code> in the definition of <code class="docutils literal notranslate"><span class="pre">y</span></code> could be replaced by <code class="docutils literal notranslate"><span class="pre">new</span> <span class="pre">BankAccount</span></code>
+But we have seen that this change leads to a different program!</p>
+<p>The substitution model ceases to be valid when we add the assignment.</p>
+<p>It is possible to adapt the substitution model by introducing a store, but
+this becomes considerably more complicated.</p>
 </div>
 
     <script type="text/x-thebe-config">
@@ -449,16 +492,16 @@ Let’s generalize the problem. We have <code class="docutils literal notranslat
         },
         codeMirrorConfig: {
             theme: "abcdef",
-            mode: "python"
+            mode: "scala"
         },
         kernelOptions: {
-            kernelName: "python3",
-            path: "./fpds/week2"
+            kernelName: "scala",
+            path: "./fpds/week4"
         },
         predefinedOutput: true
     }
     </script>
-    <script>kernelName = 'python3'</script>
+    <script>kernelName = 'scala'</script>
 
               </div>
               
@@ -468,8 +511,8 @@ Let’s generalize the problem. We have <code class="docutils literal notranslat
     
     <div class='prev-next-bottom'>
         
-    <a class='left-prev' id="prev-link" href="week2_1.html" title="previous page"><span class="section-number">5. </span>Streams</a>
-    <a class='right-next' id="next-link" href="../week3/week3_1.html" title="next page"><span class="section-number">7. </span>Type-Directed Programming</a>
+    <a class='left-prev' id="prev-link" href="week4_1.html" title="previous page"><span class="section-number">10. </span>Functions and State</a>
+    <a class='right-next' id="next-link" href="week4_3.html" title="next page"><span class="section-number">12. </span>Loops</a>
 
     </div>
     <footer class="footer mt-5 mt-md-0">

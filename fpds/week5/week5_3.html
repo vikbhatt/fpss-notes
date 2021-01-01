@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>13. A Simple FRP Implementation &#8212; Functional Programming in Scala Specialization -- Complied Notes</title>
+    <title>17. A Simple FRP Implementation &#8212; Functional Programming in Scala Specialization -- Complied Notes</title>
     
   <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
 
@@ -59,7 +59,7 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="prev" title="12. Functional Reactive Programming" href="week5_2.html" />
+    <link rel="prev" title="16. Functional Reactive Programming" href="week5_2.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -280,18 +280,38 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="../week4/week4_2.html">
+   11. Identity and Change
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week4/week4_3.html">
+   12. Loops
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week4/week4_4.html">
+   13. Discrete Event Simulation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week4/week4_5.html">
+   14. Discrete Event Simulation: API and Usage
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="week5_1.html">
-   11. Imperative Event Handling: The Observer Pattern
+   15. Imperative Event Handling: The Observer Pattern
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="week5_2.html">
-   12. Functional Reactive Programming
+   16. Functional Reactive Programming
   </a>
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   13. A Simple FRP Implementation
+   17. A Simple FRP Implementation
   </a>
  </li>
 </ul>
@@ -383,12 +403,12 @@
             <ul class="nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#the-signal-api">
-   13.1. The Signal API
+   17.1. The Signal API
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#the-var-api">
-   13.2. The Var API
+   17.2. The Var API
   </a>
  </li>
 </ul>
@@ -403,13 +423,13 @@
               <div>
                 
   <div class="section" id="a-simple-frp-implementation">
-<h1><span class="section-number">13. </span>A Simple FRP Implementation<a class="headerlink" href="#a-simple-frp-implementation" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">17. </span>A Simple FRP Implementation<a class="headerlink" href="#a-simple-frp-implementation" title="Permalink to this headline">¶</a></h1>
 <p>In the last section, we have seen how to use a very simple API of signals and vars for functional reactive programming. In this unit, we are going to take a look under the covers and see how that simple API could be implemented.</p>
 <p>We now develop a simple implementation of Signals and Vars, which
 together make up the basis of our approach to functional reactive
 programming.</p>
 <div class="section" id="the-signal-api">
-<h2><span class="section-number">13.1. </span>The Signal API<a class="headerlink" href="#the-signal-api" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">17.1. </span>The Signal API<a class="headerlink" href="#the-signal-api" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Signal</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span><span class="n">expr</span><span class="k">:</span> <span class="o">=&gt;</span> <span class="n">T</span><span class="o">)</span> <span class="o">{</span>
@@ -430,7 +450,7 @@ defined <span class=" -Color -Color-Green">object</span> <span class=" -Color -C
 </div>
 </div>
 <div class="section" id="the-var-api">
-<h2><span class="section-number">13.2. </span>The Var API<a class="headerlink" href="#the-var-api" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">17.2. </span>The Var API<a class="headerlink" href="#the-var-api" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Var</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span><span class="n">expr</span><span class="k">:</span> <span class="o">=&gt;</span> <span class="n">T</span><span class="o">)</span> <span class="k">extends</span> <span class="nc">Signal</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span><span class="n">expr</span><span class="o">)</span> <span class="o">{</span>
@@ -600,7 +620,7 @@ myValue = caller.withValue(this)(myExpr())
     
     <div class='prev-next-bottom'>
         
-    <a class='left-prev' id="prev-link" href="week5_2.html" title="previous page"><span class="section-number">12. </span>Functional Reactive Programming</a>
+    <a class='left-prev' id="prev-link" href="week5_2.html" title="previous page"><span class="section-number">16. </span>Functional Reactive Programming</a>
 
     </div>
     <footer class="footer mt-5 mt-md-0">

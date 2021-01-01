@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>6. Case Study: The Water Pouring Problem &#8212; Functional Programming in Scala Specialization -- Complied Notes</title>
+    <title>13. Discrete Event Simulation &#8212; Functional Programming in Scala Specialization -- Complied Notes</title>
     
   <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
 
@@ -59,8 +59,8 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="7. Type-Directed Programming" href="../week3/week3_1.html" />
-    <link rel="prev" title="5. Streams" href="week2_1.html" />
+    <link rel="next" title="14. Discrete Event Simulation: API and Usage" href="week4_5.html" />
+    <link rel="prev" title="12. Loops" href="week4_3.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -251,12 +251,12 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="week2_1.html">
+  <a class="reference internal" href="../week2/week2_1.html">
    5. Streams
   </a>
  </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week2/week2_2.html">
    6. Case Study: The Water Pouring Problem
   </a>
  </li>
@@ -276,27 +276,27 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../week4/week4_1.html">
+  <a class="reference internal" href="week4_1.html">
    10. Functions and State
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../week4/week4_2.html">
+  <a class="reference internal" href="week4_2.html">
    11. Identity and Change
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../week4/week4_3.html">
+  <a class="reference internal" href="week4_3.html">
    12. Loops
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../week4/week4_4.html">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
    13. Discrete Event Simulation
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../week4/week4_5.html">
+  <a class="reference internal" href="week4_5.html">
    14. Discrete Event Simulation: API and Usage
   </a>
  </li>
@@ -355,9 +355,9 @@
         <!-- ipynb file if we had a myst markdown file -->
         
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../../_sources/fpds/week2/week2_2.md"><button type="button"
+        <a class="dropdown-buttons" href="../../_sources/fpds/week4/week4_4.ipynb"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
-                data-placement="left">.md</button></a>
+                data-placement="left">.ipynb</button></a>
         <!-- Download PDF via print -->
         <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
             onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
@@ -375,6 +375,23 @@
 
         <!-- Launch buttons -->
 
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/fpds/week4/week4_4.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
     </div>
 
     <!-- Table of contents -->
@@ -387,54 +404,59 @@
         
               <div>
                 
-  <div class="section" id="case-study-the-water-pouring-problem">
-<h1><span class="section-number">6. </span>Case Study: The Water Pouring Problem<a class="headerlink" href="#case-study-the-water-pouring-problem" title="Permalink to this headline">¶</a></h1>
-<p>For the sake of example, say you have two glasses of size 4 liters, and 9 liters. You need to produce given quantity (say 6 liters) in one of the glasses. There is no marking on glasses. Moves available to you are, either you can fill a glass completely with a faucet, or you can pour from one glass to another until the glass which you pour is empty or the glass you are pouring into are full.
-Let’s generalize the problem. We have <code class="docutils literal notranslate"><span class="pre">n</span></code> number of glasses, each with arbitrary capacity</p>
-<p>We are going to represent</p>
+  <div class="section" id="discrete-event-simulation">
+<h1><span class="section-number">13. </span>Discrete Event Simulation<a class="headerlink" href="#discrete-event-simulation" title="Permalink to this headline">¶</a></h1>
+<p>Here’s an example that shows how assignments and higher-order functions can be combined in interesting ways.
+We will construct a digital circuit simulator.
+The simulator is based on a general framework for discrete event simulation.</p>
+<p>Let’s start with a small description language for digital circuits.</p>
+<p>A digital circuit is composed of wires and of functional components.
+Wires transport signals that are transformed by components.</p>
+<p>We represent signals using booleans <code class="docutils literal notranslate"><span class="pre">true</span></code> and <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p>
+<p>The base components (gates) are:</p>
 <ul class="simple">
-<li><p>Glass: <code class="docutils literal notranslate"><span class="pre">Int</span></code> (ranging from 0 to n-1)</p></li>
-<li><p>State: <code class="docutils literal notranslate"><span class="pre">Vector[Int]</span></code>, for each glass the number of deciliters of water in the glass.</p></li>
-<li><p>Moves:</p>
-<ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">Empty(glass)</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Fill(glass)</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Pour(from,</span> <span class="pre">to)</span></code></p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">Inverter</span></code>, whose output is the inverse of its input.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">AND</span></code> Gate, whose output is the conjunction of its inputs.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">OR</span></code> Gate, whose output is the disjunction of its inputs.</p></li>
 </ul>
-</li>
-</ul>
-<p>The idea would be to generate all move sequences (call them <code class="docutils literal notranslate"><span class="pre">Paths</span></code>) until we hit a path where one glass contains right amount of liquid in the target glass.</p>
-<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Pouring</span><span class="o">(</span><span class="n">capacity</span><span class="k">:</span> <span class="kt">Vector</span><span class="o">[</span><span class="kt">Int</span><span class="o">]){</span>
-    <span class="c1">//States</span>
-    <span class="k">type</span> <span class="kt">State</span> <span class="o">=</span> <span class="nc">Vector</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span>
-    <span class="k">val</span> <span class="n">initialState</span> <span class="o">=</span> <span class="n">capacity</span> <span class="n">map</span> <span class="o">(</span><span class="n">x</span> <span class="o">=&gt;</span> <span class="mi">0</span><span class="o">)</span>
-
-    <span class="c1">// Moves</span>
-    <span class="k">trait</span> <span class="nc">Move</span> <span class="o">{</span>
-        <span class="k">def</span> <span class="n">change</span><span class="o">(</span><span class="n">state</span><span class="k">:</span> <span class="kt">State</span><span class="o">)</span><span class="k">:</span> <span class="kt">State</span> 
-    <span class="o">}</span>
-    <span class="k">case</span> <span class="k">class</span> <span class="nc">Empty</span><span class="o">(</span><span class="n">glass</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">extends</span> <span class="nc">Move</span> <span class="o">{</span>
-        <span class="k">def</span> <span class="n">change</span><span class="o">(</span><span class="n">state</span><span class="k">:</span> <span class="kt">State</span><span class="o">)</span> <span class="o">=</span> <span class="n">state</span> <span class="n">updated</span> <span class="o">(</span><span class="n">glass</span><span class="o">,</span> <span class="mi">0</span><span class="o">)</span>
-    <span class="o">}</span>
-    <span class="k">case</span> <span class="k">class</span> <span class="nc">Fill</span><span class="o">(</span><span class="n">glass</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">extends</span> <span class="nc">Move</span><span class="o">{</span>
-        <span class="k">def</span> <span class="n">change</span><span class="o">(</span><span class="n">state</span><span class="k">:</span> <span class="kt">State</span><span class="o">)</span> <span class="o">=</span> <span class="n">state</span> <span class="n">updated</span> <span class="o">(</span><span class="n">glass</span><span class="o">,</span> <span class="n">capacity</span><span class="o">(</span><span class="n">glass</span><span class="o">))</span>
-    <span class="o">}</span>
-    <span class="k">case</span> <span class="k">class</span> <span class="nc">Pour</span><span class="o">(</span><span class="n">from</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">to</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">extends</span> <span class="nc">Move</span><span class="o">{</span>
-        <span class="k">def</span> <span class="n">change</span><span class="o">(</span><span class="n">state</span><span class="k">:</span> <span class="kt">State</span><span class="o">)</span> <span class="o">=</span>  <span class="o">{</span>
-            <span class="k">val</span> <span class="n">amount</span> <span class="o">=</span> <span class="n">state</span><span class="o">(</span><span class="n">from</span><span class="o">)</span> <span class="n">min</span> <span class="o">(</span><span class="n">capacity</span><span class="o">(</span><span class="n">to</span><span class="o">)</span> <span class="o">-</span> <span class="n">state</span><span class="o">(</span><span class="n">to</span><span class="o">))</span>
-            <span class="n">state</span> <span class="n">updated</span> <span class="o">(</span><span class="n">from</span><span class="o">,</span> <span class="n">state</span><span class="o">(</span><span class="n">from</span><span class="o">)-</span><span class="n">amount</span><span class="o">)</span> <span class="n">updated</span> <span class="o">(</span><span class="n">to</span><span class="o">,</span> <span class="n">state</span><span class="o">(</span><span class="n">to</span><span class="o">)+</span><span class="n">amount</span><span class="o">)</span>
-        <span class="o">}</span>
-    <span class="o">}</span>
-
-    <span class="k">val</span> <span class="n">glasses</span> <span class="o">=</span> <span class="mi">0</span> <span class="n">until</span> <span class="n">capacity</span><span class="o">.</span><span class="n">length</span>
-    <span class="k">val</span> <span class="n">moves</span> <span class="o">=</span> <span class="o">(</span><span class="k">for</span><span class="o">(</span><span class="n">g</span> <span class="o">&lt;-</span> <span class="n">glasses</span> <span class="o">)</span> <span class="k">yield</span> <span class="nc">Empty</span><span class="o">(</span><span class="n">g</span><span class="o">)</span> <span class="o">++</span>
-                <span class="k">for</span><span class="o">(</span><span class="n">g</span> <span class="o">&lt;-</span> <span class="n">glasses</span><span class="o">)</span> <span class="k">yield</span>  <span class="nc">Fill</span><span class="o">(</span><span class="n">g</span><span class="o">)</span> <span class="o">++</span>
-                <span class="k">for</span><span class="o">(</span><span class="n">from</span> <span class="o">&lt;-</span> <span class="n">glasses</span><span class="o">;</span> <span class="n">to</span> <span class="o">&lt;-</span> <span class="n">glasses</span> <span class="k">if</span> <span class="n">from</span> <span class="o">!=</span><span class="n">to</span><span class="o">)</span> <span class="k">yield</span> <span class="nc">Pour</span><span class="o">(</span><span class="n">from</span><span class="o">,</span> <span class="n">to</span><span class="o">))</span>
-
-    <span class="c1">//Paths</span>
-    <span class="k">class</span> <span class="nc">Path</span><span class="o">(</span><span class="n">history</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Move</span><span class="o">]){</span>
-        <span class="k">def</span> <span class="n">endState</span><span class="k">:</span> <span class="kt">state</span>
-    <span class="o">}</span>
+<p>Other components can be constructed by combining these base components.</p>
+<p>The components have a reaction time (or delay), i.e. their outputs don’t change immediately after a change to their inputs.</p>
+<p>We describe the elements of a digital circuit using the following Scala classes and functions.</p>
+<p>To start with, the class <code class="docutils literal notranslate"><span class="pre">Wire</span></code> models wires.</p>
+<p>Wires can be constructed as follows:</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">a</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Wire</span><span class="o">;</span> <span class="k">val</span> <span class="n">b</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Wire</span><span class="o">;</span> <span class="k">val</span> <span class="n">c</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Wire</span>
+</pre></div>
+</div>
+<p>or, equivalently:</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">,</span> <span class="n">c</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Wire</span>
+</pre></div>
+</div>
+<p>Then, there are the following functions. Each has a side effect that creates
+a gate.</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">inverter</span><span class="o">(</span><span class="n">input</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">,</span> <span class="n">output</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span>
+<span class="k">def</span> <span class="n">andGate</span><span class="o">(</span><span class="n">a1</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">,</span> <span class="n">a2</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">,</span> <span class="n">output</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span>
+<span class="k">def</span> <span class="n">orGate</span><span class="o">(</span><span class="n">o1</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">,</span> <span class="n">o2</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">,</span> <span class="n">output</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span>
+</pre></div>
+</div>
+<p>For example, a half-adder can be defined as follows:</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">halfAdder</span><span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">,</span> <span class="n">b</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">,</span> <span class="n">s</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">,</span> <span class="n">c</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+<span class="k">val</span> <span class="n">d</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Wire</span>
+<span class="k">val</span> <span class="n">e</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Wire</span>
+<span class="n">orGate</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">,</span> <span class="n">d</span><span class="o">)</span>
+<span class="n">andGate</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">,</span> <span class="n">c</span><span class="o">)</span>
+<span class="n">inverter</span><span class="o">(</span><span class="n">c</span><span class="o">,</span> <span class="n">e</span><span class="o">)</span>
+<span class="n">andGate</span><span class="o">(</span><span class="n">d</span><span class="o">,</span> <span class="n">e</span><span class="o">,</span> <span class="n">s</span><span class="o">)</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>This half-adder can in turn be used to define a full adder:</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">fullAdder</span><span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">,</span> <span class="n">b</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">,</span> <span class="n">cin</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">,</span> <span class="n">sum</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">,</span> <span class="n">cout</span><span class="k">:</span> <span class="kt">Wire</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+<span class="k">val</span> <span class="n">s</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Wire</span>
+<span class="k">val</span> <span class="n">c1</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Wire</span>
+<span class="k">val</span> <span class="n">c2</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Wire</span>
+<span class="n">halfAdder</span><span class="o">(</span><span class="n">b</span><span class="o">,</span> <span class="n">cin</span><span class="o">,</span> <span class="n">s</span><span class="o">,</span> <span class="n">c1</span><span class="o">)</span>
+<span class="n">halfAdder</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">s</span><span class="o">,</span> <span class="n">sum</span><span class="o">,</span> <span class="n">c2</span><span class="o">)</span>
+<span class="n">orGate</span><span class="o">(</span><span class="n">c1</span><span class="o">,</span> <span class="n">c2</span><span class="o">,</span> <span class="n">cout</span><span class="o">)</span>
 <span class="o">}</span>
 </pre></div>
 </div>
@@ -449,16 +471,16 @@ Let’s generalize the problem. We have <code class="docutils literal notranslat
         },
         codeMirrorConfig: {
             theme: "abcdef",
-            mode: "python"
+            mode: "scala"
         },
         kernelOptions: {
-            kernelName: "python3",
-            path: "./fpds/week2"
+            kernelName: "scala",
+            path: "./fpds/week4"
         },
         predefinedOutput: true
     }
     </script>
-    <script>kernelName = 'python3'</script>
+    <script>kernelName = 'scala'</script>
 
               </div>
               
@@ -468,8 +490,8 @@ Let’s generalize the problem. We have <code class="docutils literal notranslat
     
     <div class='prev-next-bottom'>
         
-    <a class='left-prev' id="prev-link" href="week2_1.html" title="previous page"><span class="section-number">5. </span>Streams</a>
-    <a class='right-next' id="next-link" href="../week3/week3_1.html" title="next page"><span class="section-number">7. </span>Type-Directed Programming</a>
+    <a class='left-prev' id="prev-link" href="week4_3.html" title="previous page"><span class="section-number">12. </span>Loops</a>
+    <a class='right-next' id="next-link" href="week4_5.html" title="next page"><span class="section-number">14. </span>Discrete Event Simulation: API and Usage</a>
 
     </div>
     <footer class="footer mt-5 mt-md-0">
