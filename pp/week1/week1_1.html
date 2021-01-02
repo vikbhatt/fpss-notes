@@ -1,0 +1,793 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>1. Parallelism on JVM I &#8212; Functional Programming in Scala Specialization -- Complied Notes</title>
+    
+  <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../../_static/sphinx-book-theme.40e2e510f6b7d1648584402491bb10fe.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script async="async" kind="hypothesis" src="https://hypothes.is/embed.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="2. Parallelism on the JVM II" href="week1_2.html" />
+    <link rel="prev" title="18. A Simple FRP Implementation" href="../../fpds/week5/week5_3.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../../index.html">
+  
+  <img src="../../_static/logo.png" class="logo" alt="logo">
+  
+  
+  <h1 class="site-logo" id="site-title">Functional Programming in Scala Specialization -- Complied Notes</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../intro.html">
+   Functional Programming in Scala Specialization
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Functional Programming Principles in Scala
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week1/intro.html">
+   1. Introduction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week1/week1_1.html">
+   2. Imperative vs Functional Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week1/week1_2.html">
+   3. Expressions and Evaluation model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week1/week1_3.html">
+   4. Tail Recursion
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week1/week1_4.html">
+   5. Exercise Session
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week2/week2_1.html">
+   6. Higher Order Functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week2/week2_2.html">
+   7. Class and Objects
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week3/week3_1.html">
+   8. Class Hierarchies
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week3/week3_2.html">
+   9. How classes are organized?
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week3/week3_3.html">
+   10. Polymorphism
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week4/week4_1.html">
+   11. Objects Everywhere
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week4/week4_2.html">
+   12. Functions as objects
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week4/week4_3.html">
+   13. Subtyping and Generics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week4/week4_4.html">
+   14. Variance
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week4/week4_5.html">
+   15. Decomposition
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week4/week4_6.html">
+   16. Pattern Matching
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week5/week5_1.html">
+   17. Lists
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week5/week5_2.html">
+   18. Pairs and Tuples
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week5/week5_3.html">
+   19. Higher Order List Functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week6/week6_1.html">
+   20. Other Collections
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week6/week6_2.html">
+   21. Combinatorial Search and For-Expressions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week6/week6_3.html">
+   22. Combinatorial Search Example
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week6/week6_4.html">
+   23. Maps
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week6/week6_5.html">
+   24. Putting Pieces Together
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Functional Program Design in Scala
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week1/week1_1.html">
+   1. Recap Functions and Pattern Matching
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week1/week1_2.html">
+   2. Recap: Collections
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week1/week1_3.html">
+   3. Functional Random Generators
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week1/week1_4.html">
+   4. Monads
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week2/week2_1.html">
+   5. Streams
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week2/week2_2.html">
+   6. Case Study: The Water Pouring Problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week3/week3_1.html">
+   7. Type-Directed Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week3/week3_2.html">
+   8. Type Classes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week3/week3_3.html">
+   9. Implicit Conversions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week4/week4_1.html">
+   10. Functions and State
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week4/week4_2.html">
+   11. Identity and Change
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week4/week4_3.html">
+   12. Loops
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week4/week4_4.html">
+   13. Discrete Event Simulation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week4/week4_5.html">
+   14. Discrete Event Simulation: API and Usage
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week4/week4_6.html">
+   15. Discrete Event Simulation: Implementation and Test
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week5/week5_1.html">
+   16. Imperative Event Handling: The Observer Pattern
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week5/week5_2.html">
+   17. Functional Reactive Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week5/week5_3.html">
+   18. A Simple FRP Implementation
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Parallel Programming
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   1. Parallelism on JVM I
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="week1_2.html">
+   2. Parallelism on the JVM II
+  </a>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/pp/week1/week1_1.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+        <!-- Source interaction buttons -->
+
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                title="Fullscreen mode"><i
+                    class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/pp/week1/week1_1.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+    </div>
+
+    <!-- Table of contents -->
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="parallelism-on-jvm-i">
+<h1><span class="section-number">1. </span>Parallelism on JVM I<a class="headerlink" href="#parallelism-on-jvm-i" title="Permalink to this headline">¶</a></h1>
+<p>In this lecture, we study basic primitives used to express parallel computation on JVM. The are many forms of parallelism.</p>
+<ul class="simple">
+<li><p>GPU</p></li>
+<li><p>Custom Parallel Hardware</p></li>
+<li><p>Muti-core CPU</p></li>
+<li><p>Multi processors</p></li>
+<li><p>Distributed systems</p></li>
+</ul>
+<p>We study a specific parallel programming environment, but we strive to be general. The ideas and algorithms you see generalize to other models easily.</p>
+<p><strong>Our parallel programming model assumption</strong></p>
+<ul class="simple">
+<li><p><strong>Multicore or multiprocessor system with shared memory.</strong></p></li>
+<li><p><strong>Our programs run on JVM runtime, which executes on top of an operating system</strong></p></li>
+</ul>
+<p>Operating system – software that manages hardware and software
+resources, and schedules program execution.</p>
+<p>Process – an instance of a program that is executing in the OS.</p>
+<p>The same program can be started as a process more than once, or even
+simultaneously in the same OS.</p>
+<p>Each time a process is started, while it executes,the operation systems assign it some resources, execution time on CPU, file handler, or network ports etc,.</p>
+<p>Each process is assigned unique idenitifier.</p>
+<p>A process is most coarse grained unit of concurrency on a shared memory system.</p>
+<p>The operating system multiplexes many different processes and a limited number of CPUs, so that they get <em>time slices</em> of execution. This mechanism is called <em>multitasking</em>.</p>
+<p>Two different processes cannot access each other’s memory directly – they are isolated. For us it means, processes cannot easily communicate. While operating system primitives like pipes, allow two processes to exchange information, interprocess communication is not usually straight forward.</p>
+<p>We therefore have more fine grained programming primitive.</p>
+<p>Each process can contain multiple independent concurrency units called
+<strong>threads</strong>.</p>
+<p>Threads can be started from within the same program, and they share the same memory address space.</p>
+<p>Each thread has a program counter and a program stack. The program stack is a region of memory that sequence of method invocations currently being executed. Program counter describes the current position in the program method.</p>
+<p>JVM threads cannot modify each other’s stack memory. Stack entries which correspond to local entries, which are accessible to the thread that owns the stack. They can only modify the heap memory. To communicate JVM threads must modify heap memory.</p>
+<p>Each JVM process starts with a main thread. This thread executes the main method of Scala program. In normal sequential program, we use only main thread to execute the program. However in parallel program we must multiple threads, and the operating system assigns it to the available CPU.</p>
+<p>To start additional threads:</p>
+<ol class="simple">
+<li><p>Define a <code class="docutils literal notranslate"><span class="pre">Thread</span> </code>subclass.</p></li>
+<li><p>Instantiate a <code class="docutils literal notranslate"><span class="pre">new</span> <span class="pre">Thread</span></code> object.</p></li>
+<li><p>Call <code class="docutils literal notranslate"><span class="pre">start</span></code> on the <code class="docutils literal notranslate"><span class="pre">Thread</span></code> object.</p></li>
+</ol>
+<p>The <code class="docutils literal notranslate"><span class="pre">Thread</span></code> subclass defines the code that the thread will execute. The same custom <code class="docutils literal notranslate"><span class="pre">Thread</span></code> subclass can be used to start multiple threads.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">HelloThread</span> <span class="k">extends</span> <span class="nc">Thread</span> <span class="o">{</span>
+<span class="k">override</span> <span class="k">def</span> <span class="n">run</span><span class="o">()</span> <span class="o">{</span>
+<span class="n">println</span><span class="o">(</span><span class="s">&quot;Hello world!&quot;</span><span class="o">)</span>
+<span class="o">}</span>
+<span class="o">}</span>
+<span class="k">val</span> <span class="n">t</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HelloThread</span>
+<span class="n">t</span><span class="o">.</span><span class="n">start</span><span class="o">()</span>
+<span class="n">t</span><span class="o">.</span><span class="n">join</span><span class="o">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Hello world!
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>defined <span class=" -Color -Color-Green">class</span> <span class=" -Color -Color-Cyan">HelloThread</span>
+<span class=" -Color -Color-Cyan">t</span>: <span class=" -Color -Color-Green">HelloThread</span> = Thread[Thread-0,5,]
+</pre></div>
+</div>
+</div>
+</div>
+<p>When main thread encounters <code class="docutils literal notranslate"><span class="pre">t.start()</span></code> it starts a new thread of type <code class="docutils literal notranslate"><span class="pre">HelloThread</span></code>. The two threads then execute in parallel. When the main thread calls join, it halts it execution untill <code class="docutils literal notranslate"><span class="pre">HelloThread</span></code> completes. After the completion of <code class="docutils literal notranslate"><span class="pre">HelloThread</span></code> execution, the main thread can proceed.</p>
+<p>Let’s do another experimen. Define a new <code class="docutils literal notranslate"><span class="pre">HelloThread</span></code> like this.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">HelloThread</span> <span class="k">extends</span> <span class="nc">Thread</span> <span class="o">{</span>
+<span class="k">override</span> <span class="k">def</span> <span class="n">run</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span>  <span class="o">{</span>
+<span class="n">println</span><span class="o">(</span><span class="s">&quot;Hello&quot;</span><span class="o">)</span> 
+<span class="n">println</span><span class="o">(</span><span class="s">&quot;world!&quot;</span><span class="o">)</span>
+<span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>defined <span class=" -Color -Color-Green">class</span> <span class=" -Color -Color-Cyan">HelloThread</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s run two <code class="docutils literal notranslate"><span class="pre">HelloThread</span></code> in parallel.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">main</span><span class="o">()</span><span class="k">:</span><span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+ <span class="k">val</span> <span class="n">t</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HelloThread</span>
+ <span class="k">val</span> <span class="n">s</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HelloThread</span>
+ <span class="n">t</span><span class="o">.</span><span class="n">start</span><span class="o">()</span>
+ <span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="o">()</span>
+ <span class="n">t</span><span class="o">.</span><span class="n">join</span><span class="o">()</span>
+ <span class="n">s</span><span class="o">.</span><span class="n">join</span><span class="o">()</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>defined <span class=" -Color -Color-Green">function</span> <span class=" -Color -Color-Cyan">main</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s run the <code class="docutils literal notranslate"><span class="pre">main</span></code> method several times.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="n">main</span><span class="o">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Hello
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Hello
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>world!
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>world!
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="n">main</span><span class="o">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Hello
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>world!
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Hello
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>world!
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Above demo shows two different statements executing in two threads, can overlap aribtarly. Sometimes, we would like to ensure sequence of statements to execute once as if they are one statements. Here we want to make sure two such sequences in two different threads cannot overlap. Either <code class="docutils literal notranslate"><span class="pre">t</span></code> or <code class="docutils literal notranslate"><span class="pre">s</span></code> executes all of its statements first. In cocurrent programming we call this atomicity.</p>
+<ul class="simple">
+<li><p>The previous demo showed that separate statements in two threads can overlap.</p></li>
+<li><p>In some cases, we want to ensure that a sequence of statements in a specific thread executes at once.</p></li>
+<li><p>An operation is atomic if it appears as if it occurred instantaneously from the point of view of other threads.</p></li>
+</ul>
+<p>In order to see why atomicity is important, let’s demo.</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">private</span> <span class="k">var</span> <span class="n">uidCount</span> <span class="o">=</span> <span class="mi">0L</span>
+<span class="k">def</span> <span class="n">getUniqueId</span><span class="o">()</span><span class="k">:</span> <span class="kt">Long</span> <span class="o">=</span> <span class="o">{</span>
+<span class="n">uidCount</span> <span class="o">=</span> <span class="n">uidCount</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">uidCount</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>When a thread calls <code class="docutils literal notranslate"><span class="pre">getUniqueId()</span></code> the value it gets is not returned to any other thread.</p>
+<p>We define a new method that starts a new thread that uses <code class="docutils literal notranslate"><span class="pre">getUniqueId()</span></code>.</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">startThread</span><span class="o">()</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">t</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Thread</span>
+    <span class="k">override</span> <span class="k">def</span> <span class="n">run</span><span class="o">()</span> <span class="o">=</span> <span class="o">{</span>
+        <span class="k">val</span> <span class="n">uids</span> <span class="o">=</span> <span class="k">for</span><span class="o">(</span><span class="n">i</span> <span class="o">&lt;-</span> <span class="mi">1</span> <span class="n">to</span> <span class="mi">10</span><span class="o">)</span> <span class="k">yield</span> <span class="n">getUniqueId</span><span class="o">()</span>
+        <span class="n">println</span><span class="o">(</span><span class="n">uids</span><span class="o">)</span>
+    <span class="o">}</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">start</span><span class="o">()</span>
+    <span class="n">t</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>We start two such threads and see what happens.</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="n">startThread</span><span class="o">()</span>
+<span class="n">startThread</span><span class="o">()</span>
+</pre></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">private</span> <span class="k">var</span> <span class="n">uidCount</span> <span class="o">=</span> <span class="mi">0L</span>
+<span class="k">def</span> <span class="n">getUniqueId</span><span class="o">()</span><span class="k">:</span> <span class="kt">Long</span> <span class="o">=</span> <span class="o">{</span>
+<span class="n">uidCount</span> <span class="o">=</span> <span class="n">uidCount</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">uidCount</span>
+<span class="o">}</span>
+<span class="k">def</span> <span class="n">startThread</span><span class="o">()</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">t</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Thread</span><span class="o">{</span>
+    <span class="k">override</span> <span class="k">def</span> <span class="n">run</span><span class="o">()</span> <span class="o">=</span> <span class="o">{</span>
+        <span class="k">val</span> <span class="n">uids</span> <span class="o">=</span> <span class="k">for</span><span class="o">(</span><span class="n">i</span> <span class="o">&lt;-</span> <span class="mi">1</span> <span class="n">to</span> <span class="mi">10</span><span class="o">)</span> <span class="k">yield</span> <span class="n">getUniqueId</span><span class="o">()</span>
+        <span class="n">println</span><span class="o">(</span><span class="n">uids</span><span class="o">)</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">start</span><span class="o">()</span>
+    <span class="n">t</span>
+<span class="o">}</span>
+<span class="n">startThread</span><span class="o">()</span>
+<span class="n">startThread</span><span class="o">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Vector(1, 2, 3, 5, 7, 9, 11, 13, 15, 17)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Vector(1, 2, 4, 6, 8, 10, 12, 14, 16, 18)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>defined <span class=" -Color -Color-Green">function</span> <span class=" -Color -Color-Cyan">getUniqueId</span>
+defined <span class=" -Color -Color-Green">function</span> <span class=" -Color -Color-Cyan">startThread</span>
+<span class=" -Color -Color-Cyan">res5_3</span>: <span class=" -Color -Color-Green">Thread</span> = Thread[Thread-5,5,main]
+<span class=" -Color -Color-Cyan">res5_4</span>: <span class=" -Color -Color-Green">Thread</span> = Thread[Thread-6,5,main]
+</pre></div>
+</div>
+</div>
+</div>
+<p>The numbers obtained the two threads are not at all unique. In particular 1,9 repeats itself. The <code class="docutils literal notranslate"><span class="pre">getUniqueID()</span></code> does not execute atomic fashion. Seperate statements in its body can interleave arbitrarly when executing on different processes. As a consequence invocation of <code class="docutils literal notranslate"><span class="pre">getUniqueId</span></code> do not return unique values.</p>
+<p>A thread could read <code class="docutils literal notranslate"><span class="pre">uidCount</span></code> and adds 1 to it. But before the actuall assignment takes place, the second thread does the same thing. If both thread execute the assignment, they will both try to write value 1 back into <code class="docutils literal notranslate"><span class="pre">uidCount</span></code> as a result they both return 1.</p>
+<p>Scala and Java achieve atomicity by using synchronized block. Code block after a synchronized call on object x is never executed by two threads at the same time.
+JVM ensures this by storing monitor on each object. Atmost one thread can own a monitor at a time. For example if  thread <code class="docutils literal notranslate"><span class="pre">T0</span></code> owns a monitor on object <code class="docutils literal notranslate"><span class="pre">x</span></code>, another <code class="docutils literal notranslate"><span class="pre">T1</span></code> thread cannot acquire the monitor before <code class="docutils literal notranslate"><span class="pre">T0</span></code> releases it.</p>
+<p><code class="docutils literal notranslate"><span class="pre">synchronized</span></code> method must be invoked on some object. Let’s see a demo.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">private</span> <span class="k">val</span> <span class="n">x</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">AnyRef</span> <span class="o">{}</span>
+<span class="k">private</span> <span class="k">var</span> <span class="n">uidCount</span> <span class="o">=</span> <span class="mi">0L</span>
+<span class="k">def</span> <span class="n">getUniqueId</span><span class="o">()</span><span class="k">:</span> <span class="kt">Long</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">synchronized</span><span class="o">{</span>
+<span class="n">uidCount</span> <span class="o">=</span> <span class="n">uidCount</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">uidCount</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>defined <span class=" -Color -Color-Green">function</span> <span class=" -Color -Color-Cyan">getUniqueId</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The method <code class="docutils literal notranslate"><span class="pre">getUniqueId</span></code> is surrounded by synchronized block on object <code class="docutils literal notranslate"><span class="pre">x</span></code>. To verify atomicity,</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">startThread</span><span class="o">()</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">t</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Thread</span><span class="o">{</span>
+    <span class="k">override</span> <span class="k">def</span> <span class="n">run</span><span class="o">()</span> <span class="o">=</span> <span class="o">{</span>
+        <span class="k">val</span> <span class="n">uids</span> <span class="o">=</span> <span class="k">for</span><span class="o">(</span><span class="n">i</span> <span class="o">&lt;-</span> <span class="mi">1</span> <span class="n">to</span> <span class="mi">10</span><span class="o">)</span> <span class="k">yield</span> <span class="n">getUniqueId</span><span class="o">()</span>
+        <span class="n">println</span><span class="o">(</span><span class="n">uids</span><span class="o">)</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">start</span><span class="o">()</span>
+    <span class="n">t</span>
+<span class="o">}</span>
+<span class="n">startThread</span><span class="o">()</span>
+<span class="n">startThread</span><span class="o">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Vector(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Vector(11, 12, 13, 14, 15, 16, 17, 18, 19, 20)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>defined <span class=" -Color -Color-Green">function</span> <span class=" -Color -Color-Cyan">startThread</span>
+<span class=" -Color -Color-Cyan">res7_1</span>: <span class=" -Color -Color-Green">Thread</span> = Thread[Thread-7,5,main]
+<span class=" -Color -Color-Cyan">res7_2</span>: <span class=" -Color -Color-Green">Thread</span> = Thread[Thread-8,5,]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we get unique ids.</p>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "scala"
+        },
+        kernelOptions: {
+            kernelName: "scala",
+            path: "./pp/week1"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'scala'</script>
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+    <a class='left-prev' id="prev-link" href="../../fpds/week5/week5_3.html" title="previous page"><span class="section-number">18. </span>A Simple FRP Implementation</a>
+    <a class='right-next' id="next-link" href="week1_2.html" title="next page"><span class="section-number">2. </span>Parallelism on the JVM II</a>
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Vikram Bhatt<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="../../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    
+  </body>
+</html>
