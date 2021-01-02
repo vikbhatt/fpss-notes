@@ -59,6 +59,7 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="3. Running Computations in Parallel" href="week1_3.html" />
     <link rel="prev" title="1. Parallelism on JVM I" href="week1_1.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -336,6 +337,11 @@
    2. Parallelism on the JVM II
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="week1_3.html">
+   3. Running Computations in Parallel
+  </a>
+ </li>
 </ul>
 
 </nav> <!-- To handle the deprecated key -->
@@ -418,6 +424,20 @@
     <!-- Table of contents -->
     <div class="d-none d-md-block col-md-2 bd-toc show">
         
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#memory-model">
+   2.1. Memory Model
+  </a>
+ </li>
+</ul>
+
+        </nav>
+        
     </div>
 </div>
     <div id="main-content" class="row">
@@ -427,14 +447,152 @@
                 
   <div class="section" id="parallelism-on-the-jvm-ii">
 <h1><span class="section-number">2. </span>Parallelism on the JVM II<a class="headerlink" href="#parallelism-on-the-jvm-ii" title="Permalink to this headline">¶</a></h1>
-<p>The synchronized block is an example of a synchronization primitive. A construct that allows threads to exchange information. Importantly, multiple</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Here is a note</p>
+<p>The synchronized block is an example of a synchronization primitive. A construct that allows threads to exchange information. Importantly, multiple synchronized blocks can compose.</p>
+<p>Invocations of the synchronized block can nest.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Account</span><span class="o">(</span><span class="k">private</span> <span class="k">var</span> <span class="n">amount</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+<span class="k">def</span> <span class="n">transfer</span><span class="o">(</span><span class="n">target</span><span class="k">:</span> <span class="kt">Account</span><span class="o">,</span> <span class="n">n</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="o">=</span>
+<span class="k">this</span><span class="o">.</span><span class="n">synchronized</span> <span class="o">{</span>
+<span class="n">target</span><span class="o">.</span><span class="n">synchronized</span> <span class="o">{</span>
+<span class="k">this</span><span class="o">.</span><span class="n">amount</span> <span class="o">-=</span> <span class="n">n</span>
+<span class="n">target</span><span class="o">.</span><span class="n">amount</span> <span class="o">+=</span> <span class="n">n</span>
+<span class="o">}</span>
+<span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
 </div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Here is a note!</p>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>defined <span class=" -Color -Color-Green">class</span> <span class=" -Color -Color-Cyan">Account</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Account</span></code> class has method <code class="docutils literal notranslate"><span class="pre">transfer</span></code> which is used to transfer some amount to target account. Many invocations of transfer could occur in parallel.</p>
+<p>To implement transfer method, you donot want to have single global synchronized block. This is bottleneck for parallelism, especially many transfers occur in parallel.</p>
+<p>Instead we use more fine grained synchronization, specifically we use synchronized block on source and target account, this will make sure code in nested block is executed atomic, both for the threads using the source account, <code class="docutils literal notranslate"><span class="pre">this</span></code>, and threads using the target account.</p>
+<p>For example a thread running the transfer method, first obtains the monitor on the account <code class="docutils literal notranslate"><span class="pre">A1</span></code> and then account <code class="docutils literal notranslate"><span class="pre">A2</span></code> and then transfer the money. In parallel another thread can do same thing for accounts <code class="docutils literal notranslate"><span class="pre">A3</span></code> and <code class="docutils literal notranslate"><span class="pre">A4</span></code>.</p>
+<p>Let’s see a demo.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">startThread</span><span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">Account</span><span class="o">,</span> <span class="n">b</span><span class="k">:</span> <span class="kt">Account</span><span class="o">,</span> <span class="n">n</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)={</span>
+    <span class="k">val</span> <span class="n">t</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Thread</span><span class="o">{</span>
+        <span class="k">override</span> <span class="k">def</span> <span class="n">run</span><span class="o">()</span> <span class="o">=</span> <span class="o">{</span>
+            <span class="k">for</span><span class="o">(</span><span class="n">i</span> <span class="o">&lt;-</span> <span class="mi">0</span> <span class="n">until</span> <span class="n">n</span> <span class="o">){</span>
+                <span class="n">a</span><span class="o">.</span><span class="n">transfer</span><span class="o">(</span><span class="n">b</span><span class="o">,</span> <span class="mi">1</span><span class="o">)</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">start</span><span class="o">()</span>
+    <span class="n">t</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>defined <span class=" -Color -Color-Green">function</span> <span class=" -Color -Color-Cyan">startThread</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">a1</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Account</span><span class="o">(</span><span class="mi">50000</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">a2</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Account</span><span class="o">(</span><span class="mi">70000</span><span class="o">)</span>
+
+<span class="k">val</span> <span class="n">t</span> <span class="o">=</span> <span class="n">startThread</span><span class="o">(</span><span class="n">a1</span><span class="o">,</span> <span class="n">a2</span><span class="o">,</span> <span class="mi">15000</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">s</span> <span class="o">=</span> <span class="n">startThread</span><span class="o">(</span><span class="n">a2</span><span class="o">,</span> <span class="n">a1</span><span class="o">,</span> <span class="mi">15000</span><span class="o">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Cyan">a1</span>: <span class=" -Color -Color-Green">Account</span> = ammonite.$sess.cmd0$Helper$Account@142980e
+<span class=" -Color -Color-Cyan">a2</span>: <span class=" -Color -Color-Green">Account</span> = ammonite.$sess.cmd0$Helper$Account@102e0f7
+<span class=" -Color -Color-Cyan">t</span>: <span class=" -Color -Color-Green">Thread</span> = Thread[Thread-0,5,main]
+<span class=" -Color -Color-Cyan">s</span>: <span class=" -Color -Color-Green">Thread</span> = Thread[Thread-1,5,main]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="n">t</span><span class="o">.</span><span class="n">join</span><span class="o">()</span>
+<span class="n">s</span><span class="o">.</span><span class="n">join</span><span class="o">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This program never completes, because thread <code class="docutils literal notranslate"><span class="pre">t</span></code> and <code class="docutils literal notranslate"><span class="pre">s</span></code> never completes so join blocks the main thread.</p>
+<p>But Why?</p>
+<blockquote>
+<div><p><strong>Deadlock</strong> is a scenario in which two or more threads compete for resources (such as monitor ownership), and wait for each to finish without releasing the already acquired resources.</p>
+</div></blockquote>
+<p>In our case, after having created two accounts</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">a</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Account</span><span class="o">(</span><span class="mi">50</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">b</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Account</span><span class="o">(</span><span class="mi">70</span><span class="o">)</span>
+
+<span class="c1">//thread T1</span>
+<span class="n">a</span><span class="o">.</span><span class="n">transfer</span><span class="o">(</span><span class="n">b</span><span class="o">,</span><span class="mi">10</span><span class="o">)</span>
+
+<span class="c1">//thread T2</span>
+<span class="n">b</span><span class="o">.</span><span class="n">transfer</span><span class="o">(</span><span class="n">a</span><span class="o">,</span><span class="mi">10</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>two seprate threads invoke transfer methods but in reverse order. In first case source account <code class="docutils literal notranslate"><span class="pre">a</span></code> and second case source account <code class="docutils literal notranslate"><span class="pre">b</span></code>. The two threads start the synchronized statement on these accounts in different order. The first thread enter on syncrhonized block <code class="docutils literal notranslate"><span class="pre">a</span></code> and second thread enter synchronized block on <code class="docutils literal notranslate"><span class="pre">b</span></code>. At this point, the first thread blocks untill monitor on object <code class="docutils literal notranslate"><span class="pre">b</span></code> becomes available and vice versa.</p>
+<p>Neither thread makes progress so deadlock occurs.</p>
+<p>How to resolve deadlocks?</p>
+<p>One approach is to always acquire resources in the same order.</p>
+<p>This assumes an ordering relationship on the resources.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">private</span> <span class="k">val</span> <span class="n">x</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">AnyRef</span> <span class="o">{}</span>
+<span class="k">private</span> <span class="k">var</span> <span class="n">uidCount</span> <span class="o">=</span> <span class="mi">0L</span>
+<span class="k">def</span> <span class="n">getUniqueId</span><span class="o">()</span><span class="k">:</span> <span class="kt">Long</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">synchronized</span><span class="o">{</span>
+<span class="n">uidCount</span> <span class="o">=</span> <span class="n">uidCount</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">uidCount</span>
+<span class="o">}</span>
+
+<span class="k">class</span> <span class="nc">Account</span><span class="o">(</span><span class="k">private</span> <span class="k">var</span> <span class="n">amount</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+
+<span class="k">val</span> <span class="n">uid</span> <span class="o">=</span> <span class="n">getUniqueId</span><span class="o">()</span>
+<span class="k">private</span> <span class="k">def</span> <span class="n">lockAndTransfer</span><span class="o">(</span><span class="n">target</span><span class="k">:</span> <span class="kt">Account</span><span class="o">,</span> <span class="n">n</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="o">=</span>
+<span class="k">this</span><span class="o">.</span><span class="n">synchronized</span> <span class="o">{</span>
+<span class="n">target</span><span class="o">.</span><span class="n">synchronized</span> <span class="o">{</span>
+<span class="k">this</span><span class="o">.</span><span class="n">amount</span> <span class="o">-=</span> <span class="n">n</span>
+<span class="n">target</span><span class="o">.</span><span class="n">amount</span> <span class="o">+=</span> <span class="n">n</span>
+<span class="o">}</span>
+<span class="o">}</span>    
+<span class="k">def</span> <span class="n">transfer</span><span class="o">(</span><span class="n">target</span><span class="k">:</span> <span class="kt">Account</span><span class="o">,</span> <span class="n">n</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="o">=</span>
+<span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="n">uid</span> <span class="o">&lt;</span> <span class="n">target</span><span class="o">.</span><span class="n">uid</span><span class="o">)</span> <span class="k">this</span><span class="o">.</span><span class="n">lockAndTransfer</span><span class="o">(</span><span class="n">target</span><span class="o">,</span> <span class="n">n</span><span class="o">)</span>
+<span class="k">else</span> <span class="n">target</span><span class="o">.</span><span class="n">lockAndTransfer</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="o">-</span><span class="n">n</span><span class="o">)</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>defined <span class=" -Color -Color-Green">function</span> <span class=" -Color -Color-Cyan">getUniqueId</span>
+defined <span class=" -Color -Color-Green">class</span> <span class=" -Color -Color-Cyan">Account</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In case the target uid is larget than current account uid, negative amount is transfered, to the source account.</p>
+<div class="section" id="memory-model">
+<h2><span class="section-number">2.1. </span>Memory Model<a class="headerlink" href="#memory-model" title="Permalink to this headline">¶</a></h2>
+<p>Memory model is a set of rules that describes how threads interact when accessing shared memory.</p>
+<p>Java Memory Model – the memory model for the JVM.</p>
+<ol class="simple">
+<li><p>Two threads writing to separate locations in memory do not need synchronization.</p></li>
+<li><p>A thread X that calls join on another thread Y is guaranteed to
+observe all the writes by thread Y after join returns.</p></li>
+</ol>
+<p>The parallelism constructs in the remainder of the course are implemented in terms of:</p>
+<ul class="simple">
+<li><p>threads</p></li>
+<li><p>synchronization primitives such as synchronized</p></li>
+</ul>
+<p>It is important to know what’s under the hood!</p>
 </div>
 </div>
 
@@ -467,6 +625,7 @@
     <div class='prev-next-bottom'>
         
     <a class='left-prev' id="prev-link" href="week1_1.html" title="previous page"><span class="section-number">1. </span>Parallelism on JVM I</a>
+    <a class='right-next' id="next-link" href="week1_3.html" title="next page"><span class="section-number">3. </span>Running Computations in Parallel</a>
 
     </div>
     <footer class="footer mt-5 mt-md-0">

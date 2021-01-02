@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>1. Introduction &#8212; Functional Programming in Scala Specialization -- Complied Notes</title>
+    <title>3. Running Computations in Parallel &#8212; Functional Programming in Scala Specialization -- Complied Notes</title>
     
   <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
 
@@ -59,8 +59,7 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="2. Imperative vs Functional Programming" href="week1_1.html" />
-    <link rel="prev" title="Functional Programming in Scala Specialization" href="../../intro.html" />
+    <link rel="prev" title="2. Parallelism on the JVM II" href="week1_2.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -102,124 +101,124 @@
   Functional Programming Principles in Scala
  </span>
 </p>
-<ul class="current nav sidenav_l1">
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week1/intro.html">
    1. Introduction
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="week1_1.html">
+  <a class="reference internal" href="../../fpps/week1/week1_1.html">
    2. Imperative vs Functional Programming
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="week1_2.html">
+  <a class="reference internal" href="../../fpps/week1/week1_2.html">
    3. Expressions and Evaluation model
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="week1_3.html">
+  <a class="reference internal" href="../../fpps/week1/week1_3.html">
    4. Tail Recursion
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="week1_4.html">
+  <a class="reference internal" href="../../fpps/week1/week1_4.html">
    5. Exercise Session
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../week2/week2_1.html">
+  <a class="reference internal" href="../../fpps/week2/week2_1.html">
    6. Higher Order Functions
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../week2/week2_2.html">
+  <a class="reference internal" href="../../fpps/week2/week2_2.html">
    7. Class and Objects
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../week3/week3_1.html">
+  <a class="reference internal" href="../../fpps/week3/week3_1.html">
    8. Class Hierarchies
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../week3/week3_2.html">
+  <a class="reference internal" href="../../fpps/week3/week3_2.html">
    9. How classes are organized?
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../week3/week3_3.html">
+  <a class="reference internal" href="../../fpps/week3/week3_3.html">
    10. Polymorphism
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../week4/week4_1.html">
+  <a class="reference internal" href="../../fpps/week4/week4_1.html">
    11. Objects Everywhere
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../week4/week4_2.html">
+  <a class="reference internal" href="../../fpps/week4/week4_2.html">
    12. Functions as objects
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../week4/week4_3.html">
+  <a class="reference internal" href="../../fpps/week4/week4_3.html">
    13. Subtyping and Generics
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../week4/week4_4.html">
+  <a class="reference internal" href="../../fpps/week4/week4_4.html">
    14. Variance
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../week4/week4_5.html">
+  <a class="reference internal" href="../../fpps/week4/week4_5.html">
    15. Decomposition
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../week4/week4_6.html">
+  <a class="reference internal" href="../../fpps/week4/week4_6.html">
    16. Pattern Matching
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../week5/week5_1.html">
+  <a class="reference internal" href="../../fpps/week5/week5_1.html">
    17. Lists
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../week5/week5_2.html">
+  <a class="reference internal" href="../../fpps/week5/week5_2.html">
    18. Pairs and Tuples
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../week5/week5_3.html">
+  <a class="reference internal" href="../../fpps/week5/week5_3.html">
    19. Higher Order List Functions
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../week6/week6_1.html">
+  <a class="reference internal" href="../../fpps/week6/week6_1.html">
    20. Other Collections
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../week6/week6_2.html">
+  <a class="reference internal" href="../../fpps/week6/week6_2.html">
    21. Combinatorial Search and For-Expressions
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../week6/week6_3.html">
+  <a class="reference internal" href="../../fpps/week6/week6_3.html">
    22. Combinatorial Search Example
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../week6/week6_4.html">
+  <a class="reference internal" href="../../fpps/week6/week6_4.html">
    23. Maps
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../week6/week6_5.html">
+  <a class="reference internal" href="../../fpps/week6/week6_5.html">
    24. Putting Pieces Together
   </a>
  </li>
@@ -326,19 +325,19 @@
   Parallel Programming
  </span>
 </p>
-<ul class="nav sidenav_l1">
+<ul class="current nav sidenav_l1">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../pp/week1/week1_1.html">
+  <a class="reference internal" href="week1_1.html">
    1. Parallelism on JVM I
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../../pp/week1/week1_2.html">
+  <a class="reference internal" href="week1_2.html">
    2. Parallelism on the JVM II
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../pp/week1/week1_3.html">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
    3. Running Computations in Parallel
   </a>
  </li>
@@ -382,9 +381,9 @@
         <!-- ipynb file if we had a myst markdown file -->
         
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../../_sources/fpps/week1/intro.md"><button type="button"
+        <a class="dropdown-buttons" href="../../_sources/pp/week1/week1_3.ipynb"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
-                data-placement="left">.md</button></a>
+                data-placement="left">.ipynb</button></a>
         <!-- Download PDF via print -->
         <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
             onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
@@ -402,10 +401,41 @@
 
         <!-- Launch buttons -->
 
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/pp/week1/week1_3.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
     </div>
 
     <!-- Table of contents -->
     <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#main-step-sum-of-powers-of-array-segment">
+   3.1. Main step: sum of powers of array segment
+  </a>
+ </li>
+</ul>
+
+        </nav>
         
     </div>
 </div>
@@ -414,30 +444,27 @@
         
               <div>
                 
-  <div class="section" id="introduction">
-<h1><span class="section-number">1. </span>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
-<p>The objective of course is to learn functional programming from basic principles using Scala. Functional programming  is quite different from imperative programming paradigm (e.g., C, Java).</p>
-<p>Scala provides support for both functional and object oriented programming. Scala has strong static type and inferred system. Scala is interoperable with Java and vice versa, and compiles to Java bytecode, so the executable runs on Java Virtual Machine.<a class="footnote-reference brackets" href="#id4" id="id1">4</a></p>
-<p>The name Scala is portmanteau<a class="footnote-reference brackets" href="#id5" id="id2">5</a> of <strong>scalable</strong> and <strong>language</strong>. Scalability is not necessarily defined as a generic example of high traffic sever with 100000 requests per second or highly available microservices, but Scala can also (See <a class="reference external" href="https://www.playframework.com/">Play!</a>) be used to achieve it.<a class="footnote-reference brackets" href="#id6" id="id3">6</a></p>
-<p>Scala is scalable in the sense:</p>
+  <div class="section" id="running-computations-in-parallel">
+<h1><span class="section-number">3. </span>Running Computations in Parallel<a class="headerlink" href="#running-computations-in-parallel" title="Permalink to this headline">¶</a></h1>
+<p>What would be simplest way to indicate two expression <code class="docutils literal notranslate"><span class="pre">e1</span></code> and <code class="docutils literal notranslate"><span class="pre">e2</span></code> to run in parallel?</p>
+<p><code class="docutils literal notranslate"><span class="pre">parallel(e1,e2)</span></code></p>
+<p>To understand this construct let’s look at an example.</p>
+<p>Given a vector as an array (of integers), compute its <code class="docutils literal notranslate"><span class="pre">p-norm</span></code></p>
+<p>A <code class="docutils literal notranslate"><span class="pre">p-norm</span></code> is a generalization of the notion of length from geometry</p>
+<p>2-norm of a two-dimentional vector <span class="math notranslate nohighlight">\((a1, a2)\)</span> is <span class="math notranslate nohighlight">\({(a1^2 + a2^2)}^{\frac{1}{2}}\)</span></p>
+<p>The p-norm of a vector <span class="math notranslate nohighlight">\((a_1,a_2,\dots,a_n)\)</span> is <span class="math notranslate nohighlight">\((\sum_{i=1}^{n}{|a_i|}^p)^{\frac{1}{p}}\)</span></p>
+<div class="section" id="main-step-sum-of-powers-of-array-segment">
+<h2><span class="section-number">3.1. </span>Main step: sum of powers of array segment<a class="headerlink" href="#main-step-sum-of-powers-of-array-segment" title="Permalink to this headline">¶</a></h2>
+<p>First, solve sequentially the following <code class="docutils literal notranslate"><span class="pre">sumSegment</span></code> problem: given</p>
 <ul class="simple">
-<li><p>It is suitable for scripting purposes, as it is concise and easy because of functional style and type inference. Scala interactive shell (REPL – READ, EVALUATE, PRINT LOOP) would be great place to start.</p></li>
-<li><p>It can be readily used to develop applications because of static type checking and interoperability with Java (hence huge eco system of libraries and community support available to the programmer.)</p></li>
-<li><p>It can be used to develop deploy enterprise level applications, microservices, web servers (Akka Actors concurrency model) and all the cool stuff.</p></li>
-<li><p>It can scale in terms of expressiveness and flexibility of programming models. We want to avoid scaling up data structures word by word (here word means word size of specific processor) but rather conceptually think in terms of theory of collections and their methods. Read <a class="reference internal" href="week1_1.html"><span class="doc std std-doc">here.</span></a></p></li>
+<li><p>an integer array <span class="math notranslate nohighlight">\(a\)</span>, representing our vector</p></li>
+<li><p>a positive double floating point number <span class="math notranslate nohighlight">\(p\)</span></p></li>
+<li><p>two valid indices <span class="math notranslate nohighlight">\(s \leq t\)</span> into the array a
+compute</p></li>
 </ul>
-<hr class="docutils" />
-<dl class="footnote brackets">
-<dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id1">4</a></span></dt>
-<dd><p>https://en.wikipedia.org/wiki/Scala_(programming_language)</p>
-</dd>
-<dt class="label" id="id5"><span class="brackets"><a class="fn-backref" href="#id2">5</a></span></dt>
-<dd><p>a word blending the sounds and combining the meanings of two others, for example motel or brunch.</p>
-</dd>
-<dt class="label" id="id6"><span class="brackets"><a class="fn-backref" href="#id3">6</a></span></dt>
-<dd><p>https://softwareengineering.stackexchange.com/questions/130335/why-is-scala-more-scalable-than-other-languages</p>
-</dd>
-</dl>
+<p><span class="math notranslate nohighlight">\((\sum_{i=s}^{t-1}{|a_i|}^p)^{\frac{1}{p}}\)</span>
+where <span class="math notranslate nohighlight">\(⌊y⌋\)</span> rounds down to an integer</p>
+</div>
 </div>
 
     <script type="text/x-thebe-config">
@@ -449,16 +476,16 @@
         },
         codeMirrorConfig: {
             theme: "abcdef",
-            mode: "python"
+            mode: "scala"
         },
         kernelOptions: {
-            kernelName: "python3",
-            path: "./fpps/week1"
+            kernelName: "scala",
+            path: "./pp/week1"
         },
         predefinedOutput: true
     }
     </script>
-    <script>kernelName = 'python3'</script>
+    <script>kernelName = 'scala'</script>
 
               </div>
               
@@ -468,8 +495,7 @@
     
     <div class='prev-next-bottom'>
         
-    <a class='left-prev' id="prev-link" href="../../intro.html" title="previous page">Functional Programming in Scala Specialization</a>
-    <a class='right-next' id="next-link" href="week1_1.html" title="next page"><span class="section-number">2. </span>Imperative vs Functional Programming</a>
+    <a class='left-prev' id="prev-link" href="week1_2.html" title="previous page"><span class="section-number">2. </span>Parallelism on the JVM II</a>
 
     </div>
     <footer class="footer mt-5 mt-md-0">
