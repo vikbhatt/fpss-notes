@@ -14,3 +14,6 @@ html:
   favicon: images/favicon.ico
   comments:
     hypothesis: true
+
+execute:
+  execute_notebooks: 'off'

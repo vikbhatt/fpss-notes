@@ -2,44 +2,58 @@
 - part: Functional Programming Principles in Scala
   numbered: true
   chapters:
-    - file: fpps\week1\intro
-    - file: fpps\week1\week1_1
-    - file: fpps\week1\week1_2
-    - file: fpps\week1\week1_3
-    - file: fpps\week1\week1_4
-    - file: fpps\week2\week2_1
-    - file: fpps\week2\week2_2
-    - file: fpps\week3\week3_1
-    - file: fpps\week3\week3_2
-    - file: fpps\week3\week3_3
-    - file: fpps\week4\week4_1
-    - file: fpps\week4\week4_2
-    - file: fpps\week4\week4_3
-    - file: fpps\week4\week4_4
-    - file: fpps\week4\week4_5
-    - file: fpps\week4\week4_6
-    - file: fpps\week5\week5_1
-    - file: fpps\week5\week5_2
-    - file: fpps\week5\week5_3
-    - file: fpps\week6\week6_1
-    - file: fpps\week6\week6_2
-    - file: fpps\week6\week6_3
-    - file: fpps\week6\week6_4
-    - file: fpps\week6\week6_5
+    - file: fpps/week1/intro.md
+    - file: fpps/week1/week1_1.md
+    - file: fpps/week1/week1_2.md
+    - file: fpps/week1/week1_3.md
+    - file: fpps/week1/week1_4.md
+    - file: fpps/week2/week2_1.md
+    - file: fpps/week2/week2_2.md
+    - file: fpps/week3/week3_1.md
+    - file: fpps/week3/week3_2.md
+    - file: fpps/week3/week3_3.md
+    - file: fpps/week4/week4_1.md
+    - file: fpps/week4/week4_2.md
+    - file: fpps/week4/week4_3.md
+    - file: fpps/week4/week4_4.md
+    - file: fpps/week4/week4_5.md
+    - file: fpps/week4/week4_6.md
+    - file: fpps/week5/week5_1.md
+    - file: fpps/week5/week5_2.md
+    - file: fpps/week5/week5_3.md
+    - file: fpps/week6/week6_1.md
+    - file: fpps/week6/week6_2.ipynb
+    - file: fpps/week6/week6_3.ipynb
+    - file: fpps/week6/week6_4.ipynb
+    - file: fpps/week6/week6_5.ipynb
+  
 
 - part: Functional Program Design in Scala
   numbered: true
   chapters:
-    - file: fpds\week1\week1_1
-    - file: fpds\week1\week1_2
-    - file: fpds\week1\week1_3
-    - file: fpds\week1\week1_4
-    - file: fpds\week2\week2_1
-    - file: fpds\week2\week2_2
-    - file: fpds\week3\week3_1
-    - file: fpds\week3\week3_2
-    - file: fpds\week3\week3_3
-    - file: fpds\week4\week4_1
-    - file: fpds\week5\week5_1
+    - file: fpds/week1/week1_1.md
+    - file: fpds/week1/week1_2.md
+    - file: fpds/week1/week1_3.md
+    - file: fpds/week1/week1_4.md
+    - file: fpds/week2/week2_1.md
+    - file: fpds/week2/week2_2.md
+    - file: fpds/week3/week3_1.md
+    - file: fpds/week3/week3_2.ipynb
+    - file: fpds/week3/week3_3.ipynb
+    - file: fpds/week4/week4_1.ipynb
+    - file: fpds/week4/week4_2.ipynb
+    - file: fpds/week4/week4_3.ipynb
+    - file: fpds/week4/week4_4.ipynb
+    - file: fpds/week4/week4_5.ipynb
+    - file: fpds/week4/week4_6.ipynb
+    - file: fpds/week5/week5_1.ipynb
+    - file: fpds/week5/week5_2.ipynb
+    - file: fpds/week5/week5_3.ipynb
     
+- part: Parallel Programming
+  numbered: true
+  chapters:
+    - file: pp/week1/week1_1.ipynb
+    - file: pp/week1/week1_2.ipynb
+    - file: pp/week1/week1_3.ipynb
 
