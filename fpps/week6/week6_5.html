@@ -586,7 +586,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Cyan">res4</span>: <span class=" -Color -Color-Green">String</span> = <span class=" -Color -Color-Green">&quot;5282&quot;</span>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Cyan">res5</span>: <span class=" -Color -Color-Green">String</span> = <span class=" -Color -Color-Green">&quot;5282&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -658,7 +658,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>defined <span class=" -Color -Color-Green">function</span> <span class=" -Color -Color-Cyan">encode</span>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>encode: (number: String)Set[List[String]]
 </pre></div>
 </div>
 </div>
@@ -670,19 +670,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Cyan">res7</span>: <span class=" -Color -Color-Green">Set</span>[<span class=" -Color -Color-Green">List</span>[<span class=" -Color -Color-Green">String</span>]] = <span class=" -Color -Color-Yellow">HashSet</span>(
-  <span class=" -Color -Color-Yellow">List</span>(<span class=" -Color -Color-Green">&quot;rack&quot;</span>, <span class=" -Color -Color-Green">&quot;ah&quot;</span>, <span class=" -Color -Color-Green">&quot;re&quot;</span>, <span class=" -Color -Color-Green">&quot;to&quot;</span>),
-  <span class=" -Color -Color-Yellow">List</span>(<span class=" -Color -Color-Green">&quot;sack&quot;</span>, <span class=" -Color -Color-Green">&quot;ah&quot;</span>, <span class=" -Color -Color-Green">&quot;re&quot;</span>, <span class=" -Color -Color-Green">&quot;to&quot;</span>),
-  <span class=" -Color -Color-Yellow">List</span>(<span class=" -Color -Color-Green">&quot;Scala&quot;</span>, <span class=" -Color -Color-Green">&quot;ire&quot;</span>, <span class=" -Color -Color-Green">&quot;to&quot;</span>),
-  <span class=" -Color -Color-Yellow">List</span>(<span class=" -Color -Color-Green">&quot;rack&quot;</span>, <span class=" -Color -Color-Green">&quot;bird&quot;</span>, <span class=" -Color -Color-Green">&quot;to&quot;</span>),
-  <span class=" -Color -Color-Yellow">List</span>(<span class=" -Color -Color-Green">&quot;pack&quot;</span>, <span class=" -Color -Color-Green">&quot;air&quot;</span>, <span class=" -Color -Color-Green">&quot;fun&quot;</span>),
-  <span class=" -Color -Color-Yellow">List</span>(<span class=" -Color -Color-Green">&quot;pack&quot;</span>, <span class=" -Color -Color-Green">&quot;ah&quot;</span>, <span class=" -Color -Color-Green">&quot;re&quot;</span>, <span class=" -Color -Color-Green">&quot;to&quot;</span>),
-  <span class=" -Color -Color-Yellow">List</span>(<span class=" -Color -Color-Green">&quot;pack&quot;</span>, <span class=" -Color -Color-Green">&quot;bird&quot;</span>, <span class=" -Color -Color-Green">&quot;to&quot;</span>),
-  <span class=" -Color -Color-Yellow">List</span>(<span class=" -Color -Color-Green">&quot;Scala&quot;</span>, <span class=" -Color -Color-Green">&quot;is&quot;</span>, <span class=" -Color -Color-Green">&quot;fun&quot;</span>),
-  <span class=" -Color -Color-Yellow">List</span>(<span class=" -Color -Color-Green">&quot;sack&quot;</span>, <span class=" -Color -Color-Green">&quot;bird&quot;</span>, <span class=" -Color -Color-Green">&quot;to&quot;</span>),
-  <span class=" -Color -Color-Yellow">List</span>(<span class=" -Color -Color-Green">&quot;sack&quot;</span>, <span class=" -Color -Color-Green">&quot;air&quot;</span>, <span class=" -Color -Color-Green">&quot;fun&quot;</span>),
-  <span class=" -Color -Color-Yellow">List</span>(<span class=" -Color -Color-Green">&quot;rack&quot;</span>, <span class=" -Color -Color-Green">&quot;air&quot;</span>, <span class=" -Color -Color-Green">&quot;fun&quot;</span>)
-)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>res21: Set[List[String]] = Set(List(rack, ah, re, to), List(sack, ah, re, to), List(Scala, ire, to), List(sack, air, fun), List(rack, air, fun), List(rack, bird, to), List(pack, air, fun), List(pack, ah, re, to), List(pack, bird, to), List(Scala, is, fun), List(sack, bird, to))
 </pre></div>
 </div>
 </div>
@@ -695,7 +683,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>defined <span class=" -Color -Color-Green">function</span> <span class=" -Color -Color-Cyan">translate</span>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>translate: (number: String)Set[String]
 </pre></div>
 </div>
 </div>
@@ -707,19 +695,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Cyan">res9</span>: <span class=" -Color -Color-Green">Set</span>[<span class=" -Color -Color-Green">String</span>] = <span class=" -Color -Color-Yellow">HashSet</span>(
-  <span class=" -Color -Color-Green">&quot;pack bird to&quot;</span>,
-  <span class=" -Color -Color-Green">&quot;Scala ire to&quot;</span>,
-  <span class=" -Color -Color-Green">&quot;Scala is fun&quot;</span>,
-  <span class=" -Color -Color-Green">&quot;rack ah re to&quot;</span>,
-  <span class=" -Color -Color-Green">&quot;pack air fun&quot;</span>,
-  <span class=" -Color -Color-Green">&quot;sack air fun&quot;</span>,
-  <span class=" -Color -Color-Green">&quot;pack ah re to&quot;</span>,
-  <span class=" -Color -Color-Green">&quot;sack bird to&quot;</span>,
-  <span class=" -Color -Color-Green">&quot;rack bird to&quot;</span>,
-  <span class=" -Color -Color-Green">&quot;sack ah re to&quot;</span>,
-  <span class=" -Color -Color-Green">&quot;rack air fun&quot;</span>
-)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>res23: Set[String] = Set(sack air fun, pack ah re to, pack bird to, Scala ire to, Scala is fun, rack ah re to, pack air fun, sack bird to, rack bird to, sack ah re to, rack air fun)
 </pre></div>
 </div>
 </div>

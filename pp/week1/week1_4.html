@@ -438,8 +438,20 @@
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#how-fast-are-parallel-programs">
-   How fast are parallel programs?
+  <a class="reference internal nav-link" href="#benchmarking-parallel-programs">
+   Benchmarking Parallel Programs
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#why-do-we-benchmark-parallel-programs">
+     Why do we benchmark parallel programs?
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#scalameter">
+   ScalaMeter
   </a>
  </li>
 </ul>
@@ -496,7 +508,7 @@ defined <span class=" -Color -Color-Green">function</span> <span class=" -Color 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Cyan">res1</span>: <span class=" -Color -Color-Green">Double</span> = <span class=" -Color -Color-Green">3.1448</span>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Cyan">res3</span>: <span class=" -Color -Color-Green">Double</span> = <span class=" -Color -Color-Green">3.1458</span>
 </pre></div>
 </div>
 </div>
@@ -588,27 +600,148 @@ in thread of this function.</p>
 </div>
 <p>Although, above defintion compiles it does not the benefit of parallel computation in as task <code class="docutils literal notranslate"><span class="pre">tB</span></code> completed (immediatly called join) before task <code class="docutils literal notranslate"><span class="pre">tA</span></code>.</p>
 </div>
-<div class="section" id="how-fast-are-parallel-programs">
-<h1>How fast are parallel programs?<a class="headerlink" href="#how-fast-are-parallel-programs" title="Permalink to this headline">¶</a></h1>
-<p><strong>Performance</strong>: a key motivation for parallelism</p>
-<p>How to estimate it?</p>
+<div class="section" id="benchmarking-parallel-programs">
+<h1>Benchmarking Parallel Programs<a class="headerlink" href="#benchmarking-parallel-programs" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
-<li><p>empirical measurement</p></li>
-<li><p>asymptotic analysis
-Asymptotic analysis is important to understand how algorithms scale when:</p></li>
-<li><p>inputs get larger</p></li>
-<li><p>we have more hardware parallelism available</p></li>
+<li><p>testing – ensures that parts of the program are behaving according to the intended behavior</p></li>
+<li><p>benchmarking – computes performance metrics for parts of the program.</p></li>
 </ul>
-<p>We examine worst-case (as opposed to average) bounds</p>
-<p>You have previously learned how to concisely characterize behavior of
-sequential programs using the number of operations they perform as a
-function of arguments.</p>
+<p>By contrast benchmarking is used to evaluate various evaluation metrics of the program.</p>
+<p>A performance metric could be</p>
 <ul class="simple">
-<li><p>inserting into an integer into a sorted linear list takes time <span class="math notranslate nohighlight">\(\mathcal{O}(n)\)</span>, for list storing <span class="math notranslate nohighlight">\(n\)</span> integers</p></li>
-<li><p>inserting into an integer into a balanced binary tree of <span class="math notranslate nohighlight">\(n\)</span> integers takes time <span class="math notranslate nohighlight">\(\mathcal{O}(log n)\)</span>, for tree storing <span class="math notranslate nohighlight">\(n\)</span> integers.</p></li>
+<li><p>running time</p></li>
+<li><p>memory foot print</p></li>
+<li><p>network traffic</p></li>
+<li><p>disk usage</p></li>
+<li><p>latency</p></li>
 </ul>
-<p>Let us review these techniques by applying them to our sum segment
-example</p>
+<p>Often, this value is a random variable, it’s value varies from run to run.
+For example if we want to test the runnning time on list reverse we could</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">xs</span> <span class="o">=</span> <span class="nc">List</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">startTime</span> <span class="o">=</span> <span class="nc">System</span><span class="o">.</span><span class="n">nanoTime</span>
+<span class="n">xs</span><span class="o">.</span><span class="n">reverse</span>
+<span class="n">println</span><span class="o">((</span><span class="nc">System</span><span class="o">.</span><span class="n">nanoTime</span> <span class="o">-</span> <span class="n">startTime</span><span class="o">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>5697
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Cyan">xs</span>: <span class=" -Color -Color-Green">List</span>[<span class=" -Color -Color-Green">Int</span>] = <span class=" -Color -Color-Yellow">List</span>(<span class=" -Color -Color-Green">1</span>, <span class=" -Color -Color-Green">2</span>, <span class=" -Color -Color-Green">3</span>)
+<span class=" -Color -Color-Cyan">startTime</span>: <span class=" -Color -Color-Green">Long</span> = <span class=" -Color -Color-Green">37832158629139L</span>
+<span class=" -Color -Color-Cyan">res11_2</span>: <span class=" -Color -Color-Green">List</span>[<span class=" -Color -Color-Green">Int</span>] = <span class=" -Color -Color-Yellow">List</span>(<span class=" -Color -Color-Green">3</span>, <span class=" -Color -Color-Green">2</span>, <span class=" -Color -Color-Green">1</span>)
+</pre></div>
+</div>
+</div>
+</div>
+<p>This is a very naive way but we start with this to illustrate the purpose.</p>
+<p>Typically, testing yields a binary output – a program or its part is either correct or it is not.</p>
+<p>Benchmarking usually yields a continuous value, which denotes the extent to which the program is correct.</p>
+<p>In our benchmarking example running time is a continous value and will be slightly different each time.</p>
+<div class="section" id="why-do-we-benchmark-parallel-programs">
+<h2>Why do we benchmark parallel programs?<a class="headerlink" href="#why-do-we-benchmark-parallel-programs" title="Permalink to this headline">¶</a></h2>
+<p>Performance benefits are the main reason why we are writing parallel
+programs in the first place.</p>
+<p>Benchmarking parallel programs is even more important than benchmarking sequential programs.</p>
+<p>In sequential program the only measure performance are bottlenecks of the system. Converselt,a parallel program is typically a bottleneck in the system to begin with.</p>
+<p>Performance (specifically, running time) is subject to many factors:</p>
+<ul class="simple">
+<li><p>processor speed</p></li>
+<li><p>number of processors</p></li>
+<li><p>memory access latency and throughput (affects contention)</p></li>
+<li><p>cache behavior (e.g. false sharing, associativity effects)</p></li>
+<li><p>runtime behavior (e.g. garbage collection, JIT compilation, thread scheduling)</p></li>
+</ul>
+<p>The faster the processor the faster the resulting program.</p>
+<p>A parallel program to some extent distribute some of its workload across different processors. The number of available processors is necessary pre-condition to improve the performance.</p>
+<p>Since processors are separated from main memory with a bus they have to wait while fetching data from memory. Here we differentiate latency, which is the amount of time processor must wait since it requested data from main memory until data arrives, throughput the amount of data can be retrieved from memory per unit time.</p>
+<p>These two effect memory contention.To decrease latency,high speed memory, called cache close to the processor cores which mirrors the main memory. Cache are divided into several levels. It allows to read data with out going to the bus. It boost performance by several orders of magnitude.</p>
+<p>However caches makes performance analysis complicated. Caches can decrease peformance (false sharing).</p>
+<p>Almost all programs run within some runtime environment, such as VM, MMU or OS. These components use garbage collection, JIT compilation or thread scheduling.</p>
+<p>In reality many others drive performance.</p>
+<p>Measuring performance is difficult – usually, the a performance metric is a
+random variable.</p>
+<ul class="simple">
+<li><p>multiple repetitions</p></li>
+<li><p>statistical treatment – computing mean and variance</p></li>
+<li><p>eliminating outliers</p></li>
+<li><p>ensuring steady state (warm-up)</p></li>
+<li><p>preventing anomalies (GC, JIT compilation, aggressive optimizations)</p></li>
+</ul>
+<p>garbage collection can be avoided by allocating heap memory.
+JIT compilation can turned off.
+Compilers can make optimizations.</p>
+<p>To learn more, see <em>Statistically Rigorous Java Performance Evaluation, by Georges, Buytaert, and Eeckhout</em></p>
+</div>
+</div>
+<div class="section" id="scalameter">
+<h1>ScalaMeter<a class="headerlink" href="#scalameter" title="Permalink to this headline">¶</a></h1>
+<p>ScalaMeter is a benchmarking and performance regression testing
+framework for the JVM.</p>
+<ul class="simple">
+<li><p>performance regression testing – comparing performance of the current program run against known previous runs</p></li>
+<li><p>benchmarking – measuring performance of the current (part of the) program</p></li>
+</ul>
+<p>We will focus on benchmarking</p>
+<p>First, add ScalaMeter as a dependency.</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="n">libraryDependencies</span> <span class="o">+=</span>
+<span class="s">&quot;com.storm-enroute&quot;</span> <span class="o">%%</span> <span class="s">&quot;scalameter-core&quot;</span> <span class="o">%</span> <span class="s">&quot;0.6&quot;</span>
+</pre></div>
+</div>
+<p>Then, import the contents of the ScalaMeter package, and measure:</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">org.scalameter._</span>
+<span class="k">val</span> <span class="n">time</span> <span class="o">=</span> <span class="n">measure</span> <span class="o">{</span>
+<span class="o">(</span><span class="mi">0</span> <span class="n">until</span> <span class="mi">1000000</span><span class="o">).</span><span class="n">toArray</span>
+<span class="o">}</span>
+<span class="n">println</span><span class="o">(</span><span class="s">s&quot;Array initialization time: </span><span class="si">$time</span><span class="s"> ms&quot;</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>When we run the above snippet in Scala REPl,we get numbers with a lot of variance. During the run JVM could have started dynamic compilation, evidence for this shorter time in few runs. Another thing could have potentially occured is garabage collection, during the runs more and more memory allocated. When it reaches certain threshold garbage collection kicks in. It happens periodically. Running time could be high for garbage collection.</p>
+<p>The demo showed two very different running times on two consecutive
+runs of the program.</p>
+<p>When a JVM program starts, it undergoes a period of warmup, after
+which it achieves its maximum performance.</p>
+<ul class="simple">
+<li><p>first, the program is interpreted (the program is run in interpreter, the byte code output of Scala compiler runs directly on interpreter)</p></li>
+<li><p>then, parts of the program are compiled into machine code (JVM is smart enough to figure out which parts are hot parts (frequently used) , and those parts are compiled and turned into machine code</p></li>
+<li><p>later, the JVM may choose to apply additional dynamic optimizations</p></li>
+<li><p>eventually, the program reaches steady state</p></li>
+</ul>
+<p>Usually, we want to measure steady state program performance.</p>
+<p>ScalaMeter <code class="docutils literal notranslate"><span class="pre">Warmer</span></code> objects run the benchmarked code until detecting
+steady state.</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">org.scalameter._</span>
+<span class="k">val</span> <span class="n">time</span> <span class="o">=</span> <span class="n">withWarmer</span><span class="o">(</span><span class="k">new</span> <span class="nc">Warmer</span><span class="o">.</span><span class="nc">Default</span><span class="o">)</span> <span class="n">measure</span> <span class="o">{</span>
+<span class="o">(</span><span class="mi">0</span> <span class="n">until</span> <span class="mi">1000000</span><span class="o">).</span><span class="n">toArray</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>ScalaMeter configuration clause allows specifying various parameters, such as the minimum and maximum number of warmup runs.</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">time</span> <span class="o">=</span> <span class="n">config</span><span class="o">(</span>
+<span class="nc">Key</span><span class="o">.</span><span class="n">exec</span><span class="o">.</span><span class="n">minWarmupRuns</span> <span class="o">-&gt;</span> <span class="mi">20</span><span class="o">,</span>
+<span class="nc">Key</span><span class="o">.</span><span class="n">exec</span><span class="o">.</span><span class="n">maxWarmupRuns</span> <span class="o">-&gt;</span> <span class="mi">60</span><span class="o">,</span>
+<span class="nc">Key</span><span class="o">.</span><span class="n">verbose</span> <span class="o">-&gt;</span> <span class="kc">true</span>
+<span class="o">)</span> <span class="n">withWarmer</span><span class="o">(</span><span class="k">new</span> <span class="nc">Warmer</span><span class="o">.</span><span class="nc">Default</span><span class="o">)</span> <span class="n">measure</span> <span class="o">{</span>
+<span class="o">(</span><span class="mi">0</span> <span class="n">until</span> <span class="mi">1000000</span><span class="o">).</span><span class="n">toArray</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>Finally, ScalaMeter can measure more than just the running time.</p>
+<ul class="simple">
+<li><p>Measurer.Default – plain running time</p></li>
+<li><p>IgnoringGC – running time without GC pauses</p></li>
+<li><p>OutlierElimination – removes statistical outliers</p></li>
+<li><p>MemoryFootprint – memory footprint of an object</p></li>
+<li><p>GarbageCollectionCycles – total number of GC pauses</p></li>
+<li><p>newer ScalaMeter versions can also measure method invocation counts and boxing counts</p></li>
+</ul>
+<p>To measure the memory footprint</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="n">withMeasurer</span><span class="o">(</span><span class="k">new</span> <span class="nc">Measurer</span><span class="o">.</span><span class="nc">MemoryFootprint</span><span class="o">)</span> <span class="n">withWarmer</span><span class="o">(</span> <span class="k">new</span> <span class="nc">Warmer</span><span class="o">.</span><span class="nc">Default</span><span class="o">)</span>  <span class="n">measure</span> <span class="o">{</span> <span class="o">(</span><span class="mi">0</span> <span class="n">until</span> <span class="mi">100000</span><span class="o">).</span><span class="n">toArray</span><span class="o">}</span>
+</pre></div>
+</div>
 </div>
 
     <script type="text/x-thebe-config">
