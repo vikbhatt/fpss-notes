@@ -16,4 +16,4 @@ Functional Programming in Scala Specialization contains five courses:
 - Functional Programming in Scala Capstone
 
 
-> All the credit goes to EPFL. I don't own anything. This is just mere compliation of lectures and stuff from the internet.
+> All the credit goes to École Polytechnique Fédérale de Lausanne. I don't own anything. This is just mere compliation of lectures and stuff from the internet.
