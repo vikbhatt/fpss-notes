@@ -1,0 +1,885 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>5. Data Operations and Parallel Mapping &#8212; Functional Programming in Scala Specialization -- Complied Notes</title>
+    
+  <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../../_static/sphinx-book-theme.40e2e510f6b7d1648584402491bb10fe.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script async="async" kind="hypothesis" src="https://hypothes.is/embed.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="7. Parallel Fold (Reduce) Operation" href="week2_3.html" />
+    <link rel="prev" title="4. Parallel Sorting" href="week2_1.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../../index.html">
+  
+  <img src="../../_static/logo.png" class="logo" alt="logo">
+  
+  
+  <h1 class="site-logo" id="site-title">Functional Programming in Scala Specialization -- Complied Notes</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../intro.html">
+   Functional Programming in Scala Specialization
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Functional Programming Principles in Scala
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week1/intro.html">
+   1. Introduction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week1/week1_1.html">
+   2. Imperative vs Functional Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week1/week1_2.html">
+   3. Expressions and Evaluation model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week1/week1_3.html">
+   4. Tail Recursion
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week1/week1_4.html">
+   5. Exercise Session
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week2/week2_1.html">
+   6. Higher Order Functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week2/week2_2.html">
+   7. Class and Objects
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week3/week3_1.html">
+   8. Class Hierarchies
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week3/week3_2.html">
+   9. How classes are organized?
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week3/week3_3.html">
+   10. Polymorphism
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week4/week4_1.html">
+   11. Objects Everywhere
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week4/week4_2.html">
+   12. Functions as objects
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week4/week4_3.html">
+   13. Subtyping and Generics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week4/week4_4.html">
+   14. Variance
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week4/week4_5.html">
+   15. Decomposition
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week4/week4_6.html">
+   16. Pattern Matching
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week5/week5_1.html">
+   17. Lists
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week5/week5_2.html">
+   18. Pairs and Tuples
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week5/week5_3.html">
+   19. Higher Order List Functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week6/week6_1.html">
+   20. Other Collections
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week6/week6_2.html">
+   21. Combinatorial Search and For-Expressions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week6/week6_3.html">
+   22. Combinatorial Search Example
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week6/week6_4.html">
+   23. Maps
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week6/week6_5.html">
+   24. Putting Pieces Together
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Functional Program Design in Scala
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week1/week1_1.html">
+   1. Recap Functions and Pattern Matching
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week1/week1_2.html">
+   2. Recap: Collections
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week1/week1_3.html">
+   3. Functional Random Generators
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week1/week1_4.html">
+   4. Monads
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week2/week2_1.html">
+   5. Streams
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week2/week2_2.html">
+   6. Case Study: The Water Pouring Problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week3/week3_1.html">
+   7. Type-Directed Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week3/week3_2.html">
+   8. Type Classes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week3/week3_3.html">
+   9. Implicit Conversions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week4/week4_1.html">
+   10. Functions and State
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week4/week4_2.html">
+   11. Identity and Change
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week4/week4_3.html">
+   12. Loops
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week4/week4_4.html">
+   13. Discrete Event Simulation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week4/week4_5.html">
+   14. Discrete Event Simulation: API and Usage
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week4/week4_6.html">
+   15. Discrete Event Simulation: Implementation and Test
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week5/week5_1.html">
+   16. Imperative Event Handling: The Observer Pattern
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week5/week5_2.html">
+   17. Functional Reactive Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week5/week5_3.html">
+   18. A Simple FRP Implementation
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Parallel Programming
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week1/week1_1.html">
+   1. Parallelism on JVM I
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week1/week1_2.html">
+   2. Parallelism on the JVM II
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week1/week1_3.html">
+   3. Running Computations in Parallel
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="week2_1.html">
+   4. Parallel Sorting
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   5. Data Operations and Parallel Mapping
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="#map-meaning-and-properties">
+   6. Map: Meaning and Properties
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="week2_3.html">
+   7. Parallel Fold (Reduce) Operation
+  </a>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/pp/week2/week2_2.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+        <!-- Source interaction buttons -->
+
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                title="Fullscreen mode"><i
+                    class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/pp/week2/week2_2.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+    </div>
+
+    <!-- Table of contents -->
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   5. Data Operations and Parallel Mapping
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#map-meaning-and-properties">
+   6. Map: Meaning and Properties
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#example-of-using-mapasegpar-pointwise-exponent">
+     6.1. Example of using mapASegPar: pointwise exponent
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#sequential-pointwise-exponent-written-from-scratch">
+       6.1.1. Sequential pointwise exponent written from scratch
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#parallel-pointwise-exponent-written-from-scratch">
+       6.1.2. Parallel pointwise exponent written from scratch
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#parallel-map-on-immutable-trees">
+     6.2. Parallel map on immutable trees
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+        </nav>
+        
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="data-operations-and-parallel-mapping">
+<h1><span class="section-number">5. </span>Data Operations and Parallel Mapping<a class="headerlink" href="#data-operations-and-parallel-mapping" title="Permalink to this headline">¶</a></h1>
+<p>Parallel processing of collections is important</p>
+<ul class="simple">
+<li><p>one the main applications of parallelism today
+We examine conditions when this can be done</p></li>
+</ul>
+<ul class="simple">
+<li><p>properties of collections: ability to split, combine</p></li>
+<li><p>properties of operations: associativity, independence</p></li>
+</ul>
+<p>Operations on collections are key to functional programming</p>
+<p>map: apply function to each element</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">List(1,3,8).map(x</span> <span class="pre">=&gt;</span> <span class="pre">x*x)</span> <span class="pre">==</span> <span class="pre">List(1,</span> <span class="pre">9,</span> <span class="pre">64)</span></code></p></li>
+</ul>
+<p>fold: combine elements with a given operation</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">List(1,3,8).fold(100)((s,x)</span> <span class="pre">=&gt;</span> <span class="pre">s</span> <span class="pre">+</span> <span class="pre">x)</span> <span class="pre">==</span> <span class="pre">112</span></code></p></li>
+</ul>
+<p>scan: combine folds of all list prefixes</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">List(1,3,8).scan(100)((s,x)</span> <span class="pre">=&gt;</span> <span class="pre">s</span> <span class="pre">+</span> <span class="pre">x)</span> <span class="pre">==</span> <span class="pre">List(100,</span> <span class="pre">101,</span> <span class="pre">104,</span> <span class="pre">112)</span></code></p></li>
+</ul>
+<p>These operations are even more important for parallel than sequential collections:
+they encapsulate more complex algorithms.</p>
+<p>You can think of <code class="docutils literal notranslate"><span class="pre">scan</span></code> as applying <code class="docutils literal notranslate"><span class="pre">fold</span></code> to all list prefixes, or alternatively, as recording the intermediate results
+of computing the fold of a list. Let’s apply now <code class="docutils literal notranslate"><span class="pre">scan</span></code> to
+the same input list and to the same initial elements
+in the operation of summation. What we will get is the sequence that has
+the length one more than your original sequence and contains elements 100,
+so the initial element. Then 101, so your initial element
+plus the first element of the list, then 104 obtained by adding 3, and
+then after adding 8, we obtain 112.</p>
+<p>So these operations exist in the sequential case already, but they become even more important
+in case of parallel operations, because in that case, implementing them from scratch is more difficult. So there’s even more value in reusing
+such implementations from the library.
+We have been using list to specify the intended result of these operations, but in fact, lists themselves are not a very good implementation of parallel collections.
+Because we cannot efficiently split them in half since we would need to find the position of the middle of the list.
+And it is also not efficient to combine them because concatenation takes linear time. For simplicity, here, we will consider two alternatives to lists.</p>
+<p>We use <code class="docutils literal notranslate"><span class="pre">List</span></code> to specify the results of operations.</p>
+<p>Lists are not good for parallel implementations because we cannot efficiently</p>
+<ul class="simple">
+<li><p>split them in half (need to search for the middle)</p></li>
+<li><p>combine them (concatenation needs linear time)</p></li>
+</ul>
+<p>We use for now these alternatives</p>
+<ul class="simple">
+<li><p>arrays: imperative (recall array sum)</p></li>
+<li><p>trees: can be implemented functionally</p></li>
+</ul>
+<p>Subsequent lectures examine Scala’s parallel collection libraries</p>
+<ul class="simple">
+<li><p>includes many more data structures, implemented efficiently</p></li>
+</ul>
+</div>
+<div class="section" id="map-meaning-and-properties">
+<h1><span class="section-number">6. </span>Map: Meaning and Properties<a class="headerlink" href="#map-meaning-and-properties" title="Permalink to this headline">¶</a></h1>
+<p>Map applies a given function to each list element</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="nc">List</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">8</span><span class="o">).</span><span class="n">map</span><span class="o">(</span><span class="n">x</span> <span class="o">=&gt;</span> <span class="n">x</span><span class="o">*</span><span class="n">x</span><span class="o">)</span> <span class="o">==</span> <span class="nc">List</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">9</span><span class="o">,</span> <span class="mi">64</span><span class="o">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">List(a1,</span> <span class="pre">a2,</span> <span class="pre">…,</span> <span class="pre">an).map(f)</span> <span class="pre">==</span> <span class="pre">List(f(a1),</span> <span class="pre">f(a2),</span> <span class="pre">…,</span> <span class="pre">f(an))</span></code></p>
+<p>Properties to keep in mind:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">list.map(x</span> <span class="pre">=&gt;</span> <span class="pre">x)</span> <span class="pre">==</span> <span class="pre">list</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">list.map(f.compose(g))</span> <span class="pre">==</span> <span class="pre">list.map(g).map(f)</span></code></p></li>
+</ul>
+<p>Recall that <code class="docutils literal notranslate"><span class="pre">(f.compose(g))(x)</span> <span class="pre">=</span> <span class="pre">f(g(x))</span></code>.</p>
+<p>Let’s write a sequential map function on lists.</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">mapSeq</span><span class="o">[</span><span class="kt">A</span><span class="p">,</span><span class="kt">B</span><span class="o">](</span><span class="n">lst</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">f</span> <span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">B</span><span class="o">)</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span> <span class="o">=</span> <span class="n">lst</span> <span class="k">match</span> <span class="o">{</span>
+<span class="k">case</span> <span class="nc">Nil</span> <span class="o">=&gt;</span> <span class="nc">Nil</span>
+<span class="k">case</span> <span class="n">h</span> <span class="o">::</span> <span class="n">t</span> <span class="o">=&gt;</span> <span class="n">f</span><span class="o">(</span><span class="n">h</span><span class="o">)</span> <span class="o">::</span> <span class="n">mapSeq</span><span class="o">(</span><span class="n">t</span><span class="o">,</span><span class="n">f</span><span class="o">)</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>We would like a version that parallelizes</p>
+<ul class="simple">
+<li><p>computations of <span class="math notranslate nohighlight">\(f(h)\)</span> for different elements <span class="math notranslate nohighlight">\(h\)</span></p></li>
+<li><p>finding the elements themselves (list is not a good choice)</p></li>
+</ul>
+<p>Now we would like to have parallel
+versions of such map operation, that means that we would like to perform computations of f applied to different list elements in parallel. And we would also like to parallelize
+the transformation of the list itself, that means that the choice of list is no longer ideal. Because even finding the middle
+element of the list is already linear, so we would not be able to parallelize
+operation on long lists that have not yet achieve operation. We will therefore start by looking at implementations of maps on arrays. Here’s one signature of such an operation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">mapASegSeq</span><span class="o">[</span><span class="kt">A</span><span class="p">,</span><span class="kt">B</span><span class="o">](</span><span class="n">inp</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">left</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">right</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">f</span> <span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">B</span><span class="o">,</span>
+<span class="n">out</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">B</span><span class="o">])</span> <span class="o">=</span> <span class="o">{</span>
+<span class="c1">// Writes to out(i) for left &lt;= i &lt;= right-1</span>
+<span class="k">var</span> <span class="n">i</span><span class="o">=</span> <span class="n">left</span>
+<span class="k">while</span> <span class="o">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">right</span><span class="o">)</span> <span class="o">{</span>
+<span class="n">out</span><span class="o">(</span><span class="n">i</span><span class="o">)=</span> <span class="n">f</span><span class="o">(</span><span class="n">inp</span><span class="o">(</span><span class="n">i</span><span class="o">))</span>
+<span class="n">i</span><span class="o">=</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span>
+<span class="o">}</span> <span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>defined <span class=" -Color -Color-Green">function</span> <span class=" -Color -Color-Cyan">mapASegSeq</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>It would take an input array, denoted by
+<code class="docutils literal notranslate"><span class="pre">inp</span></code>, and it also takes this argument, an output array to which
+the results should be written. To indicate which part of
+the array should be processed, we have indices <code class="docutils literal notranslate"><span class="pre">left</span></code> and <code class="docutils literal notranslate"><span class="pre">right</span></code>. And the processing should start
+at left and stop at <code class="docutils literal notranslate"><span class="pre">right-1</span></code>. The function to be applied is again passed as argument, this is the function f. Let’s look first at sequential
+implementation of such function. We can do that using a simple while loop that starts from left, and then right, the output, right to the output array, the result of input of i for which function f is applied. Then we do that for increasingly large index i going from left up to and not including right. So the effect of this function is that the content of the out array is going to be changed between this, left and right-1.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">in</span> <span class="o">=</span> <span class="nc">Array</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">,</span><span class="mi">6</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">out</span> <span class="o">=</span> <span class="nc">Array</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">f</span> <span class="o">=</span> <span class="o">(</span><span class="n">x</span><span class="k">:</span><span class="kt">Int</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">x</span><span class="o">*</span><span class="n">x</span>
+<span class="n">mapASegSeq</span><span class="o">(</span><span class="n">in</span><span class="o">,</span><span class="mi">1</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="n">f</span><span class="o">,</span><span class="n">out</span><span class="o">)</span>
+<span class="n">out</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Cyan">in</span>: <span class=" -Color -Color-Green">Array</span>[<span class=" -Color -Color-Green">Int</span>] = <span class=" -Color -Color-Yellow">Array</span>(<span class=" -Color -Color-Green">2</span>, <span class=" -Color -Color-Green">3</span>, <span class=" -Color -Color-Green">4</span>, <span class=" -Color -Color-Green">5</span>, <span class=" -Color -Color-Green">6</span>)
+<span class=" -Color -Color-Cyan">out</span>: <span class=" -Color -Color-Green">Array</span>[<span class=" -Color -Color-Green">Int</span>] = <span class=" -Color -Color-Yellow">Array</span>(<span class=" -Color -Color-Green">0</span>, <span class=" -Color -Color-Green">9</span>, <span class=" -Color -Color-Green">16</span>, <span class=" -Color -Color-Green">0</span>, <span class=" -Color -Color-Green">0</span>)
+<span class=" -Color -Color-Cyan">f</span>: <span class=" -Color -Color-Green">Int</span> =&gt; <span class=" -Color -Color-Green">Int</span> = ammonite.$sess.cmd1$Helper$$Lambda$2011/0x9abc2028@1f7a0ec
+<span class=" -Color -Color-Cyan">res1_4</span>: <span class=" -Color -Color-Green">Array</span>[<span class=" -Color -Color-Green">Int</span>] = <span class=" -Color -Color-Yellow">Array</span>(<span class=" -Color -Color-Green">0</span>, <span class=" -Color -Color-Green">9</span>, <span class=" -Color -Color-Green">16</span>, <span class=" -Color -Color-Green">0</span>, <span class=" -Color -Color-Green">0</span>)
+</pre></div>
+</div>
+</div>
+</div>
+<p>How can we do this in parallel?
+Let’s use the <code class="docutils literal notranslate"><span class="pre">parallel</span></code> construct.</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">mapASegPar</span><span class="o">[</span><span class="kt">A</span><span class="p">,</span><span class="kt">B</span><span class="o">](</span><span class="n">inp</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">left</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">right</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">f</span> <span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">B</span><span class="o">,</span>
+<span class="n">out</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">B</span><span class="o">])</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+<span class="c1">// Writes to out(i) for left &lt;= i &lt;= right-1</span>
+<span class="k">if</span> <span class="o">(</span><span class="n">right</span> <span class="o">-</span> <span class="n">left</span> <span class="o">&lt;</span> <span class="n">threshold</span><span class="o">)</span>
+<span class="n">mapASegSeq</span><span class="o">(</span><span class="n">inp</span><span class="o">,</span> <span class="n">left</span><span class="o">,</span> <span class="n">right</span><span class="o">,</span> <span class="n">f</span><span class="o">,</span> <span class="n">out</span><span class="o">)</span>
+<span class="k">else</span> <span class="o">{</span>
+<span class="k">val</span> <span class="n">mid</span> <span class="o">=</span> <span class="n">left</span> <span class="o">+</span> <span class="o">(</span><span class="n">right</span> <span class="o">-</span> <span class="n">left</span><span class="o">)/</span><span class="mi">2</span>
+<span class="n">parallel</span><span class="o">(</span><span class="n">mapASegPar</span><span class="o">(</span><span class="n">inp</span><span class="o">,</span> <span class="n">left</span><span class="o">,</span> <span class="n">mid</span><span class="o">,</span> <span class="n">f</span><span class="o">,</span> <span class="n">out</span><span class="o">),</span>
+<span class="n">mapASegPar</span><span class="o">(</span><span class="n">inp</span><span class="o">,</span> <span class="n">mid</span><span class="o">,</span> <span class="n">right</span><span class="o">,</span> <span class="n">f</span><span class="o">,</span> <span class="n">out</span><span class="o">))</span>
+<span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>When the difference between the left index
+and the right index is small enough, below some threshold, then we can invoke the
+function that we have defined previously. Otherwise, we compute
+the middle element and then we invoke the functions recursively from
+left to middle and from middle to right. There are two things that we
+need to pay attention to. One is that we are now invoking, in parallel, computations that
+are writing output to some array. It means that we need to
+be careful that parallel operation write to disjoint
+parts of the memory.</p>
+<p>In this case, what these codes are writing
+to are elements of the out array, so we need to track to which
+indices these codes are writing. And here we have a specification
+returning as an informal comment saying that our recursive function,
+just like the sequential counterpart. Writes to element out(i) for
+indices i between and including left, and
+up to and including right-1. Because of this property,
+we see that this recursive calls, in fact, will not interfere,
+because the highest element to which the first argument of
+parallel will write is mid minus 1. And the first element to which
+the second call will write is mid. Moreover, we see that if we assume
+the specification holds for these calls, then the specification
+will also hold for the entire function. So by induction, we can actually verify that this property
+that we have written in comments holds.</p>
+<p>In terms of performance, another point
+that we need to take into account is that this threshold needs to be large enough. This is particularly important for an example such as this, where the only thing that we are doing is
+writing certain elements of the array.</p>
+<p>If the function f is relatively simple,
+then performing this write to one index of
+an array is going to be several orders of magnitude cheaper than invoking parallel computations? So the overhead of parallelization
+will need to be somehow amortized over the number of times we are invoking these
+writes to individual indices of the array. That’s why threshold needs to be several orders of magnitude as well. Once we have defined such parallel maps, we can then use it for various concrete functions.</p>
+<div class="section" id="example-of-using-mapasegpar-pointwise-exponent">
+<h2><span class="section-number">6.1. </span>Example of using mapASegPar: pointwise exponent<a class="headerlink" href="#example-of-using-mapasegpar-pointwise-exponent" title="Permalink to this headline">¶</a></h2>
+<p>Raise each array element to power <span class="math notranslate nohighlight">\(p\)</span>:</p>
+<p><span class="math notranslate nohighlight">\(Array(a1, a2, . . . , an) \leftarrow Array(|a1|^p, |a2|^p, . . . , |an|^p)\)</span>
+We can use previously defined higher-order functions:</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">p</span><span class="k">:</span> <span class="kt">Double</span> <span class="o">=</span> <span class="mf">1.5</span>
+<span class="k">def</span> <span class="n">f</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Double</span> <span class="o">=</span> <span class="n">power</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">p</span><span class="o">)</span>
+<span class="n">mapASegSeq</span><span class="o">(</span><span class="n">inp</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">inp</span><span class="o">.</span><span class="n">length</span><span class="o">,</span> <span class="n">f</span><span class="o">,</span> <span class="n">out</span><span class="o">)</span> <span class="c1">// sequential</span>
+<span class="n">mapASegPar</span><span class="o">(</span><span class="n">inp</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">inp</span><span class="o">.</span><span class="n">length</span><span class="o">,</span> <span class="n">f</span><span class="o">,</span> <span class="n">out</span><span class="o">)</span> <span class="c1">// parallel</span>
+</pre></div>
+</div>
+<p>Questions on performance:</p>
+<ul class="simple">
+<li><p>are there performance gains from parallel execution</p></li>
+<li><p>performance of re-using higher-order functions vs re-implementing</p></li>
+</ul>
+<div class="section" id="sequential-pointwise-exponent-written-from-scratch">
+<h3><span class="section-number">6.1.1. </span>Sequential pointwise exponent written from scratch<a class="headerlink" href="#sequential-pointwise-exponent-written-from-scratch" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">math.pow</span>
+<span class="k">def</span> <span class="n">normsOf</span><span class="o">(</span><span class="n">inp</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">Int</span><span class="o">],</span> <span class="n">p</span><span class="k">:</span> <span class="kt">Double</span><span class="o">,</span>
+<span class="n">left</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">right</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span>
+<span class="n">out</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">Double</span><span class="o">])</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+<span class="k">var</span> <span class="n">i</span><span class="o">=</span> <span class="n">left</span>
+<span class="k">while</span> <span class="o">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">right</span><span class="o">)</span> <span class="o">{</span>
+<span class="n">out</span><span class="o">(</span><span class="n">i</span><span class="o">)=</span> <span class="n">pow</span><span class="o">(</span><span class="n">inp</span><span class="o">(</span><span class="n">i</span><span class="o">),</span><span class="n">p</span><span class="o">)</span>
+<span class="n">i</span><span class="o">=</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span>
+<span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">import </span><span class=" -Color -Color-Cyan">math.pow</span>
+
+defined <span class=" -Color -Color-Green">function</span> <span class=" -Color -Color-Cyan">normsOf</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="parallel-pointwise-exponent-written-from-scratch">
+<h3><span class="section-number">6.1.2. </span>Parallel pointwise exponent written from scratch<a class="headerlink" href="#parallel-pointwise-exponent-written-from-scratch" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">normsOfPar</span><span class="o">(</span><span class="n">inp</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">Int</span><span class="o">],</span> <span class="n">p</span><span class="k">:</span> <span class="kt">Double</span><span class="o">,</span>
+<span class="n">left</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">right</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span>
+<span class="n">out</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">Double</span><span class="o">])</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+<span class="k">if</span> <span class="o">(</span><span class="n">right</span> <span class="o">-</span> <span class="n">left</span> <span class="o">&lt;</span> <span class="n">threshold</span><span class="o">)</span> <span class="o">{</span>
+<span class="k">var</span> <span class="n">i</span><span class="o">=</span> <span class="n">left</span>
+<span class="k">while</span> <span class="o">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">right</span><span class="o">)</span> <span class="o">{</span>
+<span class="n">out</span><span class="o">(</span><span class="n">i</span><span class="o">)=</span> <span class="n">power</span><span class="o">(</span><span class="n">inp</span><span class="o">(</span><span class="n">i</span><span class="o">),</span><span class="n">p</span><span class="o">)</span>
+<span class="n">i</span><span class="o">=</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span>
+<span class="o">}</span>
+<span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+<span class="k">val</span> <span class="n">mid</span> <span class="o">=</span> <span class="n">left</span> <span class="o">+</span> <span class="o">(</span><span class="n">right</span> <span class="o">-</span> <span class="n">left</span><span class="o">)/</span><span class="mi">2</span>
+<span class="n">parallel</span><span class="o">(</span><span class="n">normsOfPar</span><span class="o">(</span><span class="n">inp</span><span class="o">,</span> <span class="n">p</span><span class="o">,</span> <span class="n">left</span><span class="o">,</span> <span class="n">mid</span><span class="o">,</span> <span class="n">out</span><span class="o">),</span>
+<span class="n">normsOfPar</span><span class="o">(</span><span class="n">inp</span><span class="o">,</span> <span class="n">p</span><span class="o">,</span> <span class="n">mid</span><span class="o">,</span> <span class="n">right</span><span class="o">,</span> <span class="n">out</span><span class="o">))</span>
+<span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>Now, what do you think is the relative
+performance of these different versions?
+How much performance improvement do you expect from:</p>
+<ul class="simple">
+<li><p>inlining the higher-order function of map</p></li>
+<li><p>parallelizing over several cores</p></li>
+</ul>
+<ul class="simple">
+<li><p>inp.length = 2000000</p></li>
+<li><p>threshold = 10000</p></li>
+<li><p>Intel(R) Core(TM) i7-3770K CPU &#64; 3.50GHz (4-core, 8 HW threads), 16GB RAM
+|expression | time(ms)|
+|———–|———-|
+|mapASegSeq(inp, 0, inp.length, f, out)| 174.17|
+|mapASegPar(inp, 0, inp.length, f, out)| 28.93|
+|normsOfSeq(inp, p, 0, inp.length, out)| 166.84|
+|normsOfPar(inp, p, 0, inp.length, out)| 28.17|</p></li>
+</ul>
+<ul class="simple">
+<li><p>Parallelization pays off</p></li>
+<li><p>Manually removing higher-order functions does not pay off</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="parallel-map-on-immutable-trees">
+<h2><span class="section-number">6.2. </span>Parallel map on immutable trees<a class="headerlink" href="#parallel-map-on-immutable-trees" title="Permalink to this headline">¶</a></h2>
+<p>Consider trees where</p>
+<ul class="simple">
+<li><p>leaves store array segments</p></li>
+<li><p>non-leaf node stores two subtrees</p></li>
+</ul>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">sealed</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="o">{</span> <span class="k">val</span> <span class="n">size</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">}</span>
+<span class="k">case</span> <span class="k">class</span> <span class="nc">Leaf</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">a</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">extends</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="o">{</span>
+<span class="k">override</span> <span class="k">val</span> <span class="n">size</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">size</span>
+<span class="o">}</span>
+<span class="k">case</span> <span class="k">class</span> <span class="nc">Node</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">l</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">r</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">extends</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="o">{</span>
+<span class="k">override</span> <span class="k">val</span> <span class="n">size</span> <span class="o">=</span> <span class="n">l</span><span class="o">.</span><span class="n">size</span> <span class="o">+</span> <span class="n">r</span><span class="o">.</span><span class="n">size</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>Assume that our trees are balanced: we can explore branches in parallel.</p>
+<p>We will consider trees whose leaves store arrays segments and whose non leaf nodes contain references to left and to right sub tree. It is also going to be convenient for both leaves and non leaves to store the total number of elements.
+We will be assuming that our trees are approximately balanced. That will allow us to explore the branches in parallel while obtaining benefits of parallelization.</p>
+<p>Here is an implementation of paralle map on tree.</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">mapTreePar</span><span class="o">[</span><span class="kt">A:Manifest</span><span class="p">,</span><span class="kt">B:Manifest</span><span class="o">](</span><span class="n">t</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">f</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">B</span><span class="o">)</span> <span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span> <span class="o">=</span>
+<span class="n">t</span> <span class="k">match</span> <span class="o">{</span>
+<span class="k">case</span> <span class="nc">Leaf</span><span class="o">(</span><span class="n">a</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="o">{</span>
+<span class="k">val</span> <span class="n">len</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">length</span><span class="o">;</span> <span class="k">val</span> <span class="n">b</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Array</span><span class="o">[</span><span class="kt">B</span><span class="o">](</span><span class="n">len</span><span class="o">)</span>
+<span class="k">var</span> <span class="n">i</span><span class="o">=</span> <span class="mi">0</span>
+<span class="k">while</span> <span class="o">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">len</span><span class="o">)</span> <span class="o">{</span> <span class="n">b</span><span class="o">(</span><span class="n">i</span><span class="o">)=</span> <span class="n">f</span><span class="o">(</span><span class="n">a</span><span class="o">(</span><span class="n">i</span><span class="o">));</span> <span class="n">i</span><span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">}</span>
+<span class="nc">Leaf</span><span class="o">(</span><span class="n">b</span><span class="o">)</span> <span class="o">}</span>
+<span class="k">case</span> <span class="nc">Node</span><span class="o">(</span><span class="n">l</span><span class="o">,</span><span class="n">r</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="o">{</span>
+<span class="k">val</span> <span class="o">(</span><span class="n">lb</span><span class="o">,</span><span class="n">rb</span><span class="o">)</span> <span class="o">=</span> <span class="n">parallel</span><span class="o">(</span><span class="n">mapTreePar</span><span class="o">(</span><span class="n">l</span><span class="o">,</span><span class="n">f</span><span class="o">),</span> <span class="n">mapTreePar</span><span class="o">(</span><span class="n">r</span><span class="o">,</span><span class="n">f</span><span class="o">))</span>
+<span class="nc">Node</span><span class="o">(</span><span class="n">lb</span><span class="o">,</span> <span class="n">rb</span><span class="o">)</span> <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>Speedup and performance similar as for the array</p>
+<p>Arrays:</p>
+<ul class="simple">
+<li><p>(+) random access to elements, on shared memory can share array</p></li>
+<li><p>(+) good memory locality</p></li>
+<li><p>(-) imperative: must ensure parallel tasks write to disjoint parts</p></li>
+<li><p>(-) expensive to concatenate</p></li>
+</ul>
+<p>Immutable trees:</p>
+<ul class="simple">
+<li><p>(+) purely functional, produce new trees, keep old ones</p></li>
+<li><p>(+) no need to worry about disjointness of writes by parallel tasks</p></li>
+<li><p>(+) efficient to combine two trees</p></li>
+<li><p>(-) high memory allocation overhead</p></li>
+<li><p>(-) bad locality</p></li>
+</ul>
+<p>It is instructive to compare using
+arrays versus basically immutable trees as collections on which we
+perform operations such as map.</p>
+<p>Arrays are very appealingbecause of their simplicity and because we can access
+elements in arbitrary order.
+When we have tasks that are executing on
+the same shared memory, that means we just need to pass the pointer or reference to the beginning of the array. And some indication of
+which indices of the array, appropriate task is suppose to process.
+Once we are processing a particular region of the array, because array elements are stored continuously in memory, we obtain good memory locality.
+On the other hand, because we need to
+create these arrays in an imperative way, we have to be careful that tasks
+that are executing in parallel write to disjoint parts of the array. Otherwise, we will obtain unpredictable results that depend on the order in which the writes are performed. That’s one disadvantage of arrays. And another disadvantage is that if we obtain these arrays into completely different computations and
+we later want to put them together, they will necessarily have to copy some parts of the array.</p>
+<p>It is interesting to compare the properties of arrays with properties of immutable trees.</p>
+<p>In this approach, we have seen that we produce new trees as the result of operations such as map and we keep the old ones. That means that we can continue using the old versions of data which is useful for many applications. Moreover, because operations such as map produces new trees, it is easier to ensure
+that it does not write to the same parts of memory as some other operation that’s executing in parallel.
+Next, it is easy to combine two trees
+because all we need to do is create a new node that has two other trees is, certain trees. Even if we need to ensure balancing,
+this can be done reasonably efficiently.</p>
+<p>Among the negative aspects of immutable trees is high memory allocation overhead and
+also bad locality. Because different parts of the tree may be stored in principle in completely different parts of memory.</p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "scala"
+        },
+        kernelOptions: {
+            kernelName: "scala",
+            path: "./pp/week2"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'scala'</script>
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+    <a class='left-prev' id="prev-link" href="week2_1.html" title="previous page"><span class="section-number">4. </span>Parallel Sorting</a>
+    <a class='right-next' id="next-link" href="week2_3.html" title="next page"><span class="section-number">7. </span>Parallel Fold (Reduce) Operation</a>
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Vikram Bhatt<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="../../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    
+  </body>
+</html>
