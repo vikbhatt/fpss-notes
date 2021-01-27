@@ -3,7 +3,9 @@
 
 I am not good at remembering stuff. I came across functional programming course in Coursera three years ago, when I was a beginner to Apache Spark. I wanted to learn and quickly became intrested in taking this specialization. Too often I would start with enthusiam and loose interest as the time progess. 
 
-I was in this frustrating cycle of start again, loose interest or distracted by some other events in life and, start over. This notebook, is result of my effort to break the cycle and keep good quality notes for quick revision. Not only it helped me in recapitulating concepts quickly but I became more deeply involved in learning and following the video lectures.
+I was in this frustrating cycle of start again, loose interest or distracted by some other events in life and, start over. This notebook, is result of my effort to break the cycle and keep good quality notes for quick revision.
+
+On the other hand, assignments are way tougher than I expected. I would revise the lectures more than twice often, and note down missed points and search internet for the rest of puzzle. All of the above problems lead me to this solution of keeping notebooks for main highlights and algorithms. Not only it helped me in recapitulating concepts quickly but I became more deeply involved in learning and following the video lectures.
 
 I hope it serves you the same purpose too.
 
