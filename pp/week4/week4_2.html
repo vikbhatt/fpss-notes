@@ -1,0 +1,741 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>19. Parallel Two-phase Construction &#8212; Functional Programming in Scala Specialization -- Complied Notes</title>
+    
+  <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../../_static/sphinx-book-theme.40e2e510f6b7d1648584402491bb10fe.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script async="async" kind="hypothesis" src="https://hypothes.is/embed.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="20. Conc-Trees" href="week4_3.html" />
+    <link rel="prev" title="18. Implementing Combiners" href="week4_1.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../../index.html">
+  
+  <img src="../../_static/logo.png" class="logo" alt="logo">
+  
+  
+  <h1 class="site-logo" id="site-title">Functional Programming in Scala Specialization -- Complied Notes</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../intro.html">
+   Functional Programming in Scala Specialization
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Functional Programming Principles in Scala
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week1/intro.html">
+   1. Introduction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week1/week1_1.html">
+   2. Imperative vs Functional Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week1/week1_2.html">
+   3. Expressions and Evaluation model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week1/week1_3.html">
+   4. Tail Recursion
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week1/week1_4.html">
+   5. Exercise Session
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week2/week2_1.html">
+   6. Higher Order Functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week2/week2_2.html">
+   7. Class and Objects
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week3/week3_1.html">
+   8. Class Hierarchies
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week3/week3_2.html">
+   9. How classes are organized?
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week3/week3_3.html">
+   10. Polymorphism
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week4/week4_1.html">
+   11. Objects Everywhere
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week4/week4_2.html">
+   12. Functions as objects
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week4/week4_3.html">
+   13. Subtyping and Generics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week4/week4_4.html">
+   14. Variance
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week4/week4_5.html">
+   15. Decomposition
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week4/week4_6.html">
+   16. Pattern Matching
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week5/week5_1.html">
+   17. Lists
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week5/week5_2.html">
+   18. Pairs and Tuples
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week5/week5_3.html">
+   19. Higher Order List Functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week6/week6_1.html">
+   20. Other Collections
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week6/week6_2.html">
+   21. Combinatorial Search and For-Expressions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week6/week6_3.html">
+   22. Combinatorial Search Example
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week6/week6_4.html">
+   23. Maps
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week6/week6_5.html">
+   24. Putting Pieces Together
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Functional Program Design in Scala
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week1/week1_1.html">
+   1. Recap Functions and Pattern Matching
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week1/week1_2.html">
+   2. Recap: Collections
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week1/week1_3.html">
+   3. Functional Random Generators
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week1/week1_4.html">
+   4. Monads
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week2/week2_1.html">
+   5. Streams
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week2/week2_2.html">
+   6. Case Study: The Water Pouring Problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week3/week3_1.html">
+   7. Type-Directed Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week3/week3_2.html">
+   8. Type Classes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week3/week3_3.html">
+   9. Implicit Conversions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week4/week4_1.html">
+   10. Functions and State
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week4/week4_2.html">
+   11. Identity and Change
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week4/week4_3.html">
+   12. Loops
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week4/week4_4.html">
+   13. Discrete Event Simulation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week4/week4_5.html">
+   14. Discrete Event Simulation: API and Usage
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week4/week4_6.html">
+   15. Discrete Event Simulation: Implementation and Test
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week5/week5_1.html">
+   16. Imperative Event Handling: The Observer Pattern
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week5/week5_2.html">
+   17. Functional Reactive Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week5/week5_3.html">
+   18. A Simple FRP Implementation
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Parallel Programming
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week1/week1_1.html">
+   1. Parallelism on JVM I
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week1/week1_2.html">
+   2. Parallelism on the JVM II
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week1/week1_3.html">
+   3. Running Computations in Parallel
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week1/week1_4.html">
+   4. Running computations in parallel
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week1/week1_4.html#first-class-tasks">
+   5. First Class Tasks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week1/week1_4.html#benchmarking-parallel-programs">
+   6. Benchmarking Parallel Programs
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week1/week1_4.html#scalameter">
+   7. ScalaMeter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week2/week2_1.html">
+   8. Parallel Sorting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week2/week2_2.html">
+   9. Data Operations and Parallel Mapping
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week2/week2_3.html">
+   10. Parallel Fold (Reduce) Operation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week2/week2_4.html">
+   11. Parallel Scan Left
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week2/week2_5.html">
+   12. Assoicativity
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week3/week3_1.html">
+   13. Data-Parallel Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week3/week3_2.html">
+   14. Data-Parallel Operations I
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week3/week3_2.html#data-parallel-operations-ii">
+   15. Data-Parallel Operations II
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week3/week3_3.html">
+   16. Scala Collections Hierarchy
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week3/week3_4.html">
+   17. Splitters and Combiners
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="week4_1.html">
+   18. Implementing Combiners
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   19. Parallel Two-phase Construction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="week4_3.html">
+   20. Conc-Trees
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="week4_3.html#amortized-constant-time-append-operation">
+   21. Amortized, Constant-time Append Operation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="week4_3.html#conc-tree-combiners">
+   22. Conc-Tree Combiners
+  </a>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/pp/week4/week4_2.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+        <!-- Source interaction buttons -->
+
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                title="Fullscreen mode"><i
+                    class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/pp/week4/week4_2.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+    </div>
+
+    <!-- Table of contents -->
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#two-phase-construction">
+   19.1. Two-Phase Construction
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#example-array-combiner">
+     19.1.1. Example: Array Combiner
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#two-phase-construction-for-arrays">
+   19.2. Two-Phase Construction for Arrays
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#two-phase-construction-for-hash-tables">
+   19.3. Two-Phase Construction for Hash Tables
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#two-phase-construction-for-search-trees">
+   19.4. Two-Phase Construction for Search Trees
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#two-phase-construction-for-spatial-data-structures">
+   19.5. Two-Phase Construction for Spatial Data Structures
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#implementing-combiners">
+   19.6. Implementing combiners
+  </a>
+ </li>
+</ul>
+
+        </nav>
+        
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="parallel-two-phase-construction">
+<h1><span class="section-number">19. </span>Parallel Two-phase Construction<a class="headerlink" href="#parallel-two-phase-construction" title="Permalink to this headline">¶</a></h1>
+<p>In last lecture we saw combining data structures in paralle require efficient combine operation. We saw that most of the data structure combine cannot be implemented efficiently.</p>
+<p>This lecture is more constructive in nature. We learn about parallel two phase data structure construction. A technique used to implement combiners efficiently.</p>
+<div class="section" id="two-phase-construction">
+<h2><span class="section-number">19.1. </span>Two-Phase Construction<a class="headerlink" href="#two-phase-construction" title="Permalink to this headline">¶</a></h2>
+<p>Previously we insisted that a combiner and the resulting collection have the same underlying data structure. For example, we assume that a combiner that produces an array must internally contain an array at the point when its combine method is called. In two-phase construction, the combiner has an intermediate data structure as its internal representation. This intermediate data structure is different from the resulting data structure, as we will see, and it has the following properties.
+Most data structures can be constructed in parallel using two-phase
+construction.
+The intermediate data structure is a data structure that:</p>
+<ul class="simple">
+<li><p>has an efficient combine method – <span class="math notranslate nohighlight">\(\mathcal{O}(\log n + \log m)\)</span> or better</p></li>
+<li><p>has an efficient <code class="docutils literal notranslate"><span class="pre">+=</span></code> method</p></li>
+<li><p>can be converted to the resulting data structure in <span class="math notranslate nohighlight">\(\mathcal{O}(\frac{n}{P})\)</span> time</p></li>
+</ul>
+<p>Together these properties allow building the resulting data structure in two phases.</p>
+<p>In the first phase, different processors build intermediate data structures in parallel by invoking the += method.</p>
+<p>These intermediate data structures are then combined in a parallel reduction tree until there is a single intermediate data structure at the root. In the second phase, the result method uses the intermediate data structure to create the final data structure in parallel.</p>
+<p>In our illustration, the final result is some array-like data structure whose subintervals are populated in parallel by different processors.</p>
+<div class="section" id="example-array-combiner">
+<h3><span class="section-number">19.1.1. </span>Example: Array Combiner<a class="headerlink" href="#example-array-combiner" title="Permalink to this headline">¶</a></h3>
+<p>Let’s implement a combiner for arrays.
+Two arrays cannot be efficiently concatenated, so we will do a two-phase construction. We use <code class="docutils literal notranslate"><span class="pre">ClassTag</span></code> type as context bound to be able instantiate array.</p>
+<p>Internally, the <code class="docutils literal notranslate"><span class="pre">ArrayCombiner</span></code> keeps the field <code class="docutils literal notranslate"><span class="pre">numElems</span></code> to store the number of elements in the combiner, and the nested <code class="docutils literal notranslate"><span class="pre">ArrayBuffer</span></code> used to store the elements. The actual elements will be stored in these entries.</p>
+<p>We use a nested <code class="docutils literal notranslate"><span class="pre">ArrayBuffer</span></code> instead of a normal one for reasons that should soon become apparent.</p>
+<p>We start with <code class="docutils literal notranslate"><span class="pre">+=</span></code>. This method finds the last nested array buffer in buffers and appends the element <code class="docutils literal notranslate"><span class="pre">x</span></code> to it. If the last nested <code class="docutils literal notranslate"><span class="pre">ArrayBuffer</span></code> ever gets full, it is expanded to accommodate more elements.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">reflect.ClassTag</span>
+<span class="k">import</span> <span class="nn">scala.collection.mutable.ArrayBuffer</span>
+<span class="k">class</span> <span class="nc">ArrayCombiner</span><span class="o">[</span><span class="kt">T</span> <span class="k">&lt;:</span> <span class="kt">AnyRef:</span> <span class="kt">ClassTag</span><span class="o">](</span><span class="k">val</span> <span class="n">parallelism</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="o">{</span>
+<span class="k">private</span> <span class="k">var</span> <span class="n">numElems</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">private</span> <span class="k">val</span> <span class="n">buffers</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayBuffer</span><span class="o">[</span><span class="kt">ArrayBuffer</span><span class="o">[</span><span class="kt">T</span><span class="o">]]</span>
+<span class="n">buffers</span> <span class="o">+=</span> <span class="k">new</span> <span class="nc">ArrayBuffer</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span>
+    
+<span class="k">def</span> <span class="o">+=(</span><span class="n">x</span><span class="k">:</span> <span class="kt">T</span><span class="o">)</span> <span class="o">=</span> <span class="o">{</span>
+<span class="n">buffers</span><span class="o">.</span><span class="n">last</span> <span class="o">+=</span> <span class="n">x</span>
+<span class="n">numElems</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="k">this</span>
+<span class="o">}</span>
+    
+    <span class="k">def</span> <span class="n">combine</span><span class="o">(</span><span class="n">that</span><span class="k">:</span> <span class="kt">ArrayCombiner</span><span class="o">[</span><span class="kt">T</span><span class="o">])</span> <span class="o">=</span> <span class="o">{</span>
+<span class="n">buffers</span> <span class="o">++=</span> <span class="n">that</span><span class="o">.</span><span class="n">buffers</span>
+<span class="n">numElems</span> <span class="o">+=</span> <span class="n">that</span><span class="o">.</span><span class="n">numElems</span>
+<span class="k">this</span>
+<span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">import </span><span class=" -Color -Color-Cyan">reflect.ClassTag</span>
+
+<span class=" -Color -Color-Green">import </span><span class=" -Color -Color-Cyan">scala.collection.mutable.ArrayBuffer</span>
+
+defined <span class=" -Color -Color-Green">class</span> <span class=" -Color -Color-Cyan">ArrayCombiner</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Appending to buffer is amortized <span class="math notranslate nohighlight">\(\mathcal{O}(1)\)</span>, low constant factors – as efficient as an array buffer. If the array buffer gets full it gets expanded to accomdate more elements.
+As learned previously, appending to an array buffer takes amortized constant time.</p>
+<p>Next we implement the combine method. Here the reason for using nested array buffers becomes obvious. The combine method simply copies the references of the argument combiners buffers to its own buffers field. It does not need to copy the actual contents of those nested buffers, only a pointer to them.</p>
+<p>What is the running time of this combine? The number of computational steps is equal to the number of nested array buffers in the argument combiner. Since every array combiner is first created with only one nested array buffer, and there are exactly P array combiners created in the reduction tree, one for each processor, the buffers field will never have more than P entries. For this reason, the running of this combined method is <span class="math notranslate nohighlight">\(\mathcal{O}(P)\)</span>.</p>
+<p>Typical desktop computers today have around four processors, and the most powerful workstations have several dozen. So P is usually negligible compared to the number of elements in the data structure, and this is still an acceptable running time for the combine operation.</p>
+<p>Finally we can implement the result method.</p>
+<p>Once we have the root intermediate data structure, we know the required size of the array from the <code class="docutils literal notranslate"><span class="pre">numElems</span></code> field, so we allocate the resulting array.</p>
+<p>We then divide the array indices into chunks, pairs of starting and ending indices that each parallel task should in parallel copy. We start these tasks, wait for their completion, and then return the array.</p>
+</div>
+</div>
+<div class="section" id="two-phase-construction-for-arrays">
+<h2><span class="section-number">19.2. </span>Two-Phase Construction for Arrays<a class="headerlink" href="#two-phase-construction-for-arrays" title="Permalink to this headline">¶</a></h2>
+<p>Two-phase construction works for in a similar way for other data
+structures. First, partition the elements, then construct parts of the final
+data structure in parallel:</p>
+<ol class="simple">
+<li><p>partition the indices into subintervals</p></li>
+<li><p>initialize the array in parallel</p></li>
+</ol>
+</div>
+<div class="section" id="two-phase-construction-for-hash-tables">
+<h2><span class="section-number">19.3. </span>Two-Phase Construction for Hash Tables<a class="headerlink" href="#two-phase-construction-for-hash-tables" title="Permalink to this headline">¶</a></h2>
+<ol class="simple">
+<li><p>partition the hash codes into buckets</p></li>
+<li><p>allocate the table, and map hash codes from different buckets into different regions</p></li>
+</ol>
+</div>
+<div class="section" id="two-phase-construction-for-search-trees">
+<h2><span class="section-number">19.4. </span>Two-Phase Construction for Search Trees<a class="headerlink" href="#two-phase-construction-for-search-trees" title="Permalink to this headline">¶</a></h2>
+<ol class="simple">
+<li><p>partition the elements into non-overlapping intervals according to their ordering</p></li>
+<li><p>construct search trees in parallel, and link non-overlapping trees</p></li>
+</ol>
+</div>
+<div class="section" id="two-phase-construction-for-spatial-data-structures">
+<h2><span class="section-number">19.5. </span>Two-Phase Construction for Spatial Data Structures<a class="headerlink" href="#two-phase-construction-for-spatial-data-structures" title="Permalink to this headline">¶</a></h2>
+<ol class="simple">
+<li><p>spatially partition the elements</p></li>
+<li><p>construct non-overlapping subsets and link them</p></li>
+</ol>
+</div>
+<div class="section" id="implementing-combiners">
+<h2><span class="section-number">19.6. </span>Implementing combiners<a class="headerlink" href="#implementing-combiners" title="Permalink to this headline">¶</a></h2>
+<p>How can we implement combiners?</p>
+<ol class="simple">
+<li><p>Two-phase construction – the combiner uses an intermediate data structure with an efficient combine method to partition the elements. When result is called, the final data structure is constructed in parallel from the intermediate data structure.</p></li>
+<li><p>An efficient concatenation or union operation – a preferred way when the resulting data structure allows this.</p></li>
+<li><p>Concurrent data structure – different combiners share the same underlying data structure, and rely on synchronization to correctly update the data structure when += is called</p></li>
+</ol>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "scala"
+        },
+        kernelOptions: {
+            kernelName: "scala",
+            path: "./pp/week4"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'scala'</script>
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+    <a class='left-prev' id="prev-link" href="week4_1.html" title="previous page"><span class="section-number">18. </span>Implementing Combiners</a>
+    <a class='right-next' id="next-link" href="week4_3.html" title="next page"><span class="section-number">20. </span>Conc-Trees</a>
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Vikram Bhatt<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="../../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    
+  </body>
+</html>

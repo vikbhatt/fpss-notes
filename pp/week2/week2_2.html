@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>5. Data Operations and Parallel Mapping &#8212; Functional Programming in Scala Specialization -- Complied Notes</title>
+    <title>9. Data Operations and Parallel Mapping &#8212; Functional Programming in Scala Specialization -- Complied Notes</title>
     
   <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
 
@@ -59,8 +59,8 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="7. Parallel Fold (Reduce) Operation" href="week2_3.html" />
-    <link rel="prev" title="4. Parallel Sorting" href="week2_1.html" />
+    <link rel="next" title="10. Parallel Fold (Reduce) Operation" href="week2_3.html" />
+    <link rel="prev" title="8. Parallel Sorting" href="week2_1.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -343,23 +343,98 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="../week1/week1_4.html">
+   4. Running computations in parallel
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week1/week1_4.html#first-class-tasks">
+   5. First Class Tasks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week1/week1_4.html#benchmarking-parallel-programs">
+   6. Benchmarking Parallel Programs
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week1/week1_4.html#scalameter">
+   7. ScalaMeter
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="week2_1.html">
-   4. Parallel Sorting
+   8. Parallel Sorting
   </a>
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   5. Data Operations and Parallel Mapping
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="#map-meaning-and-properties">
-   6. Map: Meaning and Properties
+   9. Data Operations and Parallel Mapping
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="week2_3.html">
-   7. Parallel Fold (Reduce) Operation
+   10. Parallel Fold (Reduce) Operation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="week2_4.html">
+   11. Parallel Scan Left
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="week2_5.html">
+   12. Assoicativity
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week3/week3_1.html">
+   13. Data-Parallel Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week3/week3_2.html">
+   14. Data-Parallel Operations I
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week3/week3_2.html#data-parallel-operations-ii">
+   15. Data-Parallel Operations II
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week3/week3_3.html">
+   16. Scala Collections Hierarchy
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week3/week3_4.html">
+   17. Splitters and Combiners
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week4/week4_1.html">
+   18. Implementing Combiners
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week4/week4_2.html">
+   19. Parallel Two-phase Construction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week4/week4_3.html">
+   20. Conc-Trees
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week4/week4_3.html#amortized-constant-time-append-operation">
+   21. Amortized, Constant-time Append Operation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week4/week4_3.html#conc-tree-combiners">
+   22. Conc-Tree Combiners
   </a>
  </li>
 </ul>
@@ -449,39 +524,32 @@
         </div>
         <nav id="bd-toc-nav">
             <ul class="nav section-nav flex-column">
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#">
-   5. Data Operations and Parallel Mapping
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#map-meaning-and-properties">
+   9.1. Map: Meaning and Properties
   </a>
  </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#map-meaning-and-properties">
-   6. Map: Meaning and Properties
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#example-of-using-mapasegpar-pointwise-exponent">
+   9.2. Example of using mapASegPar: pointwise exponent
   </a>
   <ul class="nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#example-of-using-mapasegpar-pointwise-exponent">
-     6.1. Example of using mapASegPar: pointwise exponent
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#sequential-pointwise-exponent-written-from-scratch">
+     9.2.1. Sequential pointwise exponent written from scratch
     </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h3 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#sequential-pointwise-exponent-written-from-scratch">
-       6.1.1. Sequential pointwise exponent written from scratch
-      </a>
-     </li>
-     <li class="toc-h3 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#parallel-pointwise-exponent-written-from-scratch">
-       6.1.2. Parallel pointwise exponent written from scratch
-      </a>
-     </li>
-    </ul>
    </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#parallel-map-on-immutable-trees">
-     6.2. Parallel map on immutable trees
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#parallel-pointwise-exponent-written-from-scratch">
+     9.2.2. Parallel pointwise exponent written from scratch
     </a>
    </li>
   </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#parallel-map-on-immutable-trees">
+   9.3. Parallel map on immutable trees
+  </a>
  </li>
 </ul>
 
@@ -495,7 +563,7 @@
               <div>
                 
   <div class="section" id="data-operations-and-parallel-mapping">
-<h1><span class="section-number">5. </span>Data Operations and Parallel Mapping<a class="headerlink" href="#data-operations-and-parallel-mapping" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">9. </span>Data Operations and Parallel Mapping<a class="headerlink" href="#data-operations-and-parallel-mapping" title="Permalink to this headline">¶</a></h1>
 <p>Parallel processing of collections is important</p>
 <ul class="simple">
 <li><p>one the main applications of parallelism today
@@ -549,9 +617,8 @@ And it is also not efficient to combine them because concatenation takes linear 
 <ul class="simple">
 <li><p>includes many more data structures, implemented efficiently</p></li>
 </ul>
-</div>
 <div class="section" id="map-meaning-and-properties">
-<h1><span class="section-number">6. </span>Map: Meaning and Properties<a class="headerlink" href="#map-meaning-and-properties" title="Permalink to this headline">¶</a></h1>
+<h2><span class="section-number">9.1. </span>Map: Meaning and Properties<a class="headerlink" href="#map-meaning-and-properties" title="Permalink to this headline">¶</a></h2>
 <p>Map applies a given function to each list element</p>
 <div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="nc">List</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">8</span><span class="o">).</span><span class="n">map</span><span class="o">(</span><span class="n">x</span> <span class="o">=&gt;</span> <span class="n">x</span><span class="o">*</span><span class="n">x</span><span class="o">)</span> <span class="o">==</span> <span class="nc">List</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">9</span><span class="o">,</span> <span class="mi">64</span><span class="o">)</span>
 </pre></div>
@@ -670,8 +737,9 @@ then performing this write to one index of
 an array is going to be several orders of magnitude cheaper than invoking parallel computations? So the overhead of parallelization
 will need to be somehow amortized over the number of times we are invoking these
 writes to individual indices of the array. That’s why threshold needs to be several orders of magnitude as well. Once we have defined such parallel maps, we can then use it for various concrete functions.</p>
+</div>
 <div class="section" id="example-of-using-mapasegpar-pointwise-exponent">
-<h2><span class="section-number">6.1. </span>Example of using mapASegPar: pointwise exponent<a class="headerlink" href="#example-of-using-mapasegpar-pointwise-exponent" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">9.2. </span>Example of using mapASegPar: pointwise exponent<a class="headerlink" href="#example-of-using-mapasegpar-pointwise-exponent" title="Permalink to this headline">¶</a></h2>
 <p>Raise each array element to power <span class="math notranslate nohighlight">\(p\)</span>:</p>
 <p><span class="math notranslate nohighlight">\(Array(a1, a2, . . . , an) \leftarrow Array(|a1|^p, |a2|^p, . . . , |an|^p)\)</span>
 We can use previously defined higher-order functions:</p>
@@ -687,7 +755,7 @@ We can use previously defined higher-order functions:</p>
 <li><p>performance of re-using higher-order functions vs re-implementing</p></li>
 </ul>
 <div class="section" id="sequential-pointwise-exponent-written-from-scratch">
-<h3><span class="section-number">6.1.1. </span>Sequential pointwise exponent written from scratch<a class="headerlink" href="#sequential-pointwise-exponent-written-from-scratch" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">9.2.1. </span>Sequential pointwise exponent written from scratch<a class="headerlink" href="#sequential-pointwise-exponent-written-from-scratch" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">math.pow</span>
@@ -713,7 +781,7 @@ defined <span class=" -Color -Color-Green">function</span> <span class=" -Color 
 </div>
 </div>
 <div class="section" id="parallel-pointwise-exponent-written-from-scratch">
-<h3><span class="section-number">6.1.2. </span>Parallel pointwise exponent written from scratch<a class="headerlink" href="#parallel-pointwise-exponent-written-from-scratch" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">9.2.2. </span>Parallel pointwise exponent written from scratch<a class="headerlink" href="#parallel-pointwise-exponent-written-from-scratch" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">normsOfPar</span><span class="o">(</span><span class="n">inp</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">Int</span><span class="o">],</span> <span class="n">p</span><span class="k">:</span> <span class="kt">Double</span><span class="o">,</span>
 <span class="n">left</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">right</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span>
 <span class="n">out</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">Double</span><span class="o">])</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
@@ -756,7 +824,7 @@ How much performance improvement do you expect from:</p>
 </div>
 </div>
 <div class="section" id="parallel-map-on-immutable-trees">
-<h2><span class="section-number">6.2. </span>Parallel map on immutable trees<a class="headerlink" href="#parallel-map-on-immutable-trees" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">9.3. </span>Parallel map on immutable trees<a class="headerlink" href="#parallel-map-on-immutable-trees" title="Permalink to this headline">¶</a></h2>
 <p>Consider trees where</p>
 <ul class="simple">
 <li><p>leaves store array segments</p></li>
@@ -856,8 +924,8 @@ also bad locality. Because different parts of the tree may be stored in principl
     
     <div class='prev-next-bottom'>
         
-    <a class='left-prev' id="prev-link" href="week2_1.html" title="previous page"><span class="section-number">4. </span>Parallel Sorting</a>
-    <a class='right-next' id="next-link" href="week2_3.html" title="next page"><span class="section-number">7. </span>Parallel Fold (Reduce) Operation</a>
+    <a class='left-prev' id="prev-link" href="week2_1.html" title="previous page"><span class="section-number">8. </span>Parallel Sorting</a>
+    <a class='right-next' id="next-link" href="week2_3.html" title="next page"><span class="section-number">10. </span>Parallel Fold (Reduce) Operation</a>
 
     </div>
     <footer class="footer mt-5 mt-md-0">

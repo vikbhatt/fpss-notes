@@ -1,0 +1,833 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RDDs, Spark’s Distributed Collection &#8212; Functional Programming in Scala Specialization -- Complied Notes</title>
+    
+  <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../../_static/sphinx-book-theme.40e2e510f6b7d1648584402491bb10fe.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script async="async" kind="hypothesis" src="https://hypothes.is/embed.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../../index.html">
+  
+  <img src="../../_static/logo.png" class="logo" alt="logo">
+  
+  
+  <h1 class="site-logo" id="site-title">Functional Programming in Scala Specialization -- Complied Notes</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../intro.html">
+   Functional Programming in Scala Specialization
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Functional Programming Principles in Scala
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week1/intro.html">
+   1. Introduction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week1/week1_1.html">
+   2. Imperative vs Functional Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week1/week1_2.html">
+   3. Expressions and Evaluation model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week1/week1_3.html">
+   4. Tail Recursion
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week1/week1_4.html">
+   5. Exercise Session
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week2/week2_1.html">
+   6. Higher Order Functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week2/week2_2.html">
+   7. Class and Objects
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week3/week3_1.html">
+   8. Class Hierarchies
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week3/week3_2.html">
+   9. How classes are organized?
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week3/week3_3.html">
+   10. Polymorphism
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week4/week4_1.html">
+   11. Objects Everywhere
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week4/week4_2.html">
+   12. Functions as objects
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week4/week4_3.html">
+   13. Subtyping and Generics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week4/week4_4.html">
+   14. Variance
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week4/week4_5.html">
+   15. Decomposition
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week4/week4_6.html">
+   16. Pattern Matching
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week5/week5_1.html">
+   17. Lists
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week5/week5_2.html">
+   18. Pairs and Tuples
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week5/week5_3.html">
+   19. Higher Order List Functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week6/week6_1.html">
+   20. Other Collections
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week6/week6_2.html">
+   21. Combinatorial Search and For-Expressions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week6/week6_3.html">
+   22. Combinatorial Search Example
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week6/week6_4.html">
+   23. Maps
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week6/week6_5.html">
+   24. Putting Pieces Together
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Functional Program Design in Scala
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week1/week1_1.html">
+   1. Recap Functions and Pattern Matching
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week1/week1_2.html">
+   2. Recap: Collections
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week1/week1_3.html">
+   3. Functional Random Generators
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week1/week1_4.html">
+   4. Monads
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week2/week2_1.html">
+   5. Streams
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week2/week2_2.html">
+   6. Case Study: The Water Pouring Problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week3/week3_1.html">
+   7. Type-Directed Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week3/week3_2.html">
+   8. Type Classes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week3/week3_3.html">
+   9. Implicit Conversions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week4/week4_1.html">
+   10. Functions and State
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week4/week4_2.html">
+   11. Identity and Change
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week4/week4_3.html">
+   12. Loops
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week4/week4_4.html">
+   13. Discrete Event Simulation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week4/week4_5.html">
+   14. Discrete Event Simulation: API and Usage
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week4/week4_6.html">
+   15. Discrete Event Simulation: Implementation and Test
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week5/week5_1.html">
+   16. Imperative Event Handling: The Observer Pattern
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week5/week5_2.html">
+   17. Functional Reactive Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week5/week5_3.html">
+   18. A Simple FRP Implementation
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Parallel Programming
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../pp/week1/week1_1.html">
+   1. Parallelism on JVM I
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../pp/week1/week1_2.html">
+   2. Parallelism on the JVM II
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../pp/week1/week1_3.html">
+   3. Running Computations in Parallel
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../pp/week1/week1_4.html">
+   4. Running computations in parallel
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../pp/week1/week1_4.html#first-class-tasks">
+   5. First Class Tasks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../pp/week1/week1_4.html#benchmarking-parallel-programs">
+   6. Benchmarking Parallel Programs
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../pp/week1/week1_4.html#scalameter">
+   7. ScalaMeter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../pp/week2/week2_1.html">
+   8. Parallel Sorting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../pp/week2/week2_2.html">
+   9. Data Operations and Parallel Mapping
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../pp/week2/week2_3.html">
+   10. Parallel Fold (Reduce) Operation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../pp/week2/week2_4.html">
+   11. Parallel Scan Left
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../pp/week2/week2_5.html">
+   12. Assoicativity
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../pp/week3/week3_1.html">
+   13. Data-Parallel Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../pp/week3/week3_2.html">
+   14. Data-Parallel Operations I
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../pp/week3/week3_2.html#data-parallel-operations-ii">
+   15. Data-Parallel Operations II
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../pp/week3/week3_3.html">
+   16. Scala Collections Hierarchy
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../pp/week3/week3_4.html">
+   17. Splitters and Combiners
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../pp/week4/week4_1.html">
+   18. Implementing Combiners
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../pp/week4/week4_2.html">
+   19. Parallel Two-phase Construction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../pp/week4/week4_3.html">
+   20. Conc-Trees
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../pp/week4/week4_3.html#amortized-constant-time-append-operation">
+   21. Amortized, Constant-time Append Operation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../pp/week4/week4_3.html#conc-tree-combiners">
+   22. Conc-Tree Combiners
+  </a>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/scala-spark-big-data/week1/week1_2.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+        <!-- Source interaction buttons -->
+
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                title="Fullscreen mode"><i
+                    class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/scala-spark-big-data/week1/week1_2.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+    </div>
+
+    <!-- Table of contents -->
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   RDDs, Spark’s Distributed Collection
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#how-to-create-an-rdd">
+     How to Create an RDD?
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#transformations-and-actions">
+   Transformations and Actions
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#example">
+     Example
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#another-example">
+     Another Example
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+        </nav>
+        
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="rdds-spark-s-distributed-collection">
+<h1>RDDs, Spark’s Distributed Collection<a class="headerlink" href="#rdds-spark-s-distributed-collection" title="Permalink to this headline">¶</a></h1>
+<p>RDDs seem a lot like immutable sequential or parallel Scala collections.</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">abstract</span> <span class="k">class</span> <span class="nc">RDD</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span>  <span class="o">{</span> 
+    <span class="k">def</span> <span class="n">map</span><span class="o">[</span><span class="kt">U</span><span class="o">](</span><span class="n">f</span><span class="k">:</span> <span class="kt">T</span> <span class="o">=&gt;</span> <span class="n">U</span><span class="o">)</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[</span><span class="kt">U</span><span class="o">]</span> <span class="o">=</span> <span class="o">...</span> 
+    <span class="k">def</span> <span class="n">flatMap</span><span class="o">[</span><span class="kt">U</span><span class="o">](</span><span class="n">f</span><span class="k">:</span> <span class="kt">T</span> <span class="o">=&gt;</span>  <span class="nc">TraversableOnce</span><span class="o">[</span><span class="kt">U</span><span class="o">]</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[</span><span class="kt">U</span><span class="o">]</span> <span class="o">=</span> <span class="o">...</span> 
+    <span class="k">def</span> <span class="n">filter</span><span class="o">(</span><span class="n">f</span><span class="k">:</span> <span class="kt">T</span> <span class="o">=&gt;</span>  <span class="nc">Boolean</span><span class="o">)</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="o">=</span> <span class="o">...</span> 
+    <span class="k">def</span> <span class="n">reduce</span><span class="o">(</span><span class="n">f</span><span class="k">:</span> <span class="o">(</span><span class="kt">T</span><span class="o">,</span>  <span class="kt">T</span><span class="o">)</span> <span class="o">=&gt;</span>  <span class="n">T</span><span class="o">)</span><span class="k">:</span> <span class="kt">T</span> <span class="o">=</span> <span class="o">...</span> 
+</pre></div>
+</div>
+<p>Shown here only few operations.</p>
+<p>Most operations on RDDs, like Scala’s immutable List, and Scala’s parallel collections, are higher-order functions.</p>
+<p>That is,  methods that work on  RDDs, taking a  function as an argument, and which typically return RDDs.</p>
+<p>While their signatures differ a bit, their semantics (macroscopically) are
+the same:</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="n">map</span><span class="o">[</span><span class="kt">B</span><span class="o">](</span><span class="n">f</span><span class="k">:</span> <span class="kt">A</span><span class="o">=&gt;</span> <span class="n">B</span><span class="o">)</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span> <span class="c1">// Scala List</span>
+<span class="n">map</span><span class="o">[</span><span class="kt">B</span><span class="o">](</span><span class="n">f</span><span class="k">:</span> <span class="kt">A</span><span class="o">=&gt;</span> <span class="n">B</span><span class="o">)</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span> <span class="c1">// Spark ROD</span>
+<span class="n">flatMap</span><span class="o">[</span><span class="kt">B</span><span class="o">](</span><span class="n">f</span><span class="k">:</span> <span class="kt">A</span><span class="o">=&gt;</span> <span class="nc">TraversableOnce</span><span class="o">[</span><span class="kt">B</span><span class="o">])</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span> <span class="c1">// Scala List</span>
+<span class="n">flatMap</span><span class="o">[</span><span class="kt">B</span><span class="o">](</span><span class="n">f</span><span class="k">:</span> <span class="kt">A</span><span class="o">=&gt;</span> <span class="nc">TraversableOnce</span><span class="o">[</span><span class="kt">B</span><span class="o">])</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span> <span class="c1">// Spark ROD</span>
+<span class="n">filter</span><span class="o">(</span><span class="n">pred</span><span class="k">:</span> <span class="kt">A</span><span class="o">=&gt;</span> <span class="nc">Boolean</span><span class="o">)</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="c1">// Scala List</span>
+<span class="n">filter</span><span class="o">(</span><span class="n">pred</span><span class="k">:</span> <span class="kt">A</span><span class="o">=&gt;</span> <span class="nc">Boolean</span><span class="o">)</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="c1">// Spark ROD</span>
+<span class="n">reduce</span><span class="o">(</span><span class="n">op</span><span class="k">:</span> <span class="o">(</span><span class="kt">A</span><span class="o">,</span> <span class="kt">A</span><span class="o">)=&gt;</span> <span class="n">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">A</span><span class="c1">// Scala List</span>
+<span class="kt">reduce</span><span class="o">(</span><span class="kt">op:</span> <span class="o">(</span><span class="kt">A</span><span class="o">,</span> <span class="kt">A</span><span class="o">)=&gt;</span> <span class="n">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">A</span><span class="c1">// Spark RDD</span>
+<span class="kt">fold</span><span class="o">(</span><span class="kt">z:</span> <span class="kt">A</span><span class="o">)(</span><span class="kt">op:</span> <span class="o">(</span><span class="kt">A</span><span class="o">,</span> <span class="kt">A</span><span class="o">)=&gt;</span> <span class="n">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">A</span><span class="c1">// Scala List</span>
+<span class="kt">fold</span><span class="o">(</span><span class="kt">z:</span> <span class="kt">A</span><span class="o">)(</span><span class="kt">op:</span> <span class="o">(</span><span class="kt">A</span><span class="o">,</span> <span class="kt">A</span><span class="o">)=&gt;</span> <span class="n">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">A</span><span class="c1">// Spark RDD</span>
+<span class="kt">aggregate</span><span class="o">[</span><span class="kt">B</span><span class="o">](</span><span class="n">z</span><span class="k">:</span> <span class="o">=&gt;</span> <span class="n">B</span><span class="o">)(</span><span class="n">seqop</span><span class="k">:</span> <span class="o">(</span><span class="kt">B</span><span class="o">,</span> <span class="kt">A</span><span class="o">)=&gt;</span> <span class="n">B</span><span class="o">,</span> <span class="n">combop</span><span class="k">:</span> <span class="o">(</span><span class="kt">B</span><span class="o">,</span> <span class="kt">B</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">B</span><span class="o">)</span><span class="k">:</span> <span class="kt">B</span> <span class="c1">// Scala</span>
+<span class="kt">aggregate</span><span class="o">[</span><span class="kt">B</span><span class="o">](</span><span class="n">z</span><span class="k">:</span> <span class="kt">B</span><span class="o">)(</span><span class="n">seqop</span><span class="k">:</span> <span class="o">(</span><span class="kt">B</span><span class="o">,</span> <span class="kt">A</span><span class="o">)=&gt;</span> <span class="n">B</span><span class="o">,</span> <span class="n">combop</span><span class="k">:</span> <span class="o">(</span><span class="kt">B</span><span class="o">,</span> <span class="kt">B</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">B</span><span class="o">)</span><span class="k">:</span> <span class="kt">B</span> <span class="c1">// Spark RDD         </span>
+</pre></div>
+</div>
+<p>Using RDDs in Spark feels a lot like normal Scala sequential/parallel
+collections, with the added knowledge that your data is distributed across
+several machines.</p>
+<div class="section" id="how-to-create-an-rdd">
+<h2>How to Create an RDD?<a class="headerlink" href="#how-to-create-an-rdd" title="Permalink to this headline">¶</a></h2>
+<p>RDDs can be created in two ways:</p>
+<ul class="simple">
+<li><p>Transforming an existing RDD .</p></li>
+<li><p>From a SparkContext ( or SparkSession) object.</p></li>
+</ul>
+<p>Transforming an existing <code class="docutils literal notranslate"><span class="pre">RDD</span></code>. Just like a call to map on a <code class="docutils literal notranslate"><span class="pre">List</span></code> returns a new <code class="docutils literal notranslate"><span class="pre">List</span></code>, many higher-order functions defined on <code class="docutils literal notranslate"><span class="pre">RDD</span></code> return a new <code class="docutils literal notranslate"><span class="pre">RDD</span></code>.</p>
+<p>From a <code class="docutils literal notranslate"><span class="pre">SparkContext</span></code> (or <code class="docutils literal notranslate"><span class="pre">SparkSession</span></code>) object .
+The <code class="docutils literal notranslate"><span class="pre">SparkContext</span></code> object (renamed <code class="docutils literal notranslate"><span class="pre">SparkSession</span></code>) can be thought of as
+your handle to the Spark cluster. It represents the connection between the
+Spark cluster and your running application. It defines a handful of methods which can be used to create and populate a new RDD:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">parallelize</span></code>: convert a local Scala collection to an RDD .</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">textFile</span></code>: read a text file from HDFS or a local file system and return an RDD of String</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="transformations-and-actions">
+<h1>Transformations and Actions<a class="headerlink" href="#transformations-and-actions" title="Permalink to this headline">¶</a></h1>
+<p>Operations on RDD’s.</p>
+<p>Recall transformers and accessors from Scala sequential and parallel
+collections.</p>
+<p>Transformers. Return new collections as results. (Not single values.)
+Examples: <code class="docutils literal notranslate"><span class="pre">map</span></code>, <code class="docutils literal notranslate"><span class="pre">filter</span></code>, <code class="docutils literal notranslate"><span class="pre">flatMap</span></code>, <code class="docutils literal notranslate"><span class="pre">groupBy</span></code></p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="n">map</span><span class="o">(</span><span class="n">f</span><span class="k">:</span> <span class="kt">A</span><span class="o">=&gt;</span> <span class="n">B</span><span class="o">)</span><span class="k">:</span> <span class="kt">Traversable</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span>
+</pre></div>
+</div>
+<p>Accessors: Return single values as results. (Not collections.)
+Examples: <code class="docutils literal notranslate"><span class="pre">reduce</span></code>, <code class="docutils literal notranslate"><span class="pre">fold</span></code>, <code class="docutils literal notranslate"><span class="pre">aggregate</span></code>.</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="n">reduce</span><span class="o">(</span><span class="n">op</span><span class="k">:</span> <span class="o">(</span><span class="kt">A</span><span class="o">,</span> <span class="kt">A</span><span class="o">)=&gt;</span> <span class="n">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">A</span>
+</pre></div>
+</div>
+<p>Transformations: Return new collections RDDs as results. They are lazy, their result RDD is not immediately computed.</p>
+<p>Actions. Compute a result based on an RDD, and either returned or saved to an external storage system (e.g., HDFS). They are eager, their result is immediately computed.</p>
+<p>Laziness/eagerness is how we can limit network communication using the programming mode.</p>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<p>Consider the following sim ple exam ple:</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">largelist</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span> <span class="o">=</span> <span class="o">...</span>
+<span class="k">val</span> <span class="n">wordsRdd</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">parallelize</span><span class="o">(</span><span class="n">largelist</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">lengthsRdd</span> <span class="o">=</span> <span class="n">wordsRdd</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">length</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>What has happened on the cluster at this point?
+Nothing. Execution of map ( a transform at ion) is deferred.
+To kick off the com putation and wait for its result.</p>
+<table class="table">
+<tbody><tr><th style="width:25%">Transformation</th><th>Meaning</th></tr>
+<tr>
+  <td> <b>map</b>(<i>func</i>) </td>
+  <td> Return a new distributed dataset formed by passing each element of the source through a function <i>func</i>. </td>
+</tr>
+<tr>
+  <td> <b>filter</b>(<i>func</i>) </td>
+  <td> Return a new dataset formed by selecting those elements of the source on which <i>func</i> returns true. </td>
+</tr>
+<tr>
+  <td> <b>flatMap</b>(<i>func</i>) </td>
+  <td> Similar to map, but each input item can be mapped to 0 or more output items (so <i>func</i> should return a Seq rather than a single item). </td>
+</tr>
+<tr>
+  <td> <b>mapPartitions</b>(<i>func</i>) </td>
+  <td> Similar to map, but runs separately on each partition (block) of the RDD, so <i>func</i> must be of type
+    Iterator[T] =&gt; Iterator[U] when running on an RDD of type T. </td>
+</tr>
+<tr>
+  <td> <b>mapPartitionsWithIndex</b>(<i>func</i>) </td>
+  <td> Similar to mapPartitions, but also provides <i>func</i> with an integer value representing the index of
+  the partition, so <i>func</i> must be of type (Int, Iterator[T]) =&gt; Iterator[U] when running on an RDD of type T.
+  </td>
+</tr>
+<tr>
+  <td> <b>sample</b>(<i>withReplacement</i>, <i>fraction</i>, <i>seed</i>) </td>
+  <td> Sample a fraction <i>fraction</i> of the data, with or without replacement, using a given random number generator seed. </td>
+</tr>
+<tr>
+  <td> <b>union</b>(<i>otherDataset</i>) </td>
+  <td> Return a new dataset that contains the union of the elements in the source dataset and the argument. </td>
+</tr>
+<tr>
+  <td> <b>distinct</b>([<i>numTasks</i>])) </td>
+  <td> Return a new dataset that contains the distinct elements of the source dataset.</td>
+</tr>
+<tr>
+  <td> <b>groupByKey</b>([<i>numTasks</i>]) </td>
+  <td> When called on a dataset of (K, V) pairs, returns a dataset of (K, Seq[V]) pairs. <br>
+<b>Note:</b> By default, this uses only 8 parallel tasks to do the grouping. You can pass an optional <code>numTasks</code> argument to set a different number of tasks.
+</td>
+</tr>
+<tr>
+  <td> <b>reduceByKey</b>(<i>func</i>, [<i>numTasks</i>]) </td>
+  <td> When called on a dataset of (K, V) pairs, returns a dataset of (K, V) pairs where the values for each key are aggregated using the given reduce function. Like in <code>groupByKey</code>, the number of reduce tasks is configurable through an optional second argument. </td>
+</tr>
+<tr>
+  <td> <b>sortByKey</b>([<i>ascending</i>], [<i>numTasks</i>]) </td>
+  <td> When called on a dataset of (K, V) pairs where K implements Ordered, returns a dataset of (K, V) pairs sorted by keys in ascending or descending order, as specified in the boolean <code>ascending</code> argument.</td>
+</tr>
+<tr>
+  <td> <b>join</b>(<i>otherDataset</i>, [<i>numTasks</i>]) </td>
+  <td> When called on datasets of type (K, V) and (K, W), returns a dataset of (K, (V, W)) pairs with all pairs of elements for each key. </td>
+</tr>
+<tr>
+  <td> <b>cogroup</b>(<i>otherDataset</i>, [<i>numTasks</i>]) </td>
+  <td> When called on datasets of type (K, V) and (K, W), returns a dataset of (K, Seq[V], Seq[W]) tuples. This operation is also called <code>groupWith</code>. </td>
+</tr>
+<tr>
+  <td> <b>cartesian</b>(<i>otherDataset</i>) </td>
+  <td> When called on datasets of types T and U, returns a dataset of (T, U) pairs (all pairs of elements). </td>
+</tr>
+</tbody></table></div>
+<div class="section" id="another-example">
+<h2>Another Example<a class="headerlink" href="#another-example" title="Permalink to this headline">¶</a></h2>
+<p>Let’s assume that we have an <code class="docutils literal notranslate"><span class="pre">RDD[String]</span></code> which contains gigabytes of
+logs collected over the previous year. Each element of this <code class="docutils literal notranslate"><span class="pre">RDD</span></code> represents
+one line of logging.
+Assuming that dates come in the form, <code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD:HH:MM:SS</span></code>, and errors
+are logged with a prefix that includes the word “error”</p>
+<p>How would you determine the number of errors that were logged in
+December 2016?</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">lastYearslogs</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span> <span class="o">=</span> <span class="o">...</span>
+<span class="k">val</span> <span class="n">numDecErrorlogs</span>
+<span class="o">=</span> <span class="n">lastYearslogs</span><span class="o">.</span><span class="n">filter</span><span class="o">(</span><span class="n">lg</span> <span class="o">=&gt;</span> <span class="n">lg</span><span class="o">.</span><span class="n">contains</span><span class="o">(</span><span class="s">&quot;2016-12&quot;</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="n">lg</span><span class="o">.</span><span class="n">contains</span><span class="o">(</span><span class="s">&quot;error&quot;</span><span class="o">))</span>
+<span class="o">.</span><span class="n">count</span><span class="o">()</span>
+</pre></div>
+</div>
+<p>Spark com putes RDDs the first time they are used in an action.
+This helps when processing large amounts of data.
+Example:</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">lastYearslogs</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span> <span class="o">=</span> <span class="o">...</span>
+<span class="k">val</span> <span class="n">firstlogsWithErrors</span> <span class="o">=</span> <span class="n">lastYearslogs</span><span class="o">.</span><span class="n">filter</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">contains</span><span class="o">(</span><span class="s">&quot;ERROR&quot;</span><span class="o">))</span> <span class="o">.</span><span class="n">take</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>The execution of filter is deferred until the take action is applied.
+Spark leverages this by analyzing and optimizing the chain of operations before
+executing it.</p>
+<p>Spark will not compute intermediate RDDs. Instead, as soon as 10 elements of the
+filtered RDD have been computed, firstLogsWi thErrors is done. At this point Spark
+stops working, saving time and space computing elements of the unused result of filter.</p>
+<table class="table">
+<tbody><tr><th>Action</th><th>Meaning</th></tr>
+<tr>
+  <td> <b>reduce</b>(<i>func</i>) </td>
+  <td> Aggregate the elements of the dataset using a function <i>func</i> (which takes two arguments and returns one). The function should be commutative and associative so that it can be computed correctly in parallel. </td>
+</tr>
+<tr>
+  <td> <b>collect</b>() </td>
+  <td> Return all the elements of the dataset as an array at the driver program. This is usually useful after a filter or other operation that returns a sufficiently small subset of the data. </td>
+</tr>
+<tr>
+  <td> <b>count</b>() </td>
+  <td> Return the number of elements in the dataset. </td>
+</tr>
+<tr>
+  <td> <b>first</b>() </td>
+  <td> Return the first element of the dataset (similar to take(1)). </td>
+</tr>
+<tr>
+  <td> <b>take</b>(<i>n</i>) </td>
+  <td> Return an array with the first <i>n</i> elements of the dataset. Note that this is currently not executed in parallel. Instead, the driver program computes all the elements. </td>
+</tr>
+<tr>
+  <td> <b>takeSample</b>(<i>withReplacement</i>, <i>num</i>, <i>seed</i>) </td>
+  <td> Return an array with a random sample of <i>num</i> elements of the dataset, with or without replacement, using the given random number generator seed. </td>
+</tr>
+<tr>
+  <td> <b>saveAsTextFile</b>(<i>path</i>) </td>
+  <td> Write the elements of the dataset as a text file (or set of text files) in a given directory in the local filesystem, HDFS or any other Hadoop-supported file system. Spark will call toString on each element to convert it to a line of text in the file. </td>
+</tr>
+<tr>
+  <td> <b>saveAsSequenceFile</b>(<i>path</i>) </td>
+  <td> Write the elements of the dataset as a Hadoop SequenceFile in a given path in the local filesystem, HDFS or any other Hadoop-supported file system. This is only available on RDDs of key-value pairs that either implement Hadoop's Writable interface or are implicitly convertible to Writable (Spark includes conversions for basic types like Int, Double, String, etc). </td>
+</tr>
+<tr>
+  <td> <b>countByKey</b>() </td>
+  <td> Only available on RDDs of type (K, V). Returns a `Map` of (K, Int) pairs with the count of each key. </td>
+</tr>
+<tr>
+  <td> <b>foreach</b>(<i>func</i>) </td>
+  <td> Run a function <i>func</i> on each element of the dataset. This is usually done for side effects such as updating an accumulator variable (see below) or interacting with external storage systems. </td>
+</tr>
+</tbody></table></div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "scala"
+        },
+        kernelOptions: {
+            kernelName: "scala",
+            path: "./scala-spark-big-data/week1"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'scala'</script>
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Vikram Bhatt<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="../../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    
+  </body>
+</html>

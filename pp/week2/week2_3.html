@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>7. Parallel Fold (Reduce) Operation &#8212; Functional Programming in Scala Specialization -- Complied Notes</title>
+    <title>10. Parallel Fold (Reduce) Operation &#8212; Functional Programming in Scala Specialization -- Complied Notes</title>
     
   <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
 
@@ -59,7 +59,8 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="prev" title="5. Data Operations and Parallel Mapping" href="week2_2.html" />
+    <link rel="next" title="11. Parallel Scan Left" href="week2_4.html" />
+    <link rel="prev" title="9. Data Operations and Parallel Mapping" href="week2_2.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -342,23 +343,98 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="../week1/week1_4.html">
+   4. Running computations in parallel
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week1/week1_4.html#first-class-tasks">
+   5. First Class Tasks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week1/week1_4.html#benchmarking-parallel-programs">
+   6. Benchmarking Parallel Programs
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week1/week1_4.html#scalameter">
+   7. ScalaMeter
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="week2_1.html">
-   4. Parallel Sorting
+   8. Parallel Sorting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="week2_2.html">
-   5. Data Operations and Parallel Mapping
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="week2_2.html#map-meaning-and-properties">
-   6. Map: Meaning and Properties
+   9. Data Operations and Parallel Mapping
   </a>
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   7. Parallel Fold (Reduce) Operation
+   10. Parallel Fold (Reduce) Operation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="week2_4.html">
+   11. Parallel Scan Left
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="week2_5.html">
+   12. Assoicativity
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week3/week3_1.html">
+   13. Data-Parallel Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week3/week3_2.html">
+   14. Data-Parallel Operations I
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week3/week3_2.html#data-parallel-operations-ii">
+   15. Data-Parallel Operations II
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week3/week3_3.html">
+   16. Scala Collections Hierarchy
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week3/week3_4.html">
+   17. Splitters and Combiners
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week4/week4_1.html">
+   18. Implementing Combiners
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week4/week4_2.html">
+   19. Parallel Two-phase Construction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week4/week4_3.html">
+   20. Conc-Trees
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week4/week4_3.html#amortized-constant-time-append-operation">
+   21. Amortized, Constant-time Append Operation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week4/week4_3.html#conc-tree-combiners">
+   22. Conc-Tree Combiners
   </a>
  </li>
 </ul>
@@ -450,22 +526,22 @@
             <ul class="nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#folding-reducing-trees">
-   7.1. Folding (reducing) trees
+   10.1. Folding (reducing) trees
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#associativity-stated-as-tree-reduction">
-   7.2. Associativity stated as tree reduction
+   10.2. Associativity stated as tree reduction
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#consequence-stated-as-tree-reduction">
-   7.3. Consequence stated as tree reduction
+   10.3. Consequence stated as tree reduction
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#reduction-of-arrays">
-   7.4. Reduction of arrays
+   10.4. Reduction of arrays
   </a>
  </li>
 </ul>
@@ -480,7 +556,7 @@
               <div>
                 
   <div class="section" id="parallel-fold-reduce-operation">
-<h1><span class="section-number">7. </span>Parallel Fold (Reduce) Operation<a class="headerlink" href="#parallel-fold-reduce-operation" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">10. </span>Parallel Fold (Reduce) Operation<a class="headerlink" href="#parallel-fold-reduce-operation" title="Permalink to this headline">¶</a></h1>
 <p>Fold takes among others a binary operation, but variants differ:</p>
 <ul class="simple">
 <li><p>whether they take an initial element or assume non-empty list</p></li>
@@ -511,7 +587,7 @@ evaluate to the same result, for example:</p>
 ▶ nodes are <span class="math notranslate nohighlight">\(⊗\)</span></p>
 <p>The shape of tree encodes the parentheses of our expression. Leaf nodes are combined first.</p>
 <div class="section" id="folding-reducing-trees">
-<h2><span class="section-number">7.1. </span>Folding (reducing) trees<a class="headerlink" href="#folding-reducing-trees" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">10.1. </span>Folding (reducing) trees<a class="headerlink" href="#folding-reducing-trees" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">sealed</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span>
 <span class="k">case</span> <span class="k">class</span> <span class="nc">Leaf</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">value</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span> <span class="k">extends</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span>
 <span class="k">case</span> <span class="k">class</span> <span class="nc">Node</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">left</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">right</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">extends</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span>
@@ -546,7 +622,7 @@ What is its (sequential) definition?</p>
 Answer: height of the tree</p>
 </div>
 <div class="section" id="associativity-stated-as-tree-reduction">
-<h2><span class="section-number">7.2. </span>Associativity stated as tree reduction<a class="headerlink" href="#associativity-stated-as-tree-reduction" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">10.2. </span>Associativity stated as tree reduction<a class="headerlink" href="#associativity-stated-as-tree-reduction" title="Permalink to this headline">¶</a></h2>
 <p>How can we restate associativity of such trees?
 $<span class="math notranslate nohighlight">\(x ⊗ (y ⊗ z) = (x ⊗ y) ⊗ z\)</span>$</p>
 <p>If f denotes <span class="math notranslate nohighlight">\(⊕\)</span>, in Scala we can write this also as:</p>
@@ -570,7 +646,7 @@ reduce(Node(Node(Leaf(x), Leaf(y)), Leaf(z)), f)\]</div>
 <p><code class="docutils literal notranslate"><span class="pre">toList(t)</span> <span class="pre">==</span> <span class="pre">reduce(map(t,</span> <span class="pre">List(_)),</span> <span class="pre">_</span> <span class="pre">++</span> <span class="pre">_)</span></code></p>
 </div>
 <div class="section" id="consequence-stated-as-tree-reduction">
-<h2><span class="section-number">7.3. </span>Consequence stated as tree reduction<a class="headerlink" href="#consequence-stated-as-tree-reduction" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">10.3. </span>Consequence stated as tree reduction<a class="headerlink" href="#consequence-stated-as-tree-reduction" title="Permalink to this headline">¶</a></h2>
 <p>Consequence of associativity: consider two expressions with same list of
 operands connected with <span class="math notranslate nohighlight">\(⊗\)</span>, but different parentheses. Then these
 expressions evaluate to the same result.</p>
@@ -582,7 +658,7 @@ expressions evaluate to the same result.</p>
 <code class="docutils literal notranslate"><span class="pre">toList(t1)==toList(t2)</span> <span class="pre">⇒</span> <span class="pre">rotations</span> <span class="pre">can</span> <span class="pre">bring</span> <span class="pre">t1,t2</span> <span class="pre">to</span> <span class="pre">same</span> <span class="pre">tree</span></code></p>
 </div>
 <div class="section" id="reduction-of-arrays">
-<h2><span class="section-number">7.4. </span>Reduction of arrays<a class="headerlink" href="#reduction-of-arrays" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">10.4. </span>Reduction of arrays<a class="headerlink" href="#reduction-of-arrays" title="Permalink to this headline">¶</a></h2>
 <p>We have seen reduction on trees.
 Often we work with collections where we only know the ordering and not the tree structure.
 How can we do reduction in case of, e.g., arrays?</p>
@@ -641,7 +717,8 @@ Because of associativity, we can choose any tree that preserves the order of ele
     
     <div class='prev-next-bottom'>
         
-    <a class='left-prev' id="prev-link" href="week2_2.html" title="previous page"><span class="section-number">5. </span>Data Operations and Parallel Mapping</a>
+    <a class='left-prev' id="prev-link" href="week2_2.html" title="previous page"><span class="section-number">9. </span>Data Operations and Parallel Mapping</a>
+    <a class='right-next' id="next-link" href="week2_4.html" title="next page"><span class="section-number">11. </span>Parallel Scan Left</a>
 
     </div>
     <footer class="footer mt-5 mt-md-0">

@@ -1,0 +1,874 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>20. Conc-Trees &#8212; Functional Programming in Scala Specialization -- Complied Notes</title>
+    
+  <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../../_static/sphinx-book-theme.40e2e510f6b7d1648584402491bb10fe.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script async="async" kind="hypothesis" src="https://hypothes.is/embed.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="19. Parallel Two-phase Construction" href="week4_2.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../../index.html">
+  
+  <img src="../../_static/logo.png" class="logo" alt="logo">
+  
+  
+  <h1 class="site-logo" id="site-title">Functional Programming in Scala Specialization -- Complied Notes</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../intro.html">
+   Functional Programming in Scala Specialization
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Functional Programming Principles in Scala
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week1/intro.html">
+   1. Introduction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week1/week1_1.html">
+   2. Imperative vs Functional Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week1/week1_2.html">
+   3. Expressions and Evaluation model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week1/week1_3.html">
+   4. Tail Recursion
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week1/week1_4.html">
+   5. Exercise Session
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week2/week2_1.html">
+   6. Higher Order Functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week2/week2_2.html">
+   7. Class and Objects
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week3/week3_1.html">
+   8. Class Hierarchies
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week3/week3_2.html">
+   9. How classes are organized?
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week3/week3_3.html">
+   10. Polymorphism
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week4/week4_1.html">
+   11. Objects Everywhere
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week4/week4_2.html">
+   12. Functions as objects
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week4/week4_3.html">
+   13. Subtyping and Generics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week4/week4_4.html">
+   14. Variance
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week4/week4_5.html">
+   15. Decomposition
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week4/week4_6.html">
+   16. Pattern Matching
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week5/week5_1.html">
+   17. Lists
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week5/week5_2.html">
+   18. Pairs and Tuples
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week5/week5_3.html">
+   19. Higher Order List Functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week6/week6_1.html">
+   20. Other Collections
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week6/week6_2.html">
+   21. Combinatorial Search and For-Expressions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week6/week6_3.html">
+   22. Combinatorial Search Example
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week6/week6_4.html">
+   23. Maps
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week6/week6_5.html">
+   24. Putting Pieces Together
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Functional Program Design in Scala
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week1/week1_1.html">
+   1. Recap Functions and Pattern Matching
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week1/week1_2.html">
+   2. Recap: Collections
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week1/week1_3.html">
+   3. Functional Random Generators
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week1/week1_4.html">
+   4. Monads
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week2/week2_1.html">
+   5. Streams
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week2/week2_2.html">
+   6. Case Study: The Water Pouring Problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week3/week3_1.html">
+   7. Type-Directed Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week3/week3_2.html">
+   8. Type Classes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week3/week3_3.html">
+   9. Implicit Conversions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week4/week4_1.html">
+   10. Functions and State
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week4/week4_2.html">
+   11. Identity and Change
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week4/week4_3.html">
+   12. Loops
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week4/week4_4.html">
+   13. Discrete Event Simulation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week4/week4_5.html">
+   14. Discrete Event Simulation: API and Usage
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week4/week4_6.html">
+   15. Discrete Event Simulation: Implementation and Test
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week5/week5_1.html">
+   16. Imperative Event Handling: The Observer Pattern
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week5/week5_2.html">
+   17. Functional Reactive Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week5/week5_3.html">
+   18. A Simple FRP Implementation
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Parallel Programming
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week1/week1_1.html">
+   1. Parallelism on JVM I
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week1/week1_2.html">
+   2. Parallelism on the JVM II
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week1/week1_3.html">
+   3. Running Computations in Parallel
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week1/week1_4.html">
+   4. Running computations in parallel
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week1/week1_4.html#first-class-tasks">
+   5. First Class Tasks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week1/week1_4.html#benchmarking-parallel-programs">
+   6. Benchmarking Parallel Programs
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week1/week1_4.html#scalameter">
+   7. ScalaMeter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week2/week2_1.html">
+   8. Parallel Sorting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week2/week2_2.html">
+   9. Data Operations and Parallel Mapping
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week2/week2_3.html">
+   10. Parallel Fold (Reduce) Operation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week2/week2_4.html">
+   11. Parallel Scan Left
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week2/week2_5.html">
+   12. Assoicativity
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week3/week3_1.html">
+   13. Data-Parallel Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week3/week3_2.html">
+   14. Data-Parallel Operations I
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week3/week3_2.html#data-parallel-operations-ii">
+   15. Data-Parallel Operations II
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week3/week3_3.html">
+   16. Scala Collections Hierarchy
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week3/week3_4.html">
+   17. Splitters and Combiners
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="week4_1.html">
+   18. Implementing Combiners
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="week4_2.html">
+   19. Parallel Two-phase Construction
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   20. Conc-Trees
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="#amortized-constant-time-append-operation">
+   21. Amortized, Constant-time Append Operation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="#conc-tree-combiners">
+   22. Conc-Tree Combiners
+  </a>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/pp/week4/week4_3.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+        <!-- Source interaction buttons -->
+
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                title="Fullscreen mode"><i
+                    class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/pp/week4/week4_3.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+    </div>
+
+    <!-- Table of contents -->
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   20. Conc-Trees
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#amortized-constant-time-append-operation">
+   21. Amortized, Constant-time Append Operation
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#constant-time-appends-in-conc-trees">
+     21.1. Constant Time Appends in Conc-Trees
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#conc-tree-combiners">
+   22. Conc-Tree Combiners
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#chunk-nodes">
+     22.1. Chunk Nodes
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#expanding-the-conc-buffer">
+     22.2. Expanding the Conc Buffer
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#combine-method">
+     22.3. Combine Method
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+        </nav>
+        
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="conc-trees">
+<h1><span class="section-number">20. </span>Conc-Trees<a class="headerlink" href="#conc-trees" title="Permalink to this headline">¶</a></h1>
+<p>In this lecture, we will study the <code class="docutils literal notranslate"><span class="pre">conc</span></code> data type, which is a parallel counterpart to functional cons list and is used to manipulate data. This will reveal a data structure with an efficient concatenation method.</p>
+<p>Let’s recall the list data type in functional programming.</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span>sealed trait List[+T] {
+def head: T
+def tail: List[T]
+}
+case class ::[T](head: T, tail: List[T])
+extends List[T]
+case object Nil extends List[Nothing] {
+def head = sys.error(”empty list”)
+def tail = sys.error(”empty list”)
+}
+</pre></div>
+</div>
+<p>Lists are built for sequential computations – they are traversed from left to
+right.</p>
+<p>Due to their recursive structure, lists are built for sequential computations. They have to be traversed going from left to right. Trees have a different recursive structure. Since there is more than one choice for recursion, different subtrees can be traversed in parallel.</p>
+<p>Trees allow parallel computations – their subtrees can be traversed in
+parallel.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">sealed</span> <span class="k">trait</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">+T</span><span class="o">]</span>
+<span class="k">case</span> <span class="k">class</span> <span class="nc">Node</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span><span class="n">left</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">T</span><span class="o">],</span> <span class="n">right</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">T</span><span class="o">])</span>
+<span class="k">extends</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span>
+<span class="k">case</span> <span class="k">class</span> <span class="nc">Leaf</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span><span class="n">elem</span><span class="k">:</span> <span class="kt">T</span><span class="o">)</span> <span class="k">extends</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span>
+<span class="k">case</span> <span class="k">object</span> <span class="nc">Empty</span> <span class="k">extends</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">Nothing</span><span class="o">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>defined <span class=" -Color -Color-Green">trait</span> <span class=" -Color -Color-Cyan">Tree</span>
+defined <span class=" -Color -Color-Green">class</span> <span class=" -Color -Color-Cyan">Node</span>
+defined <span class=" -Color -Color-Green">class</span> <span class=" -Color -Color-Cyan">Leaf</span>
+defined <span class=" -Color -Color-Green">object</span> <span class=" -Color -Color-Cyan">Empty</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>How do we implement a filter method on trees?</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">filter</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span><span class="n">t</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">T</span><span class="o">])(</span><span class="n">p</span><span class="k">:</span> <span class="kt">T</span> <span class="o">=&gt;</span> <span class="nc">Boolean</span><span class="o">)</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="o">=</span> <span class="n">t</span> <span class="k">match</span> <span class="o">{</span>
+<span class="k">case</span> <span class="nc">Node</span><span class="o">(</span><span class="n">left</span><span class="o">,</span> <span class="n">right</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="nc">Node</span><span class="o">(</span><span class="n">parallel</span><span class="o">(</span><span class="n">filter</span><span class="o">(</span><span class="n">left</span><span class="o">)(</span><span class="n">p</span><span class="o">),</span> <span class="n">filter</span><span class="o">(</span><span class="n">right</span><span class="o">)(</span><span class="n">p</span><span class="o">)))</span>
+<span class="k">case</span> <span class="nc">Leaf</span><span class="o">(</span><span class="n">elem</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="k">if</span> <span class="o">(</span><span class="n">p</span><span class="o">(</span><span class="n">elem</span><span class="o">))</span> <span class="n">t</span> <span class="k">else</span> <span class="nc">Empty</span>
+<span class="k">case</span> <span class="nc">Empty</span> <span class="o">=&gt;</span> <span class="nc">Empty</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>Trees are not good for parallelism unless they are balanced.
+Let’s devise a data type called <code class="docutils literal notranslate"><span class="pre">Conc</span></code>, which represents balanced trees:
+In parallel programming, this data type is known as the <code class="docutils literal notranslate"><span class="pre">conc-list</span></code>.</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">sealed</span> <span class="k">trait</span> <span class="nc">Conc</span><span class="o">[</span><span class="kt">+T</span><span class="o">]</span> <span class="o">{</span>
+<span class="k">def</span> <span class="n">level</span><span class="k">:</span> <span class="kt">Int</span>
+<span class="k">def</span> <span class="n">size</span><span class="k">:</span> <span class="kt">Int</span>
+<span class="k">def</span> <span class="n">left</span><span class="k">:</span> <span class="kt">Conc</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span>
+<span class="k">def</span> <span class="n">right</span><span class="k">:</span> <span class="kt">Conc</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">case</span> <span class="k">object</span> <span class="nc">Empty</span> <span class="k">extends</span> <span class="nc">Conc</span><span class="o">[</span><span class="kt">Nothing</span><span class="o">]</span> <span class="o">{</span>
+<span class="k">def</span> <span class="n">level</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">def</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="o">}</span>
+<span class="k">class</span> <span class="nc">Single</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span><span class="k">val</span> <span class="n">x</span><span class="k">:</span> <span class="kt">T</span><span class="o">)</span> <span class="k">extends</span> <span class="nc">Conc</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="o">{</span>
+<span class="k">def</span> <span class="n">level</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">def</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="o">}</span>
+<span class="k">case</span> <span class="k">class</span> <span class="nc">&lt;&gt;</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span><span class="n">left</span><span class="k">:</span> <span class="kt">Conc</span><span class="o">[</span><span class="kt">T</span><span class="o">],</span> <span class="n">right</span><span class="k">:</span> <span class="kt">Conc</span><span class="o">[</span><span class="kt">T</span><span class="o">])</span> <span class="k">extends</span> <span class="nc">Conc</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="o">{</span>
+<span class="k">val</span> <span class="n">level</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">max</span><span class="o">(</span><span class="n">left</span><span class="o">.</span><span class="n">level</span><span class="o">,</span> <span class="n">right</span><span class="o">.</span><span class="n">level</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">size</span> <span class="o">=</span> <span class="n">left</span><span class="o">.</span><span class="n">size</span> <span class="o">+</span> <span class="n">right</span><span class="o">.</span><span class="n">size</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>In addition, we will define the following invariants for Conc-trees:</p>
+<ol class="simple">
+<li><p>A <code class="docutils literal notranslate"><span class="pre">&lt;&gt;</span></code> node can never contain Empty as its subtree.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">level</span></code> difference between the left and the right subtree of a <code class="docutils literal notranslate"><span class="pre">&lt;&gt;</span></code> node is always 1 or less.
+We will rely on these invariants to implement concatenation:</p></li>
+</ol>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="o">&lt;&gt;(</span><span class="n">that</span><span class="k">:</span> <span class="kt">Conc</span><span class="o">[</span><span class="kt">T</span><span class="o">])</span><span class="k">:</span> <span class="kt">Conc</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="o">=</span> <span class="o">{</span>
+<span class="k">if</span> <span class="o">(</span><span class="k">this</span> <span class="o">==</span> <span class="nc">Empty</span><span class="o">)</span> <span class="n">that</span>
+<span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">that</span> <span class="o">==</span> <span class="nc">Empty</span><span class="o">)</span> <span class="k">this</span>
+<span class="k">else</span> <span class="n">concat</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="n">that</span><span class="o">)</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>Concatenation needs to consider several cases.
+First, the two trees could have height difference 1 or less:</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">concat</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span><span class="n">xs</span><span class="k">:</span> <span class="kt">Conc</span><span class="o">[</span><span class="kt">T</span><span class="o">],</span> <span class="n">ys</span><span class="k">:</span> <span class="kt">Conc</span><span class="o">[</span><span class="kt">T</span><span class="o">])</span><span class="k">:</span> <span class="kt">Conc</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">diff</span> <span class="o">=</span> <span class="n">ys</span><span class="o">.</span><span class="n">level</span> <span class="o">-</span> <span class="n">xs</span><span class="o">.</span><span class="n">level</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">diff</span> <span class="o">&gt;=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="n">diff</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="o">)</span> <span class="k">new</span> <span class="o">&lt;&gt;(</span><span class="n">xs</span><span class="o">,</span> <span class="n">ys</span><span class="o">)</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">diff</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">1</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">xs</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">level</span> <span class="o">&gt;=</span> <span class="n">xs</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">level</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">val</span> <span class="n">nr</span> <span class="o">=</span> <span class="n">concat</span><span class="o">(</span><span class="n">xs</span><span class="o">.</span><span class="n">right</span><span class="o">,</span> <span class="n">ys</span><span class="o">)</span>
+            <span class="k">new</span> <span class="o">&lt;&gt;(</span><span class="n">xs</span><span class="o">.</span><span class="n">left</span><span class="o">,</span> <span class="n">nr</span><span class="o">)</span>
+        <span class="o">}</span> 
+        <span class="k">else</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">nrr</span> <span class="o">=</span> <span class="n">concat</span><span class="o">(</span><span class="n">xs</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">right</span><span class="o">,</span> <span class="n">ys</span><span class="o">)</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">nrr</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="n">xs</span><span class="o">.</span><span class="n">level</span> <span class="o">-</span> <span class="mi">3</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">nl</span> <span class="o">=</span> <span class="n">xs</span><span class="o">.</span><span class="n">left</span>
+    <span class="k">val</span> <span class="n">nr</span> <span class="o">=</span> <span class="k">new</span> <span class="o">&lt;&gt;(</span><span class="n">xs</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">left</span><span class="o">,</span> <span class="n">nrr</span><span class="o">)</span>
+    <span class="k">new</span> <span class="o">&lt;&gt;(</span><span class="n">nl</span><span class="o">,</span> <span class="n">nr</span><span class="o">)</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">nl</span> <span class="o">=</span> <span class="k">new</span> <span class="o">&lt;&gt;(</span><span class="n">xs</span><span class="o">.</span><span class="n">left</span><span class="o">,</span> <span class="n">xs</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">left</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">nr</span> <span class="o">=</span> <span class="n">nrr</span>
+    <span class="k">new</span> <span class="o">&lt;&gt;(</span><span class="n">nl</span><span class="o">,</span> <span class="n">nr</span><span class="o">)</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+    
+    
+</pre></div>
+</div>
+<p>Question: What is the complexity of <code class="docutils literal notranslate"><span class="pre">&lt;&gt;</span></code> method?</p>
+<p>Concatenation takes <span class="math notranslate nohighlight">\(\mathcal{O}(h1 − h2)\)</span> time, where <span class="math notranslate nohighlight">\(h_1\)</span> and <span class="math notranslate nohighlight">\(h_2\)</span> are the heights of the two trees</p>
+</div>
+<div class="section" id="amortized-constant-time-append-operation">
+<h1><span class="section-number">21. </span>Amortized, Constant-time Append Operation<a class="headerlink" href="#amortized-constant-time-append-operation" title="Permalink to this headline">¶</a></h1>
+<p>In this lecture, we will consider how to modify countries to implement an append method to the constant running time.
+Such an append method is crucial for implementing combiners sufficiently. The first step in implementing a combiner is providing a <code class="docutils literal notranslate"><span class="pre">+=</span></code> method.
+Let’s use Conc-Trees to implement a <code class="docutils literal notranslate"><span class="pre">Combiner</span></code>.
+How could we implement <code class="docutils literal notranslate"><span class="pre">+=</span></code> method?</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">var</span> <span class="n">xs</span><span class="k">:</span> <span class="kt">Conc</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="o">=</span> <span class="nc">Empty</span>
+<span class="k">def</span> <span class="o">+=(</span><span class="n">elem</span><span class="k">:</span> <span class="kt">T</span><span class="o">)</span> <span class="o">{</span>
+<span class="n">xs</span> <span class="o">=</span> <span class="n">xs</span> <span class="o">&lt;&gt;</span> <span class="nc">Single</span><span class="o">(</span><span class="n">elem</span><span class="o">)</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>This takes <span class="math notranslate nohighlight">\(\mathcal{O}(\log n)\)</span> time – can we do better than that?</p>
+<p>ogarithmic running time is not bad but it could be better. We would prefer if plus equals was a constant time method, as plus equals is invoked every time the processor adds a new element to the combiner.</p>
+<p>Surprisingly enough, it turns out this is possible. However, we will need to relax the previous invariance on this data structure, so we will extend the Conc-Tree with a new node type. The idea will be to represent the result of a plus equals operation differently. For this reason, we will introduce a new type of a node called <code class="docutils literal notranslate"><span class="pre">Append</span></code>.</p>
+<p>The Append node has exactly the same structure as the conc node does. It has a left and a right sub tree and it’s level and size are defined in exactly the same way as they were for Conc notes. <strong>However, we will not impose the previous balance in variant on the Append nodes. We will allow arbitrary difference in levels between the left and the right child</strong>.</p>
+<p>To achieve <span class="math notranslate nohighlight">\(\mathcal{O}(1)\)</span> appends with low constant factors, we need to extend the Conc-Tree data structure.
+We will introduce a new Append node with different semantics:</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">case</span> <span class="k">class</span> <span class="nc">Append</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span><span class="n">left</span><span class="k">:</span> <span class="kt">Conc</span><span class="o">[</span><span class="kt">T</span><span class="o">],</span> <span class="n">right</span><span class="k">:</span> <span class="kt">Conc</span><span class="o">[</span><span class="kt">T</span><span class="o">])</span> <span class="k">extends</span> <span class="nc">Conc</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="o">{</span>
+<span class="k">val</span> <span class="n">level</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">max</span><span class="o">(</span><span class="n">left</span><span class="o">.</span><span class="n">level</span><span class="o">,</span> <span class="n">right</span><span class="o">.</span><span class="n">level</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">size</span> <span class="o">=</span> <span class="n">left</span><span class="o">.</span><span class="n">size</span> <span class="o">+</span> <span class="n">right</span><span class="o">.</span><span class="n">size</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>One possible appendLeaf implementation:</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">appendLeaf</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span><span class="n">xs</span><span class="k">:</span> <span class="kt">Conc</span><span class="o">[</span><span class="kt">T</span><span class="o">],</span> <span class="n">y</span><span class="k">:</span> <span class="kt">T</span><span class="o">)</span><span class="k">:</span> <span class="kt">Conc</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="o">=</span> <span class="nc">Append</span><span class="o">(</span><span class="n">xs</span><span class="o">,</span> <span class="k">new</span> <span class="nc">Single</span><span class="o">(</span><span class="n">y</span><span class="o">))</span>
+</pre></div>
+</div>
+<p>Unfortunately, a tree created this way is obviously unbalanced. If we are to later use it for parallelism or concatenations, we need to somehow transform the data structure back into a format that does not have any Append nodes.
+Question is, can we do this reasonably quickly, for example, in logarithmic time?
+Can we still do O(log n) concatenation? I.e. can we eliminate Append nodes in O(log n) time?</p>
+<p>I would argue we can’t. After we add <span class="math notranslate nohighlight">\(n\)</span> elements to the tree this way, we will have <span class="math notranslate nohighlight">\(n\)</span> Append nodes in total. Therefore, we would have to traverse and process all those nodes to eliminate them from the tree. And once again establish the balance in variance. The conversion to a normal Conc-Tree would have to take at least O(n) steps.</p>
+<p>The fundamental problem here is that we are essentially still building a link list with append nodes. So we need to link these notes more intelligently. In what follows, we will make sure that if the total number of elements in the tree is <span class="math notranslate nohighlight">\(n\)</span>, then there are never more than <span class="math notranslate nohighlight">\(\log n\)</span> of append nodes in the data structure.</p>
+<p>To add <span class="math notranslate nohighlight">\(n\)</span> leaves to an <code class="docutils literal notranslate"><span class="pre">Append</span></code> list, we need <span class="math notranslate nohighlight">\(\mathcal{O}(n)\)</span> work. Storing <span class="math notranslate nohighlight">\(n\)</span> leaves requires <span class="math notranslate nohighlight">\(\mathcal{O}(\log n)\)</span> <code class="docutils literal notranslate"><span class="pre">Append</span></code> nodes.</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">appendLeaf</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span><span class="n">xs</span><span class="k">:</span> <span class="kt">Conc</span><span class="o">[</span><span class="kt">T</span><span class="o">],</span> <span class="n">ys</span><span class="k">:</span> <span class="kt">Single</span><span class="o">[</span><span class="kt">T</span><span class="o">])</span><span class="k">:</span> <span class="kt">Conc</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="o">=</span> <span class="n">xs</span> <span class="k">match</span> <span class="o">{</span>
+<span class="k">case</span> <span class="nc">Empty</span> <span class="o">=&gt;</span> <span class="n">ys</span>
+<span class="k">case</span> <span class="n">xs</span><span class="k">:</span> <span class="kt">Single</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="o">=&gt;</span> <span class="k">new</span> <span class="o">&lt;&gt;(</span><span class="n">xs</span><span class="o">,</span> <span class="n">ys</span><span class="o">)</span>
+<span class="k">case</span> <span class="k">_</span> <span class="o">&lt;&gt;</span> <span class="k">_</span> <span class="o">=&gt;</span> <span class="k">new</span> <span class="nc">Append</span><span class="o">(</span><span class="n">xs</span><span class="o">,</span> <span class="n">ys</span><span class="o">)</span>
+<span class="k">case</span> <span class="n">xs</span><span class="k">:</span> <span class="kt">Append</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="o">=&gt;</span> <span class="n">append</span><span class="o">(</span><span class="n">xs</span><span class="o">,</span> <span class="n">ys</span><span class="o">)</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<div class="section" id="constant-time-appends-in-conc-trees">
+<h2><span class="section-number">21.1. </span>Constant Time Appends in Conc-Trees<a class="headerlink" href="#constant-time-appends-in-conc-trees" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="nd">@tailrec</span> <span class="k">private</span> <span class="k">def</span> <span class="n">append</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span><span class="n">xs</span><span class="k">:</span> <span class="kt">Append</span><span class="o">[</span><span class="kt">T</span><span class="o">],</span> <span class="n">ys</span><span class="k">:</span> <span class="kt">Conc</span><span class="o">[</span><span class="kt">T</span><span class="o">])</span><span class="k">:</span> <span class="kt">Conc</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="o">=</span> <span class="o">{</span>
+<span class="k">if</span> <span class="o">(</span><span class="n">xs</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">level</span> <span class="o">&gt;</span> <span class="n">ys</span><span class="o">.</span><span class="n">level</span><span class="o">)</span> <span class="k">new</span> <span class="nc">Append</span><span class="o">(</span><span class="n">xs</span><span class="o">,</span> <span class="n">ys</span><span class="o">)</span>
+<span class="k">else</span> <span class="o">{</span>
+<span class="k">val</span> <span class="n">zs</span> <span class="o">=</span> <span class="k">new</span> <span class="o">&lt;&gt;(</span><span class="n">xs</span><span class="o">.</span><span class="n">right</span><span class="o">,</span> <span class="n">ys</span><span class="o">)</span>
+<span class="n">xs</span><span class="o">.</span><span class="n">left</span> <span class="k">match</span> <span class="o">{</span>
+<span class="k">case</span> <span class="n">ws</span> <span class="o">@</span> <span class="nc">Append</span><span class="o">(</span><span class="k">_</span><span class="o">,</span> <span class="k">_</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">append</span><span class="o">(</span><span class="n">ws</span><span class="o">,</span> <span class="n">zs</span><span class="o">)</span>
+<span class="k">case</span> <span class="n">ws</span> <span class="k">if</span> <span class="n">ws</span><span class="o">.</span><span class="n">level</span> <span class="o">&lt;=</span> <span class="n">zs</span><span class="o">.</span><span class="n">level</span> <span class="o">=&gt;</span> <span class="n">ws</span> <span class="o">&lt;&gt;</span> <span class="n">zs</span>
+<span class="k">case</span> <span class="n">ws</span> <span class="o">=&gt;</span> <span class="k">new</span> <span class="nc">Append</span><span class="o">(</span><span class="n">ws</span><span class="o">,</span> <span class="n">zs</span><span class="o">)</span>
+<span class="o">}</span>
+<span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>We have implemented an immutable data structure with:</p>
+<p>▶ <span class="math notranslate nohighlight">\(\mathcal{O}(1)\)</span> appends</p>
+<p>▶ <span class="math notranslate nohighlight">\(\mathcal{O}(\log n)\)</span> concatenation</p>
+<p>Next, we will see if we can implement a more efficient, mutable data Conc-tree variant, which can implement a Combiner.</p>
+</div>
+</div>
+<div class="section" id="conc-tree-combiners">
+<h1><span class="section-number">22. </span>Conc-Tree Combiners<a class="headerlink" href="#conc-tree-combiners" title="Permalink to this headline">¶</a></h1>
+<p>We will call this new combiner implementation a conc buffer. Internally a conc buffer contains a conc tree and an array of fixed size K. Where K is a predefined constant It also contains a field chunk size, which holds the index of the first empty array entry. let’s visualize this array, named chunk. As long as the array is not full, Conc Buffer adds the elements to the first non-empty array entry. Once the array becomes full, we simply pull the entire array as a leaf in the Conc-tree, and allocate a new array.</p>
+<p>The ConcBuffer appends elements into an array of size k.
+When the array gets full, it is stored into a Chunk node and added into the
+Conc-tree.</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ConcBuffer</span><span class="o">[</span><span class="kt">T:</span> <span class="kt">ClassTag</span><span class="o">](</span><span class="k">val</span> <span class="n">k</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="k">private</span> <span class="k">var</span> <span class="n">conc</span><span class="k">:</span> <span class="kt">Conc</span><span class="o">[</span><span class="kt">T</span><span class="o">])</span> <span class="o">{</span>
+<span class="k">private</span> <span class="k">var</span> <span class="n">chunk</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Array</span><span class="o">(</span><span class="n">k</span><span class="o">)</span>
+<span class="k">private</span> <span class="k">var</span> <span class="n">chunkSize</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">+=</span></code> operation in most cases just adds an element to the chunk array:</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">final</span> <span class="k">def</span> <span class="o">+=(</span><span class="n">elem</span><span class="k">:</span> <span class="kt">T</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+<span class="k">if</span> <span class="o">(</span><span class="n">chunkSize</span> <span class="o">&gt;=</span> <span class="n">k</span><span class="o">)</span> <span class="n">expand</span><span class="o">()</span>
+<span class="n">chunk</span><span class="o">(</span><span class="n">chunkSize</span><span class="o">)</span> <span class="o">=</span> <span class="n">elem</span>
+<span class="n">chunkSize</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>Occasionally, the chunk array becomes full, and needs to be expanded.</p>
+<div class="section" id="chunk-nodes">
+<h2><span class="section-number">22.1. </span>Chunk Nodes<a class="headerlink" href="#chunk-nodes" title="Permalink to this headline">¶</a></h2>
+<p>Chunk nodes are similar to Single nodes, but instead of a single element,
+they hold an array of elements.</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Chunk</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span><span class="k">val</span> <span class="n">array</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">T</span><span class="o">],</span> <span class="k">val</span> <span class="n">size</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">extends</span> <span class="nc">Conc</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="o">{</span>
+<span class="k">def</span> <span class="n">level</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="expanding-the-conc-buffer">
+<h2><span class="section-number">22.2. </span>Expanding the Conc Buffer<a class="headerlink" href="#expanding-the-conc-buffer" title="Permalink to this headline">¶</a></h2>
+<p>The expand method inserts the chunk into the Conc-tree, and allocates a
+new chunk:</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">private</span> <span class="k">def</span> <span class="n">expand</span><span class="o">()</span> <span class="o">{</span>
+<span class="n">conc</span> <span class="o">=</span> <span class="n">appendLeaf</span><span class="o">(</span><span class="n">conc</span><span class="o">,</span> <span class="k">new</span> <span class="nc">Chunk</span><span class="o">(</span><span class="n">chunk</span><span class="o">,</span> <span class="n">chunkSize</span><span class="o">))</span>
+<span class="n">chunk</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Array</span><span class="o">(</span><span class="n">k</span><span class="o">)</span>
+<span class="n">chunkSize</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="combine-method">
+<h2><span class="section-number">22.3. </span>Combine Method<a class="headerlink" href="#combine-method" title="Permalink to this headline">¶</a></h2>
+<p>The combine method is straightforward:</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">final</span> <span class="k">def</span> <span class="n">combine</span><span class="o">(</span><span class="n">that</span><span class="k">:</span> <span class="kt">ConcBuffer</span><span class="o">[</span><span class="kt">T</span><span class="o">])</span><span class="k">:</span> <span class="kt">ConcBuffer</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="o">=</span> <span class="o">{</span>
+<span class="k">val</span> <span class="n">combinedConc</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="n">result</span> <span class="o">&lt;&gt;</span> <span class="n">that</span><span class="o">.</span><span class="n">result</span>
+<span class="k">new</span> <span class="nc">ConcBuffer</span><span class="o">(</span><span class="n">k</span><span class="o">,</span> <span class="n">combinedConc</span><span class="o">)</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>Above, the combine method relies on the result method to obtain the Conc-trees from both buffers.</p>
+<p>The result method packs chunk array into the tree and returns the
+resulting tree:</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">result</span><span class="k">:</span> <span class="kt">Conc</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="o">=</span> <span class="o">{</span>
+<span class="n">conc</span> <span class="o">=</span> <span class="n">appendLeaf</span><span class="o">(</span><span class="n">conc</span><span class="o">,</span> <span class="k">new</span> <span class="nc">Chunk</span><span class="o">(</span><span class="n">chunk</span><span class="o">,</span> <span class="n">chunkSize</span><span class="o">))</span>
+<span class="n">conc</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>Summary:
+▶ <span class="math notranslate nohighlight">\(\mathcal{O}(\log n)\)</span> combine concatenation
+▶ fast <span class="math notranslate nohighlight">\(\mathcal{O}(1)\)</span> += operation
+▶ <span class="math notranslate nohighlight">\(\mathcal{O}(1)\)</span> result operation</p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "scala"
+        },
+        kernelOptions: {
+            kernelName: "scala",
+            path: "./pp/week4"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'scala'</script>
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+    <a class='left-prev' id="prev-link" href="week4_2.html" title="previous page"><span class="section-number">19. </span>Parallel Two-phase Construction</a>
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Vikram Bhatt<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="../../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    
+  </body>
+</html>

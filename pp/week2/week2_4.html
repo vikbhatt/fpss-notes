@@ -1,0 +1,1138 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>11. Parallel Scan Left &#8212; Functional Programming in Scala Specialization -- Complied Notes</title>
+    
+  <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../../_static/sphinx-book-theme.40e2e510f6b7d1648584402491bb10fe.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script async="async" kind="hypothesis" src="https://hypothes.is/embed.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="12. Assoicativity" href="week2_5.html" />
+    <link rel="prev" title="10. Parallel Fold (Reduce) Operation" href="week2_3.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../../index.html">
+  
+  <img src="../../_static/logo.png" class="logo" alt="logo">
+  
+  
+  <h1 class="site-logo" id="site-title">Functional Programming in Scala Specialization -- Complied Notes</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../intro.html">
+   Functional Programming in Scala Specialization
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Functional Programming Principles in Scala
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week1/intro.html">
+   1. Introduction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week1/week1_1.html">
+   2. Imperative vs Functional Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week1/week1_2.html">
+   3. Expressions and Evaluation model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week1/week1_3.html">
+   4. Tail Recursion
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week1/week1_4.html">
+   5. Exercise Session
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week2/week2_1.html">
+   6. Higher Order Functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week2/week2_2.html">
+   7. Class and Objects
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week3/week3_1.html">
+   8. Class Hierarchies
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week3/week3_2.html">
+   9. How classes are organized?
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week3/week3_3.html">
+   10. Polymorphism
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week4/week4_1.html">
+   11. Objects Everywhere
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week4/week4_2.html">
+   12. Functions as objects
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week4/week4_3.html">
+   13. Subtyping and Generics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week4/week4_4.html">
+   14. Variance
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week4/week4_5.html">
+   15. Decomposition
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week4/week4_6.html">
+   16. Pattern Matching
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week5/week5_1.html">
+   17. Lists
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week5/week5_2.html">
+   18. Pairs and Tuples
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week5/week5_3.html">
+   19. Higher Order List Functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week6/week6_1.html">
+   20. Other Collections
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week6/week6_2.html">
+   21. Combinatorial Search and For-Expressions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week6/week6_3.html">
+   22. Combinatorial Search Example
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week6/week6_4.html">
+   23. Maps
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpps/week6/week6_5.html">
+   24. Putting Pieces Together
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Functional Program Design in Scala
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week1/week1_1.html">
+   1. Recap Functions and Pattern Matching
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week1/week1_2.html">
+   2. Recap: Collections
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week1/week1_3.html">
+   3. Functional Random Generators
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week1/week1_4.html">
+   4. Monads
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week2/week2_1.html">
+   5. Streams
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week2/week2_2.html">
+   6. Case Study: The Water Pouring Problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week3/week3_1.html">
+   7. Type-Directed Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week3/week3_2.html">
+   8. Type Classes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week3/week3_3.html">
+   9. Implicit Conversions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week4/week4_1.html">
+   10. Functions and State
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week4/week4_2.html">
+   11. Identity and Change
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week4/week4_3.html">
+   12. Loops
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week4/week4_4.html">
+   13. Discrete Event Simulation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week4/week4_5.html">
+   14. Discrete Event Simulation: API and Usage
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week4/week4_6.html">
+   15. Discrete Event Simulation: Implementation and Test
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week5/week5_1.html">
+   16. Imperative Event Handling: The Observer Pattern
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week5/week5_2.html">
+   17. Functional Reactive Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fpds/week5/week5_3.html">
+   18. A Simple FRP Implementation
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Parallel Programming
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week1/week1_1.html">
+   1. Parallelism on JVM I
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week1/week1_2.html">
+   2. Parallelism on the JVM II
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week1/week1_3.html">
+   3. Running Computations in Parallel
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week1/week1_4.html">
+   4. Running computations in parallel
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week1/week1_4.html#first-class-tasks">
+   5. First Class Tasks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week1/week1_4.html#benchmarking-parallel-programs">
+   6. Benchmarking Parallel Programs
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week1/week1_4.html#scalameter">
+   7. ScalaMeter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="week2_1.html">
+   8. Parallel Sorting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="week2_2.html">
+   9. Data Operations and Parallel Mapping
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="week2_3.html">
+   10. Parallel Fold (Reduce) Operation
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   11. Parallel Scan Left
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="week2_5.html">
+   12. Assoicativity
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week3/week3_1.html">
+   13. Data-Parallel Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week3/week3_2.html">
+   14. Data-Parallel Operations I
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week3/week3_2.html#data-parallel-operations-ii">
+   15. Data-Parallel Operations II
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week3/week3_3.html">
+   16. Scala Collections Hierarchy
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week3/week3_4.html">
+   17. Splitters and Combiners
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week4/week4_1.html">
+   18. Implementing Combiners
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week4/week4_2.html">
+   19. Parallel Two-phase Construction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week4/week4_3.html">
+   20. Conc-Trees
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week4/week4_3.html#amortized-constant-time-append-operation">
+   21. Amortized, Constant-time Append Operation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week4/week4_3.html#conc-tree-combiners">
+   22. Conc-Tree Combiners
+  </a>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/pp/week2/week2_4.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+        <!-- Source interaction buttons -->
+
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                title="Fullscreen mode"><i
+                    class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/pp/week2/week2_4.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+    </div>
+
+    <!-- Table of contents -->
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sequential-definition">
+   11.1. Sequential Definition
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#reduce-that-preserves-the-computation-tree">
+   11.2. Reduce that preserves the computation tree
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#parallel-reduce-that-preserves-the-computation-tree-upsweep">
+   11.3. Parallel reduce that preserves the computation tree (upsweep)
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#using-tree-with-results-to-create-the-final-collection">
+   11.4. Using tree with results to create the final collection
+  </a>
+ </li>
+</ul>
+
+        </nav>
+        
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="parallel-scan-left">
+<h1><span class="section-number">11. </span>Parallel Scan Left<a class="headerlink" href="#parallel-scan-left" title="Permalink to this headline">¶</a></h1>
+<p>Having seen parallel map and parallel fold</p>
+<p>map: apply function to each element</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">List(1,3,8).map(x</span> <span class="pre">=&gt;</span> <span class="pre">x*x)</span> <span class="pre">==</span> <span class="pre">List(1,</span> <span class="pre">9,</span> <span class="pre">64)</span></code></p></li>
+</ul>
+<p>fold: combine elements with a given operation</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">List(1,3,8).fold(100)((s,x)</span> <span class="pre">=&gt;</span> <span class="pre">s</span> <span class="pre">+</span> <span class="pre">x)</span> <span class="pre">==</span> <span class="pre">112</span></code></p></li>
+</ul>
+<p>we now examine parallel scanLeft:</p>
+<p>scanLeft: list of the folds of all list prefixes</p>
+<p><code class="docutils literal notranslate"><span class="pre">List(1,3,8).scanLeft(100)((s,x)</span> <span class="pre">=&gt;</span> <span class="pre">s</span> <span class="pre">+</span> <span class="pre">x)</span> <span class="pre">==</span> <span class="pre">List(100,</span> <span class="pre">101,</span> <span class="pre">104,</span> <span class="pre">112)</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">List(1,3,8).scanLeft(100)(_</span> <span class="pre">+</span> <span class="pre">_)</span> <span class="pre">==</span> <span class="pre">List(100,</span> <span class="pre">101,</span> <span class="pre">104,</span> <span class="pre">112)</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">List(a1,</span> <span class="pre">a2,</span> <span class="pre">a3).scanLeft(f)(a0)</span> <span class="pre">=</span> <span class="pre">List(b0,</span> <span class="pre">b1,</span> <span class="pre">b2,</span> <span class="pre">b3)</span></code></p>
+<p>where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(b0 = a0\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(b1 = f(b0, a1)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(b2 = f(b1, a2)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(b3 = f(b2, a3)\)</span>
+We assume that <code class="docutils literal notranslate"><span class="pre">f</span></code> is assocative, throughout this segment.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">scanRight</span></code> is different from <code class="docutils literal notranslate"><span class="pre">scanLeft</span></code>, even if <code class="docutils literal notranslate"><span class="pre">f</span></code> is associative</p>
+<p><code class="docutils literal notranslate"><span class="pre">List(1,3,8).scanRight(100)(_</span> <span class="pre">+</span> <span class="pre">_)</span> <span class="pre">==</span> <span class="pre">List(112,</span> <span class="pre">111,</span> <span class="pre">108,</span> <span class="pre">100)</span></code></p>
+<p>We consider only <code class="docutils literal notranslate"><span class="pre">scanLeft</span></code>, but <code class="docutils literal notranslate"><span class="pre">scanRight</span></code> is dual.</p>
+<div class="section" id="sequential-definition">
+<h2><span class="section-number">11.1. </span>Sequential Definition<a class="headerlink" href="#sequential-definition" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">List(a1,</span> <span class="pre">a2,</span> <span class="pre">...,</span> <span class="pre">aN).scanLeft(f)(a0)</span> <span class="pre">=</span> <span class="pre">List(b0,</span> <span class="pre">b1,</span> <span class="pre">b2,</span> <span class="pre">...,</span> <span class="pre">bN)</span></code></p>
+<p>where <span class="math notranslate nohighlight">\(b_0 = a_0\)</span> and <span class="math notranslate nohighlight">\(b_i = f(b_{i−1}, a_i)\)</span> for <span class="math notranslate nohighlight">\(1 ≤ i ≤ N\)</span>.
+Give a sequential definition of <code class="docutils literal notranslate"><span class="pre">scanLeft</span></code>:</p>
+<ul class="simple">
+<li><p>take an array <code class="docutils literal notranslate"><span class="pre">inp</span></code>, an element <code class="docutils literal notranslate"><span class="pre">a0</span></code>, and binary operation <code class="docutils literal notranslate"><span class="pre">f</span></code></p></li>
+<li><p>write the output to array <code class="docutils literal notranslate"><span class="pre">out</span></code>, assuming <code class="docutils literal notranslate"><span class="pre">out.length</span> <span class="pre">&gt;=</span> <span class="pre">inp.length</span> <span class="pre">+</span> <span class="pre">1</span></code></p></li>
+</ul>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">scanLeft</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">inp</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">a0</span><span class="k">:</span> <span class="kt">A</span><span class="o">,</span> <span class="n">f</span><span class="k">:</span> <span class="o">(</span><span class="kt">A</span><span class="o">,</span><span class="kt">A</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">A</span><span class="o">,</span><span class="n">out</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span><span class="k">:</span> <span class="kt">Unit</span>
+</pre></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">scanLeft</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">inp</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span>
+<span class="n">a0</span><span class="k">:</span> <span class="kt">A</span><span class="o">,</span> <span class="n">f</span><span class="k">:</span> <span class="o">(</span><span class="kt">A</span><span class="o">,</span><span class="kt">A</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">A</span><span class="o">,</span>
+<span class="n">out</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+<span class="n">out</span><span class="o">(</span><span class="mi">0</span><span class="o">)=</span> <span class="n">a0</span>
+<span class="k">var</span> <span class="n">a</span><span class="o">=</span> <span class="n">a0</span>
+<span class="k">var</span> <span class="n">i</span><span class="o">=</span> <span class="mi">0</span>
+<span class="k">while</span> <span class="o">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">inp</span><span class="o">.</span><span class="n">length</span><span class="o">)</span> <span class="o">{</span>
+<span class="n">a</span><span class="o">=</span> <span class="n">f</span><span class="o">(</span><span class="n">a</span><span class="o">,</span><span class="n">inp</span><span class="o">(</span><span class="n">i</span><span class="o">))</span>
+<span class="n">i</span><span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">out</span><span class="o">(</span><span class="n">i</span><span class="o">)=</span> <span class="n">a</span>
+<span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>defined <span class=" -Color -Color-Green">function</span> <span class=" -Color -Color-Cyan">scanLeft</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Can <code class="docutils literal notranslate"><span class="pre">scanLeft</span></code> be made parallel? Assume that <code class="docutils literal notranslate"><span class="pre">f</span></code> is associative.</p>
+<p>Goal: an algorithm that runs in <span class="math notranslate nohighlight">\(\mathcal{O}(\log n)\)</span> given infinite parallelism.</p>
+<p>At first, the task seems impossible; it seems that:</p>
+<ul class="simple">
+<li><p>the value of the last element in sequence depends on all previous ones</p></li>
+<li><p>need to wait on all previous partial results to be computed first</p></li>
+<li><p>such approach gives <span class="math notranslate nohighlight">\(\mathcal{O}(n)\)</span> even with infinite parallelism</p></li>
+</ul>
+<blockquote>
+<div><p>Idea: give up on reusing all intermediate results</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>do more work (more <code class="docutils literal notranslate"><span class="pre">f</span></code> applications)</p></li>
+<li><p>improve parallelism, more than compensate for recomputation</p></li>
+</ul>
+<p>Can you define result of <code class="docutils literal notranslate"><span class="pre">scanLeft</span></code> using <code class="docutils literal notranslate"><span class="pre">map</span></code> and <code class="docutils literal notranslate"><span class="pre">reduce</span></code>?</p>
+<p>Assume input is given in array <code class="docutils literal notranslate"><span class="pre">inp</span></code> and that you have <code class="docutils literal notranslate"><span class="pre">reduceSeg1</span></code> and <code class="docutils literal notranslate"><span class="pre">mapSeg</span></code> functions on array segments:</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">reduceSeg1</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">inp</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">left</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">right</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">a0</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">f</span><span class="k">:</span> <span class="o">(</span><span class="kt">A</span><span class="o">,</span><span class="kt">A</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">A</span>
+
+<span class="k">def</span> <span class="n">mapSeg</span><span class="o">[</span><span class="kt">A</span><span class="p">,</span><span class="kt">B</span><span class="o">](</span><span class="n">inp</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">left</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">right</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">fi</span> <span class="k">:</span> <span class="o">(</span><span class="kt">Int</span><span class="o">,</span><span class="kt">A</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">B</span><span class="o">,</span> <span class="n">out</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">B</span><span class="o">])</span><span class="k">:</span> <span class="kt">Unit</span>
+</pre></div>
+</div>
+<p>Assume that the input is given in the input array <code class="docutils literal notranslate"><span class="pre">inp</span></code>. And the boundaries of the segment that we are interested in are given by <code class="docutils literal notranslate"><span class="pre">left</span></code> and <code class="docutils literal notranslate"><span class="pre">right</span></code>. The initial element is <code class="docutils literal notranslate"><span class="pre">a0</span></code>, and the binary operation is <code class="docutils literal notranslate"><span class="pre">f</span></code>.</p>
+<p>Then reduce is going to be used in order to simply reduce that segment of the area <code class="docutils literal notranslate"><span class="pre">A</span></code>, and we can also use <code class="docutils literal notranslate"><span class="pre">map</span></code> which can apply
+an operation on a given array segment and write the resulting output array.</p>
+<p>We’re going to use a slightly modified variant of map where the function that determines the mapping is given
+not only the element <code class="docutils literal notranslate"><span class="pre">A</span></code>, the value of the given point of the array, but also the index at which the value is stored. \</p>
+<p>Can you implement scan left with an invocation of map and reduce?</p>
+<p>Here’s one solution, this solution follows the definition of SCAD.</p>
+<p>So element in position i in the output, is the result of reducing the segment of the input array up to that position. Therefore, the resulting array will be obtained using a map over the input array where this function fi given to map is in fact going to reduce the array segment from 0 to i. The invocation of map will fill in
+the output array With elements, starting from 0 and
+ending in including input length- 1. We then just need to write the final element of the output array. That final element is computed by
+taking the element before the final and combining it with the corresponding element of the input array.</p>
+<p>If map and reduce are implemented in parallel, and they each have <span class="math notranslate nohighlight">\(\log N\)</span> parallel complexity, then because map is applying all these
+individual operations in parallel, you can see that the overall depth
+is going to continue to be <span class="math notranslate nohighlight">\(\log N\)</span>.</p>
+<p>In the previous solution we do not reuse any computation.</p>
+<p>Can we reuse some of it?</p>
+<p>Recall that reduce proceeds by applying the operations in a tree</p>
+<p>Idea: save the intermediate results of this parallel computation.</p>
+<p>We first assume that input collection is also (another) tree.</p>
+<p>Trees storing our input collection only have values in leaves:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">sealed</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span>
+<span class="k">case</span> <span class="k">class</span> <span class="nc">Leaf</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">a</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span> <span class="k">extends</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span>
+<span class="k">case</span> <span class="k">class</span> <span class="nc">Node</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">l</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">r</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">extends</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>defined <span class=" -Color -Color-Green">class</span> <span class=" -Color -Color-Cyan">Tree</span>
+defined <span class=" -Color -Color-Green">class</span> <span class=" -Color -Color-Cyan">Leaf</span>
+defined <span class=" -Color -Color-Green">class</span> <span class=" -Color -Color-Cyan">Node</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Trees storing intermediate values also have (res) values in nodes:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">sealed</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">TreeRes</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="o">{</span> <span class="k">val</span> <span class="n">res</span><span class="k">:</span> <span class="kt">A</span> <span class="o">}</span>
+<span class="k">case</span> <span class="k">class</span> <span class="nc">LeafRes</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="k">override</span> <span class="k">val</span> <span class="n">res</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span> <span class="k">extends</span> <span class="nc">TreeRes</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span>
+<span class="k">case</span> <span class="k">class</span> <span class="nc">NodeRes</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">l</span><span class="k">:</span> <span class="kt">TreeRes</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span>
+<span class="k">override</span> <span class="k">val</span> <span class="n">res</span><span class="k">:</span> <span class="kt">A</span><span class="o">,</span> <span class="n">r</span><span class="k">:</span> <span class="kt">TreeRes</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">extends</span> <span class="nc">TreeRes</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>defined <span class=" -Color -Color-Green">class</span> <span class=" -Color -Color-Cyan">TreeRes</span>
+defined <span class=" -Color -Color-Green">class</span> <span class=" -Color -Color-Cyan">LeafRes</span>
+defined <span class=" -Color -Color-Green">class</span> <span class=" -Color -Color-Cyan">NodeRes</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Can you define reduceRes function that transforms Tree into TreeRes?</p>
+<p>Here’s the signature of <code class="docutils literal notranslate"><span class="pre">reduceRes</span></code>. The implementation of
+a <code class="docutils literal notranslate"><span class="pre">reduceRes</span></code> is very simple. Leaves map to leaves with the same value. And nodes invoke the reduction on left and
+right subtree with the same operation. And then, we build the resulting node. The resulting node has these left and
+right subtrees, this component. But it also needs to store the new value. In order to obtain the new value,
+all we need to do is apply the given binary operation to
+the results of the left and right subtree. So, you can see that the resulting tree has the same shape as the original tree, we just have these additional values. And the root of the overall tree is in fact the value of reduce on our initial collection.</p>
+</div>
+<div class="section" id="reduce-that-preserves-the-computation-tree">
+<h2><span class="section-number">11.2. </span>Reduce that preserves the computation tree<a class="headerlink" href="#reduce-that-preserves-the-computation-tree" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">reduceRes</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">t</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">f</span><span class="k">:</span> <span class="o">(</span><span class="kt">A</span><span class="o">,</span><span class="kt">A</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">TreeRes</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="o">=</span> <span class="n">t</span> <span class="k">match</span> <span class="o">{</span>
+<span class="k">case</span> <span class="nc">Leaf</span><span class="o">(</span><span class="n">v</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="nc">LeafRes</span><span class="o">(</span><span class="n">v</span><span class="o">)</span>
+<span class="k">case</span> <span class="nc">Node</span><span class="o">(</span><span class="n">l</span><span class="o">,</span> <span class="n">r</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="o">{</span>
+<span class="k">val</span> <span class="o">(</span><span class="n">tL</span><span class="o">,</span> <span class="n">tR</span><span class="o">)</span> <span class="o">=</span> <span class="o">(</span><span class="n">reduceRes</span><span class="o">(</span><span class="n">l</span><span class="o">,</span> <span class="n">f</span><span class="o">),</span> <span class="n">reduceRes</span><span class="o">(</span><span class="n">r</span><span class="o">,</span> <span class="n">f</span><span class="o">))</span>
+<span class="nc">NodeRes</span><span class="o">(</span><span class="n">tL</span><span class="o">,</span> <span class="n">f</span><span class="o">(</span><span class="n">tL</span><span class="o">.</span><span class="n">res</span><span class="o">,</span> <span class="n">tR</span><span class="o">.</span><span class="n">res</span><span class="o">),</span> <span class="n">tR</span><span class="o">)</span>
+<span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>defined <span class=" -Color -Color-Green">function</span> <span class=" -Color -Color-Cyan">reduceRes</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">t1</span> <span class="o">=</span> <span class="nc">Node</span><span class="o">(</span><span class="nc">Node</span><span class="o">(</span><span class="nc">Leaf</span><span class="o">(</span><span class="mi">1</span><span class="o">),</span> <span class="nc">Leaf</span><span class="o">(</span><span class="mi">3</span><span class="o">)),</span> <span class="nc">Node</span><span class="o">(</span><span class="nc">Leaf</span><span class="o">(</span><span class="mi">8</span><span class="o">),</span> <span class="nc">Leaf</span><span class="o">(</span><span class="mi">50</span><span class="o">)))</span>
+<span class="k">val</span> <span class="n">plus</span> <span class="o">=</span> <span class="o">(</span><span class="n">x</span><span class="k">:</span><span class="kt">Int</span><span class="o">,</span><span class="n">y</span><span class="k">:</span><span class="kt">Int</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">x</span><span class="o">+</span><span class="n">y</span>
+<span class="k">val</span> <span class="n">res0</span> <span class="o">=</span> <span class="n">reduceRes</span><span class="o">(</span><span class="n">t1</span><span class="o">,</span> <span class="n">plus</span><span class="o">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Cyan">t1</span>: <span class=" -Color -Color-Green">Node</span>[<span class=" -Color -Color-Green">Int</span>] = <span class=" -Color -Color-Yellow">Node</span>(<span class=" -Color -Color-Yellow">Node</span>(<span class=" -Color -Color-Yellow">Leaf</span>(<span class=" -Color -Color-Green">1</span>), <span class=" -Color -Color-Yellow">Leaf</span>(<span class=" -Color -Color-Green">3</span>)), <span class=" -Color -Color-Yellow">Node</span>(<span class=" -Color -Color-Yellow">Leaf</span>(<span class=" -Color -Color-Green">8</span>), <span class=" -Color -Color-Yellow">Leaf</span>(<span class=" -Color -Color-Green">50</span>)))
+<span class=" -Color -Color-Cyan">plus</span>: (<span class=" -Color -Color-Green">Int</span>, <span class=" -Color -Color-Green">Int</span>) =&gt; <span class=" -Color -Color-Green">Int</span> = ammonite.$sess.cmd4$Helper$$Lambda$2052/0x9b467828@3d4a71
+<span class=" -Color -Color-Cyan">res0</span>: <span class=" -Color -Color-Green">TreeRes</span>[<span class=" -Color -Color-Green">Int</span>] = <span class=" -Color -Color-Yellow">NodeRes</span>(
+  <span class=" -Color -Color-Yellow">NodeRes</span>(<span class=" -Color -Color-Yellow">LeafRes</span>(<span class=" -Color -Color-Green">1</span>), <span class=" -Color -Color-Green">4</span>, <span class=" -Color -Color-Yellow">LeafRes</span>(<span class=" -Color -Color-Green">3</span>)),
+  <span class=" -Color -Color-Green">62</span>,
+  <span class=" -Color -Color-Yellow">NodeRes</span>(<span class=" -Color -Color-Yellow">LeafRes</span>(<span class=" -Color -Color-Green">8</span>), <span class=" -Color -Color-Green">58</span>, <span class=" -Color -Color-Yellow">LeafRes</span>(<span class=" -Color -Color-Green">50</span>))
+)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Of course, we would like to do this computation in parallel, but all we need to do in order to accomplish that is to insert this <code class="docutils literal notranslate"><span class="pre">parallel</span></code> keyword in front of the two recursive invocations. The resulting function, we will call <code class="docutils literal notranslate"><span class="pre">upsweep</span></code>. This suggests the bottom up
+computation that we use in order to obtain the tree of results.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">java.util.concurrent._</span>
+<span class="k">import</span> <span class="nn">scala.util.DynamicVariable</span>
+  
+<span class="k">val</span> <span class="n">forkJoinPool</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ForkJoinPool</span>
+
+  <span class="k">abstract</span> <span class="k">class</span> <span class="nc">TaskScheduler</span> <span class="o">{</span>
+    <span class="k">def</span> <span class="n">schedule</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span><span class="n">body</span><span class="k">:</span> <span class="o">=&gt;</span> <span class="n">T</span><span class="o">)</span><span class="k">:</span> <span class="kt">ForkJoinTask</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span>
+    <span class="k">def</span> <span class="n">parallel</span><span class="o">[</span><span class="kt">A</span><span class="p">,</span> <span class="kt">B</span><span class="o">](</span><span class="n">taskA</span><span class="k">:</span> <span class="o">=&gt;</span> <span class="n">A</span><span class="o">,</span> <span class="n">taskB</span><span class="k">:</span> <span class="o">=&gt;</span> <span class="n">B</span><span class="o">)</span><span class="k">:</span> <span class="o">(</span><span class="kt">A</span><span class="o">,</span> <span class="kt">B</span><span class="o">)</span> <span class="o">=</span> <span class="o">{</span>
+      <span class="k">val</span> <span class="n">right</span> <span class="o">=</span> <span class="n">task</span> <span class="o">{</span>
+        <span class="n">taskB</span>
+      <span class="o">}</span>
+      <span class="k">val</span> <span class="n">left</span> <span class="o">=</span> <span class="n">taskA</span>
+      <span class="o">(</span><span class="n">left</span><span class="o">,</span> <span class="n">right</span><span class="o">.</span><span class="n">join</span><span class="o">())</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+
+  <span class="k">class</span> <span class="nc">DefaultTaskScheduler</span> <span class="k">extends</span> <span class="nc">TaskScheduler</span> <span class="o">{</span>
+    <span class="k">def</span> <span class="n">schedule</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span><span class="n">body</span><span class="k">:</span> <span class="o">=&gt;</span> <span class="n">T</span><span class="o">)</span><span class="k">:</span> <span class="kt">ForkJoinTask</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="o">=</span> <span class="o">{</span>
+      <span class="k">val</span> <span class="n">t</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">RecursiveTask</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="o">{</span>
+        <span class="k">def</span> <span class="n">compute</span> <span class="o">=</span> <span class="n">body</span>
+      <span class="o">}</span>
+      <span class="nc">Thread</span><span class="o">.</span><span class="n">currentThread</span> <span class="k">match</span> <span class="o">{</span>
+        <span class="k">case</span> <span class="n">wt</span><span class="k">:</span> <span class="kt">ForkJoinWorkerThread</span> <span class="o">=&gt;</span>
+          <span class="n">t</span><span class="o">.</span><span class="n">fork</span><span class="o">()</span>
+        <span class="k">case</span> <span class="k">_</span> <span class="o">=&gt;</span>
+          <span class="n">forkJoinPool</span><span class="o">.</span><span class="n">execute</span><span class="o">(</span><span class="n">t</span><span class="o">)</span>
+      <span class="o">}</span>
+      <span class="n">t</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+
+  <span class="k">val</span> <span class="n">scheduler</span> <span class="o">=</span>
+    <span class="k">new</span> <span class="nc">DynamicVariable</span><span class="o">[</span><span class="kt">TaskScheduler</span><span class="o">](</span><span class="k">new</span> <span class="nc">DefaultTaskScheduler</span><span class="o">)</span>
+
+  <span class="k">def</span> <span class="n">task</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span><span class="n">body</span><span class="k">:</span> <span class="o">=&gt;</span> <span class="n">T</span><span class="o">)</span><span class="k">:</span> <span class="kt">ForkJoinTask</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="n">scheduler</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">schedule</span><span class="o">(</span><span class="n">body</span><span class="o">)</span>
+  <span class="o">}</span>
+
+  <span class="k">def</span> <span class="n">parallel</span><span class="o">[</span><span class="kt">A</span><span class="p">,</span> <span class="kt">B</span><span class="o">](</span><span class="n">taskA</span><span class="k">:</span> <span class="o">=&gt;</span> <span class="n">A</span><span class="o">,</span> <span class="n">taskB</span><span class="k">:</span> <span class="o">=&gt;</span> <span class="n">B</span><span class="o">)</span><span class="k">:</span> <span class="o">(</span><span class="kt">A</span><span class="o">,</span> <span class="kt">B</span><span class="o">)</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="n">scheduler</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">parallel</span><span class="o">(</span><span class="n">taskA</span><span class="o">,</span> <span class="n">taskB</span><span class="o">)</span>
+  <span class="o">}</span>
+
+  <span class="k">def</span> <span class="n">parallel</span><span class="o">[</span><span class="kt">A</span><span class="p">,</span> <span class="kt">B</span><span class="p">,</span> <span class="kt">C</span><span class="p">,</span> <span class="kt">D</span><span class="o">](</span><span class="n">taskA</span><span class="k">:</span> <span class="o">=&gt;</span> <span class="n">A</span><span class="o">,</span> <span class="n">taskB</span><span class="k">:</span> <span class="o">=&gt;</span> <span class="n">B</span><span class="o">,</span> <span class="n">taskC</span><span class="k">:</span> <span class="o">=&gt;</span> <span class="n">C</span><span class="o">,</span> <span class="n">taskD</span><span class="k">:</span> <span class="o">=&gt;</span> <span class="n">D</span><span class="o">)</span><span class="k">:</span> <span class="o">(</span><span class="kt">A</span><span class="o">,</span> <span class="kt">B</span><span class="o">,</span> <span class="n">C</span><span class="o">,</span> <span class="n">D</span><span class="o">)</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">ta</span> <span class="o">=</span> <span class="n">task</span> <span class="o">{</span> <span class="n">taskA</span> <span class="o">}</span>
+    <span class="k">val</span> <span class="n">tb</span> <span class="o">=</span> <span class="n">task</span> <span class="o">{</span> <span class="n">taskB</span> <span class="o">}</span>
+    <span class="k">val</span> <span class="n">tc</span> <span class="o">=</span> <span class="n">task</span> <span class="o">{</span> <span class="n">taskC</span> <span class="o">}</span>
+    <span class="k">val</span> <span class="n">td</span> <span class="o">=</span> <span class="n">taskD</span>
+    <span class="o">(</span><span class="n">ta</span><span class="o">.</span><span class="n">join</span><span class="o">(),</span> <span class="n">tb</span><span class="o">.</span><span class="n">join</span><span class="o">(),</span> <span class="n">tc</span><span class="o">.</span><span class="n">join</span><span class="o">(),</span> <span class="n">td</span><span class="o">)</span>
+  <span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">import </span><span class=" -Color -Color-Cyan">java.util.concurrent._</span>
+
+<span class=" -Color -Color-Green">import </span><span class=" -Color -Color-Cyan">scala.util.DynamicVariable</span>
+<span class=" -Color -Color-Cyan">  </span>
+
+<span class=" -Color -Color-Cyan">forkJoinPool</span>: <span class=" -Color -Color-Green">ForkJoinPool</span> = java.util.concurrent.ForkJoinPool@1d5af79[Running, parallelism = 8, size = 0, active = 0, running = 0, steals = 0, tasks = 0, submissions = 0]
+defined <span class=" -Color -Color-Green">class</span> <span class=" -Color -Color-Cyan">TaskScheduler</span>
+defined <span class=" -Color -Color-Green">class</span> <span class=" -Color -Color-Cyan">DefaultTaskScheduler</span>
+<span class=" -Color -Color-Cyan">scheduler</span>: <span class=" -Color -Color-Green">DynamicVariable</span>[<span class=" -Color -Color-Green">TaskScheduler</span>] = DynamicVariable(ammonite.$sess.cmd5$Helper$DefaultTaskScheduler@16d737a)
+defined <span class=" -Color -Color-Green">function</span> <span class=" -Color -Color-Cyan">task</span>
+defined <span class=" -Color -Color-Green">function</span> <span class=" -Color -Color-Cyan">parallel</span>
+defined <span class=" -Color -Color-Green">function</span> <span class=" -Color -Color-Cyan">parallel</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="parallel-reduce-that-preserves-the-computation-tree-upsweep">
+<h2><span class="section-number">11.3. </span>Parallel reduce that preserves the computation tree (upsweep)<a class="headerlink" href="#parallel-reduce-that-preserves-the-computation-tree-upsweep" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">upsweep</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">t</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">f</span><span class="k">:</span> <span class="o">(</span><span class="kt">A</span><span class="o">,</span><span class="kt">A</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">TreeRes</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="o">=</span> <span class="n">t</span> <span class="k">match</span> <span class="o">{</span>
+<span class="k">case</span> <span class="nc">Leaf</span><span class="o">(</span><span class="n">v</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="nc">LeafRes</span><span class="o">(</span><span class="n">v</span><span class="o">)</span>
+<span class="k">case</span> <span class="nc">Node</span><span class="o">(</span><span class="n">l</span><span class="o">,</span> <span class="n">r</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="o">{</span>
+<span class="k">val</span> <span class="o">(</span><span class="n">tL</span><span class="o">,</span> <span class="n">tR</span><span class="o">)</span> <span class="o">=</span> <span class="n">parallel</span><span class="o">(</span><span class="n">upsweep</span><span class="o">(</span><span class="n">l</span><span class="o">,</span> <span class="n">f</span><span class="o">),</span> <span class="n">upsweep</span><span class="o">(</span><span class="n">r</span><span class="o">,</span> <span class="n">f</span><span class="o">))</span>
+<span class="nc">NodeRes</span><span class="o">(</span><span class="n">tL</span><span class="o">,</span> <span class="n">f</span><span class="o">(</span><span class="n">tL</span><span class="o">.</span><span class="n">res</span><span class="o">,</span> <span class="n">tR</span><span class="o">.</span><span class="n">res</span><span class="o">),</span> <span class="n">tR</span><span class="o">)</span>
+<span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>defined <span class=" -Color -Color-Green">function</span> <span class=" -Color -Color-Cyan">upsweep</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Given this tree with results, we would now like to produce
+the scanLeft of our initial collection. For the collection 1, 3, 8,
+50 and the initial element 100, the scanLeft should be the following list.</p>
+<p>The computation of <code class="docutils literal notranslate"><span class="pre">scanLeft</span></code>, given
+the result tree from <code class="docutils literal notranslate"><span class="pre">upSweep</span></code>, is called <code class="docutils literal notranslate"><span class="pre">downsweep</span></code>. Downsweep takes an initial element <code class="docutils literal notranslate"><span class="pre">a0</span></code>, which plays an important role here. And the tree of results. And the binary operation <code class="docutils literal notranslate"><span class="pre">f</span></code>. It will produce a new collection,just like the bigger tree in the end. We will first produce a tree that has the same length as the original one. To understand how downsweep works, the key fact to remember is that a0 is supposed to denote the reduce of all elements that come to the left of
+the current tree, t, that we are given.</p>
+<p>At the very beginning,
+this is the initial element, 100. As we move down the tree,
+then we get some elements that proceeded. So, for example, for this subtree here. What we need to take into account is 100,
+1, and 3. When we have the Leaf, then,
+we simply need to apply operation f to the given element a0 and
+the element in the Leaf. The interesting case is
+of course case of Node. We are going to again recursively do
+a downsweep on the left and right subtree. This will give us two new trees, left and
+right, and then, we will combine it. The key question is, what is the initial element that we
+are passing to these two subtrees? Now, what are the things that are to
+the left of our left subtree here? Well, they are the things that
+they are left to the entire tree. So, we are passing the same element a0. What about the right subtree? Here, we need to take into account both
+the elements that we are given, a0. But also,
+what happened in the left subtree.</p>
+</div>
+<div class="section" id="using-tree-with-results-to-create-the-final-collection">
+<h2><span class="section-number">11.4. </span>Using tree with results to create the final collection<a class="headerlink" href="#using-tree-with-results-to-create-the-final-collection" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">downsweep</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">t</span><span class="k">:</span> <span class="kt">TreeRes</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">a0</span><span class="k">:</span> <span class="kt">A</span><span class="o">,</span> <span class="n">f</span> <span class="k">:</span> <span class="o">(</span><span class="kt">A</span><span class="o">,</span><span class="kt">A</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="o">=</span> <span class="n">t</span> <span class="k">match</span> <span class="o">{</span>
+<span class="k">case</span> <span class="nc">LeafRes</span><span class="o">(</span><span class="n">a</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="nc">Leaf</span><span class="o">(</span><span class="n">f</span><span class="o">(</span><span class="n">a0</span><span class="o">,</span> <span class="n">a</span><span class="o">))</span>
+<span class="k">case</span> <span class="nc">NodeRes</span><span class="o">(</span><span class="n">l</span><span class="o">,</span> <span class="k">_</span><span class="o">,</span> <span class="n">r</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="o">{</span>
+<span class="k">val</span> <span class="o">(</span><span class="n">tL</span><span class="o">,</span> <span class="n">tR</span><span class="o">)</span> <span class="o">=</span> <span class="n">parallel</span><span class="o">(</span><span class="n">downsweep</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">l</span><span class="o">,</span> <span class="n">a0</span><span class="o">,</span> <span class="n">f</span><span class="o">),</span>
+<span class="n">downsweep</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">r</span><span class="o">,</span> <span class="n">f</span><span class="o">(</span><span class="n">a0</span><span class="o">,</span> <span class="n">l</span><span class="o">.</span><span class="n">res</span><span class="o">),</span> <span class="n">f</span><span class="o">))</span>
+<span class="nc">Node</span><span class="o">(</span><span class="n">tL</span><span class="o">,</span> <span class="n">tR</span><span class="o">)</span> <span class="o">}</span> <span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>defined <span class=" -Color -Color-Green">function</span> <span class=" -Color -Color-Cyan">downsweep</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>To understand how downsweep works, remember <code class="docutils literal notranslate"><span class="pre">a0</span></code> is used to denote the reduce of all elements that come to the left of current tree <code class="docutils literal notranslate"><span class="pre">t</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="n">downsweep</span><span class="o">(</span><span class="n">res0</span><span class="o">,</span> <span class="mi">100</span><span class="o">,</span> <span class="n">plus</span><span class="o">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Cyan">res8</span>: <span class=" -Color -Color-Green">Tree</span>[<span class=" -Color -Color-Green">Int</span>] = <span class=" -Color -Color-Yellow">Node</span>(<span class=" -Color -Color-Yellow">Node</span>(<span class=" -Color -Color-Yellow">Leaf</span>(<span class=" -Color -Color-Green">101</span>), <span class=" -Color -Color-Yellow">Leaf</span>(<span class=" -Color -Color-Green">104</span>)), <span class=" -Color -Color-Yellow">Node</span>(<span class=" -Color -Color-Yellow">Leaf</span>(<span class=" -Color -Color-Green">112</span>), <span class=" -Color -Color-Yellow">Leaf</span>(<span class=" -Color -Color-Green">162</span>)))
+</pre></div>
+</div>
+</div>
+</div>
+<p>This is the reuslt of <code class="docutils literal notranslate"><span class="pre">scanLeft</span></code> using the functions defined above.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">scanLeft</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">t</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">a0</span><span class="k">:</span> <span class="kt">A</span><span class="o">,</span> <span class="n">f</span><span class="k">:</span> <span class="o">(</span><span class="kt">A</span><span class="o">,</span><span class="kt">A</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="o">=</span> <span class="o">{</span>
+<span class="k">val</span> <span class="n">tRes</span> <span class="o">=</span> <span class="n">upsweep</span><span class="o">(</span><span class="n">t</span><span class="o">,</span> <span class="n">f</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">scan1</span> <span class="o">=</span> <span class="n">downsweep</span><span class="o">(</span><span class="n">tRes</span><span class="o">,</span> <span class="n">a0</span><span class="o">,</span> <span class="n">f</span><span class="o">)</span>
+<span class="n">prepend</span><span class="o">(</span><span class="n">a0</span><span class="o">,</span> <span class="n">scan1</span><span class="o">)</span>
+<span class="o">}</span>
+<span class="k">def</span> <span class="n">prepend</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">x</span><span class="k">:</span> <span class="kt">A</span><span class="o">,</span> <span class="n">t</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="o">=</span> <span class="n">t</span> <span class="k">match</span> <span class="o">{</span>
+<span class="k">case</span> <span class="nc">Leaf</span><span class="o">(</span><span class="n">v</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="nc">Node</span><span class="o">(</span><span class="nc">Leaf</span><span class="o">(</span><span class="n">x</span><span class="o">),</span> <span class="nc">Leaf</span><span class="o">(</span><span class="n">v</span><span class="o">))</span>
+<span class="k">case</span> <span class="nc">Node</span><span class="o">(</span><span class="n">l</span><span class="o">,</span> <span class="n">r</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="nc">Node</span><span class="o">(</span><span class="n">prepend</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">l</span><span class="o">),</span> <span class="n">r</span><span class="o">)</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>defined <span class=" -Color -Color-Green">function</span> <span class=" -Color -Color-Cyan">scanLeft</span>
+defined <span class=" -Color -Color-Green">function</span> <span class=" -Color -Color-Cyan">prepend</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="n">scanLeft</span><span class="o">(</span><span class="n">t1</span><span class="o">,</span> <span class="mi">100</span><span class="o">,</span> <span class="n">plus</span><span class="o">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Cyan">res10</span>: <span class=" -Color -Color-Green">Tree</span>[<span class=" -Color -Color-Green">Int</span>] = <span class=" -Color -Color-Yellow">Node</span>(
+  <span class=" -Color -Color-Yellow">Node</span>(<span class=" -Color -Color-Yellow">Node</span>(<span class=" -Color -Color-Yellow">Leaf</span>(<span class=" -Color -Color-Green">100</span>), <span class=" -Color -Color-Yellow">Leaf</span>(<span class=" -Color -Color-Green">101</span>)), <span class=" -Color -Color-Yellow">Leaf</span>(<span class=" -Color -Color-Green">104</span>)),
+  <span class=" -Color -Color-Yellow">Node</span>(<span class=" -Color -Color-Yellow">Leaf</span>(<span class=" -Color -Color-Green">112</span>), <span class=" -Color -Color-Yellow">Leaf</span>(<span class=" -Color -Color-Green">162</span>))
+)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Previous definition on trees is good for understanding</p>
+<p>As with <code class="docutils literal notranslate"><span class="pre">map</span></code> and <code class="docutils literal notranslate"><span class="pre">reduce</span></code>, to make it more efficient, we use trees that have arrays in leaves instead of individual elements.
+Exercise: define <code class="docutils literal notranslate"><span class="pre">scanLeft</span></code> on trees with such large leaves, using sequential scan left in the leaves.</p>
+<p>Next step: parallel scan when the entire collection is an array</p>
+<p>▶ we will still need to construct the intermediate tree</p>
+<p>Now we go further and examine parallel scan for a collection represented as an array. So we have one big array to start with. Interestingly even in this case we use tree to store intermediate results. The tree of intermediate results looks very similar to the one we seen before.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">sealed</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">TreeResA</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="o">{</span> <span class="k">val</span> <span class="n">res</span><span class="k">:</span> <span class="kt">A</span> <span class="o">}</span>
+<span class="k">case</span> <span class="k">class</span> <span class="nc">Leaf</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">from</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">to</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span>
+<span class="k">override</span> <span class="k">val</span> <span class="n">res</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span> <span class="k">extends</span> <span class="nc">TreeResA</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span>
+<span class="k">case</span> <span class="k">class</span> <span class="nc">Node</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">l</span><span class="k">:</span> <span class="kt">TreeResA</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> 
+<span class="k">override</span> <span class="k">val</span> <span class="n">res</span><span class="k">:</span> <span class="kt">A</span><span class="o">,</span> <span class="n">r</span><span class="k">:</span> <span class="kt">TreeResA</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">extends</span> <span class="nc">TreeResA</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>defined <span class=" -Color -Color-Green">class</span> <span class=" -Color -Color-Cyan">TreeResA</span>
+defined <span class=" -Color -Color-Green">class</span> <span class=" -Color -Color-Cyan">Leaf</span>
+defined <span class=" -Color -Color-Green">class</span> <span class=" -Color -Color-Cyan">Node</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Node</span></code> stores left and right subtree, as well as the value we computed. On the other hand there is small change in leaves. We want to process our arrays efficiently, we want to stop when the chunks processing are small enough. We represent these chunks using indices <code class="docutils literal notranslate"><span class="pre">from</span></code> and <code class="docutils literal notranslate"><span class="pre">to</span></code>. We will not store the actual content, but we will store the indices to big array. We are storing indication where those values can be found.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">threshold</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="k">def</span> <span class="n">upsweep</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">inp</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">from</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">to</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span>
+<span class="n">f</span><span class="k">:</span> <span class="o">(</span><span class="kt">A</span><span class="o">,</span><span class="kt">A</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">TreeResA</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="o">=</span> <span class="o">{</span>
+<span class="k">if</span> <span class="o">(</span><span class="n">to</span> <span class="o">-</span> <span class="n">from</span> <span class="o">&lt;</span> <span class="n">threshold</span><span class="o">)</span>
+<span class="nc">Leaf</span><span class="o">(</span><span class="n">from</span><span class="o">,</span> <span class="n">to</span><span class="o">,</span> <span class="n">reduceSeg1</span><span class="o">(</span><span class="n">inp</span><span class="o">,</span> <span class="n">from</span> <span class="o">+</span> <span class="mi">1</span><span class="o">,</span> <span class="n">to</span><span class="o">,</span> <span class="n">inp</span><span class="o">(</span><span class="n">from</span><span class="o">),</span> <span class="n">f</span><span class="o">))</span>
+<span class="k">else</span> <span class="o">{</span>
+<span class="k">val</span> <span class="n">mid</span> <span class="o">=</span> <span class="n">from</span> <span class="o">+</span> <span class="o">(</span><span class="n">to</span> <span class="o">-</span> <span class="n">from</span><span class="o">)/</span><span class="mi">2</span>
+<span class="k">val</span> <span class="o">(</span><span class="n">tL</span><span class="o">,</span><span class="n">tR</span><span class="o">)</span> <span class="o">=</span> <span class="n">parallel</span><span class="o">(</span><span class="n">upsweep</span><span class="o">(</span><span class="n">inp</span><span class="o">,</span> <span class="n">from</span><span class="o">,</span> <span class="n">mid</span><span class="o">,</span> <span class="n">f</span><span class="o">),</span>
+<span class="n">upsweep</span><span class="o">(</span><span class="n">inp</span><span class="o">,</span> <span class="n">mid</span><span class="o">,</span> <span class="n">to</span><span class="o">,</span> <span class="n">f</span><span class="o">))</span>
+<span class="nc">Node</span><span class="o">(</span><span class="n">tL</span><span class="o">,</span> <span class="n">f</span><span class="o">(</span><span class="n">tL</span><span class="o">.</span><span class="n">res</span><span class="o">,</span><span class="n">tR</span><span class="o">.</span><span class="n">res</span><span class="o">),</span> <span class="n">tR</span><span class="o">)</span>
+<span class="o">}</span>
+<span class="o">}</span>
+
+<span class="k">def</span> <span class="n">reduceSeg1</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">inp</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">left</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">right</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span>
+<span class="n">a0</span><span class="k">:</span> <span class="kt">A</span><span class="o">,</span> <span class="n">f</span><span class="k">:</span> <span class="o">(</span><span class="kt">A</span><span class="o">,</span><span class="kt">A</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=</span> <span class="o">{</span>
+<span class="k">var</span> <span class="n">a</span><span class="o">=</span> <span class="n">a0</span>
+<span class="k">var</span> <span class="n">i</span><span class="o">=</span> <span class="n">left</span>
+<span class="k">while</span> <span class="o">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">right</span><span class="o">)</span> <span class="o">{</span>
+<span class="n">a</span><span class="o">=</span> <span class="n">f</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">inp</span><span class="o">(</span><span class="n">i</span><span class="o">))</span>
+<span class="n">i</span><span class="o">=</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span>
+<span class="o">}</span>
+<span class="n">a</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Cyan">threshold</span>: <span class=" -Color -Color-Green">Int</span> = <span class=" -Color -Color-Green">50</span>
+defined <span class=" -Color -Color-Green">function</span> <span class=" -Color -Color-Cyan">upsweep</span>
+defined <span class=" -Color -Color-Green">function</span> <span class=" -Color -Color-Cyan">reduceSeg1</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">scanLeftSeg</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">inp</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">left</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">right</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span>
+<span class="n">a0</span><span class="k">:</span> <span class="kt">A</span><span class="o">,</span> <span class="n">f</span><span class="k">:</span> <span class="o">(</span><span class="kt">A</span><span class="o">,</span><span class="kt">A</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">A</span><span class="o">,</span>
+<span class="n">out</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="o">=</span> <span class="o">{</span>
+<span class="k">if</span> <span class="o">(</span><span class="n">left</span> <span class="o">&lt;</span> <span class="n">right</span><span class="o">)</span> <span class="o">{</span>
+<span class="k">var</span> <span class="n">i</span><span class="o">=</span> <span class="n">left</span>
+<span class="k">var</span> <span class="n">a</span><span class="o">=</span> <span class="n">a0</span>
+<span class="k">while</span> <span class="o">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">right</span><span class="o">)</span> <span class="o">{</span>
+<span class="n">a</span><span class="o">=</span> <span class="n">f</span><span class="o">(</span><span class="n">a</span><span class="o">,</span><span class="n">inp</span><span class="o">(</span><span class="n">i</span><span class="o">))</span>
+<span class="n">i</span><span class="o">=</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span>
+<span class="n">out</span><span class="o">(</span><span class="n">i</span><span class="o">)</span><span class="k">=</span><span class="n">a</span>
+<span class="o">}</span>
+<span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>defined <span class=" -Color -Color-Green">function</span> <span class=" -Color -Color-Cyan">scanLeftSeg</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">downsweep</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">inp</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span>
+<span class="n">a0</span><span class="k">:</span> <span class="kt">A</span><span class="o">,</span> <span class="n">f</span><span class="k">:</span> <span class="o">(</span><span class="kt">A</span><span class="o">,</span><span class="kt">A</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">A</span><span class="o">,</span>
+<span class="n">t</span><span class="k">:</span> <span class="kt">TreeResA</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span>
+<span class="n">out</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="n">t</span> <span class="k">match</span> <span class="o">{</span>
+<span class="k">case</span> <span class="nc">Leaf</span><span class="o">(</span><span class="n">from</span><span class="o">,</span> <span class="n">to</span><span class="o">,</span> <span class="n">res</span><span class="o">)</span> <span class="o">=&gt;</span>
+<span class="n">scanLeftSeg</span><span class="o">(</span><span class="n">inp</span><span class="o">,</span> <span class="n">from</span><span class="o">,</span> <span class="n">to</span><span class="o">,</span> <span class="n">a0</span><span class="o">,</span> <span class="n">f</span><span class="o">,</span> <span class="n">out</span><span class="o">)</span>
+<span class="k">case</span> <span class="nc">Node</span><span class="o">(</span><span class="n">l</span><span class="o">,</span> <span class="k">_</span><span class="o">,</span> <span class="n">r</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="o">{</span>
+<span class="k">val</span> <span class="o">(</span><span class="k">_</span><span class="o">,</span><span class="k">_</span><span class="o">)</span> <span class="o">=</span> <span class="n">parallel</span><span class="o">(</span>
+<span class="n">downsweep</span><span class="o">(</span><span class="n">inp</span><span class="o">,</span> <span class="n">a0</span><span class="o">,</span> <span class="n">f</span><span class="o">,</span> <span class="n">l</span><span class="o">,</span> <span class="n">out</span><span class="o">),</span>
+<span class="n">downsweep</span><span class="o">(</span><span class="n">inp</span><span class="o">,</span> <span class="n">f</span><span class="o">(</span><span class="n">a0</span><span class="o">,</span><span class="n">l</span><span class="o">.</span><span class="n">res</span><span class="o">),</span> <span class="n">f</span><span class="o">,</span> <span class="n">r</span><span class="o">,</span> <span class="n">out</span><span class="o">))</span>
+<span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>defined <span class=" -Color -Color-Green">function</span> <span class=" -Color -Color-Cyan">downsweep</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">scanLeft</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">inp</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span>
+<span class="n">a0</span><span class="k">:</span> <span class="kt">A</span><span class="o">,</span> <span class="n">f</span><span class="k">:</span> <span class="o">(</span><span class="kt">A</span><span class="o">,</span><span class="kt">A</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">A</span><span class="o">,</span>
+<span class="n">out</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="o">=</span> <span class="o">{</span>
+<span class="k">val</span> <span class="n">t</span> <span class="o">=</span> <span class="n">upsweep</span><span class="o">(</span><span class="n">inp</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">inp</span><span class="o">.</span><span class="n">length</span><span class="o">,</span> <span class="n">f</span><span class="o">)</span>
+<span class="n">downsweep</span><span class="o">(</span><span class="n">inp</span><span class="o">,</span> <span class="n">a0</span><span class="o">,</span> <span class="n">f</span><span class="o">,</span> <span class="n">t</span><span class="o">,</span> <span class="n">out</span><span class="o">)</span> <span class="c1">// fills out[1..inp.length]</span>
+<span class="n">out</span><span class="o">(</span><span class="mi">0</span><span class="o">)=</span> <span class="n">a0</span> <span class="c1">// prepends a0</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>defined <span class=" -Color -Color-Green">function</span> <span class=" -Color -Color-Cyan">scanLeft</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">inp</span> <span class="o">=</span> <span class="nc">Array</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">out</span> <span class="o">=</span> <span class="nc">Array</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="mi">1</span><span class="o">,</span><span class="mi">1</span><span class="o">,</span><span class="mi">1</span><span class="o">)</span>
+<span class="n">scanLeft</span><span class="o">(</span><span class="n">inp</span> <span class="o">,</span><span class="mi">4</span><span class="o">,(</span><span class="n">x</span><span class="k">:</span><span class="kt">Int</span><span class="o">,</span> <span class="n">y</span><span class="k">:</span><span class="kt">Int</span><span class="o">)=&gt;</span> <span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="o">,</span> <span class="n">out</span><span class="o">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Cyan">inp</span>: <span class=" -Color -Color-Green">Array</span>[<span class=" -Color -Color-Green">Int</span>] = <span class=" -Color -Color-Yellow">Array</span>(<span class=" -Color -Color-Green">1</span>, <span class=" -Color -Color-Green">2</span>, <span class=" -Color -Color-Green">3</span>)
+<span class=" -Color -Color-Cyan">out</span>: <span class=" -Color -Color-Green">Array</span>[<span class=" -Color -Color-Green">Int</span>] = <span class=" -Color -Color-Yellow">Array</span>(<span class=" -Color -Color-Green">4</span>, <span class=" -Color -Color-Green">5</span>, <span class=" -Color -Color-Green">7</span>, <span class=" -Color -Color-Green">10</span>)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="n">out</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Cyan">res18</span>: <span class=" -Color -Color-Green">Array</span>[<span class=" -Color -Color-Green">Int</span>] = <span class=" -Color -Color-Yellow">Array</span>(<span class=" -Color -Color-Green">4</span>, <span class=" -Color -Color-Green">5</span>, <span class=" -Color -Color-Green">7</span>, <span class=" -Color -Color-Green">10</span>)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "scala"
+        },
+        kernelOptions: {
+            kernelName: "scala",
+            path: "./pp/week2"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'scala'</script>
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+    <a class='left-prev' id="prev-link" href="week2_3.html" title="previous page"><span class="section-number">10. </span>Parallel Fold (Reduce) Operation</a>
+    <a class='right-next' id="next-link" href="week2_5.html" title="next page"><span class="section-number">12. </span>Assoicativity</a>
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Vikram Bhatt<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="../../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    
+  </body>
+</html>

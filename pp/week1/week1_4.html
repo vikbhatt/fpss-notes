@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Running computations in parallel &#8212; Functional Programming in Scala Specialization -- Complied Notes</title>
+    <title>4. Running computations in parallel &#8212; Functional Programming in Scala Specialization -- Complied Notes</title>
     
   <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
 
@@ -59,6 +59,8 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="8. Parallel Sorting" href="../week2/week2_1.html" />
+    <link rel="prev" title="3. Running Computations in Parallel" href="week1_3.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -324,7 +326,7 @@
   Parallel Programming
  </span>
 </p>
-<ul class="nav sidenav_l1">
+<ul class="current nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="week1_1.html">
    1. Parallelism on JVM I
@@ -340,24 +342,99 @@
    3. Running Computations in Parallel
   </a>
  </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   4. Running computations in parallel
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="#first-class-tasks">
+   5. First Class Tasks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="#benchmarking-parallel-programs">
+   6. Benchmarking Parallel Programs
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="#scalameter">
+   7. ScalaMeter
+  </a>
+ </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../week2/week2_1.html">
-   4. Parallel Sorting
+   8. Parallel Sorting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../week2/week2_2.html">
-   5. Data Operations and Parallel Mapping
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../week2/week2_2.html#map-meaning-and-properties">
-   6. Map: Meaning and Properties
+   9. Data Operations and Parallel Mapping
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../week2/week2_3.html">
-   7. Parallel Fold (Reduce) Operation
+   10. Parallel Fold (Reduce) Operation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week2/week2_4.html">
+   11. Parallel Scan Left
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week2/week2_5.html">
+   12. Assoicativity
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week3/week3_1.html">
+   13. Data-Parallel Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week3/week3_2.html">
+   14. Data-Parallel Operations I
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week3/week3_2.html#data-parallel-operations-ii">
+   15. Data-Parallel Operations II
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week3/week3_3.html">
+   16. Scala Collections Hierarchy
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week3/week3_4.html">
+   17. Splitters and Combiners
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week4/week4_1.html">
+   18. Implementing Combiners
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week4/week4_2.html">
+   19. Parallel Two-phase Construction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week4/week4_3.html">
+   20. Conc-Trees
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week4/week4_3.html#amortized-constant-time-append-operation">
+   21. Amortized, Constant-time Append Operation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week4/week4_3.html#conc-tree-combiners">
+   22. Conc-Tree Combiners
   </a>
  </li>
 </ul>
@@ -449,29 +526,29 @@
             <ul class="nav section-nav flex-column">
  <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#">
-   Running computations in parallel
+   4. Running computations in parallel
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#first-class-tasks">
-   First Class Tasks
+   5. First Class Tasks
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#benchmarking-parallel-programs">
-   Benchmarking Parallel Programs
+   6. Benchmarking Parallel Programs
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h2 nav-item toc-entry">
     <a class="reference internal nav-link" href="#why-do-we-benchmark-parallel-programs">
-     Why do we benchmark parallel programs?
+     6.1. Why do we benchmark parallel programs?
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#scalameter">
-   ScalaMeter
+   7. ScalaMeter
   </a>
  </li>
 </ul>
@@ -486,7 +563,7 @@
               <div>
                 
   <div class="section" id="running-computations-in-parallel">
-<h1>Running computations in parallel<a class="headerlink" href="#running-computations-in-parallel" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">4. </span>Running computations in parallel<a class="headerlink" href="#running-computations-in-parallel" title="Permalink to this headline">¶</a></h1>
 <p>Consider a square and circle of radius one inside the square.</p>
 <p>Ratio between surface areas of circle and square</p>
 <p><span class="math notranslate nohighlight">\(\lambda = \frac{\pi}{4}\)</span></p>
@@ -545,7 +622,7 @@ defined <span class=" -Color -Color-Green">function</span> <span class=" -Color 
 <p>All computations are happening in parallel and independent.</p>
 </div>
 <div class="section" id="first-class-tasks">
-<h1>First Class Tasks<a class="headerlink" href="#first-class-tasks" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">5. </span>First Class Tasks<a class="headerlink" href="#first-class-tasks" title="Permalink to this headline">¶</a></h1>
 <p>Let’s now describe a more flexible construct for describing parallel computation. Consider</p>
 <div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="o">(</span><span class="n">v1</span><span class="o">,</span> <span class="n">v2</span><span class="o">)</span> <span class="o">=</span> <span class="n">parallel</span><span class="o">(</span><span class="n">e1</span><span class="o">,</span> <span class="n">e2</span><span class="o">)</span>
 </pre></div>
@@ -621,7 +698,7 @@ in thread of this function.</p>
 <p>Although, above defintion compiles it does not the benefit of parallel computation in as task <code class="docutils literal notranslate"><span class="pre">tB</span></code> completed (immediatly called join) before task <code class="docutils literal notranslate"><span class="pre">tA</span></code>.</p>
 </div>
 <div class="section" id="benchmarking-parallel-programs">
-<h1>Benchmarking Parallel Programs<a class="headerlink" href="#benchmarking-parallel-programs" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">6. </span>Benchmarking Parallel Programs<a class="headerlink" href="#benchmarking-parallel-programs" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
 <li><p>testing – ensures that parts of the program are behaving according to the intended behavior</p></li>
 <li><p>benchmarking – computes performance metrics for parts of the program.</p></li>
@@ -662,7 +739,7 @@ For example if we want to test the runnning time on list reverse we could</p>
 <p>Benchmarking usually yields a continuous value, which denotes the extent to which the program is correct.</p>
 <p>In our benchmarking example running time is a continous value and will be slightly different each time.</p>
 <div class="section" id="why-do-we-benchmark-parallel-programs">
-<h2>Why do we benchmark parallel programs?<a class="headerlink" href="#why-do-we-benchmark-parallel-programs" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.1. </span>Why do we benchmark parallel programs?<a class="headerlink" href="#why-do-we-benchmark-parallel-programs" title="Permalink to this headline">¶</a></h2>
 <p>Performance benefits are the main reason why we are writing parallel
 programs in the first place.</p>
 <p>Benchmarking parallel programs is even more important than benchmarking sequential programs.</p>
@@ -698,7 +775,7 @@ Compilers can make optimizations.</p>
 </div>
 </div>
 <div class="section" id="scalameter">
-<h1>ScalaMeter<a class="headerlink" href="#scalameter" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">7. </span>ScalaMeter<a class="headerlink" href="#scalameter" title="Permalink to this headline">¶</a></h1>
 <p>ScalaMeter is a benchmarking and performance regression testing
 framework for the JVM.</p>
 <ul class="simple">
@@ -792,6 +869,8 @@ steady state.</p>
     
     <div class='prev-next-bottom'>
         
+    <a class='left-prev' id="prev-link" href="week1_3.html" title="previous page"><span class="section-number">3. </span>Running Computations in Parallel</a>
+    <a class='right-next' id="next-link" href="../week2/week2_1.html" title="next page"><span class="section-number">8. </span>Parallel Sorting</a>
 
     </div>
     <footer class="footer mt-5 mt-md-0">

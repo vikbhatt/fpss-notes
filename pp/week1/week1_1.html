@@ -343,23 +343,98 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="week1_4.html">
+   4. Running computations in parallel
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="week1_4.html#first-class-tasks">
+   5. First Class Tasks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="week1_4.html#benchmarking-parallel-programs">
+   6. Benchmarking Parallel Programs
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="week1_4.html#scalameter">
+   7. ScalaMeter
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="../week2/week2_1.html">
-   4. Parallel Sorting
+   8. Parallel Sorting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../week2/week2_2.html">
-   5. Data Operations and Parallel Mapping
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../week2/week2_2.html#map-meaning-and-properties">
-   6. Map: Meaning and Properties
+   9. Data Operations and Parallel Mapping
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../week2/week2_3.html">
-   7. Parallel Fold (Reduce) Operation
+   10. Parallel Fold (Reduce) Operation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week2/week2_4.html">
+   11. Parallel Scan Left
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week2/week2_5.html">
+   12. Assoicativity
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week3/week3_1.html">
+   13. Data-Parallel Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week3/week3_2.html">
+   14. Data-Parallel Operations I
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week3/week3_2.html#data-parallel-operations-ii">
+   15. Data-Parallel Operations II
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week3/week3_3.html">
+   16. Scala Collections Hierarchy
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week3/week3_4.html">
+   17. Splitters and Combiners
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week4/week4_1.html">
+   18. Implementing Combiners
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week4/week4_2.html">
+   19. Parallel Two-phase Construction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week4/week4_3.html">
+   20. Conc-Trees
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week4/week4_3.html#amortized-constant-time-append-operation">
+   21. Amortized, Constant-time Append Operation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../week4/week4_3.html#conc-tree-combiners">
+   22. Conc-Tree Combiners
   </a>
  </li>
 </ul>
@@ -483,7 +558,7 @@ simultaneously in the same OS.</p>
 <p>Threads can be started from within the same program, and they share the same memory address space.</p>
 <p>Each thread has a program counter and a program stack. The program stack is a region of memory that sequence of method invocations currently being executed. Program counter describes the current position in the program method.</p>
 <p>JVM threads cannot modify each other’s stack memory. Stack entries which correspond to local entries, which are accessible to the thread that owns the stack. They can only modify the heap memory. To communicate JVM threads must modify heap memory.</p>
-<p>Each JVM process starts with a main thread. This thread executes the main method of Scala program. In normal sequential program, we use only main thread to execute the program. However in parallel program we must multiple threads, and the operating system assigns it to the available CPU.</p>
+<p>Each JVM process starts with a main thread. This thread executes the main method of Scala program. In normal sequential program, we use only main thread to execute the program. However in parallel program we must start multiple threads, and the operating system assigns it to the available CPU.</p>
 <p>To start additional threads:</p>
 <ol class="simple">
 <li><p>Define a <code class="docutils literal notranslate"><span class="pre">Thread</span> </code>subclass.</p></li>
@@ -515,7 +590,7 @@ simultaneously in the same OS.</p>
 </div>
 </div>
 <p>When main thread encounters <code class="docutils literal notranslate"><span class="pre">t.start()</span></code> it starts a new thread of type <code class="docutils literal notranslate"><span class="pre">HelloThread</span></code>. The two threads then execute in parallel. When the main thread calls join, it halts it execution untill <code class="docutils literal notranslate"><span class="pre">HelloThread</span></code> completes. After the completion of <code class="docutils literal notranslate"><span class="pre">HelloThread</span></code> execution, the main thread can proceed.</p>
-<p>Let’s do another experimen. Define a new <code class="docutils literal notranslate"><span class="pre">HelloThread</span></code> like this.</p>
+<p>Let’s do another experiment. Define a new <code class="docutils literal notranslate"><span class="pre">HelloThread</span></code> like this.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">HelloThread</span> <span class="k">extends</span> <span class="nc">Thread</span> <span class="o">{</span>
